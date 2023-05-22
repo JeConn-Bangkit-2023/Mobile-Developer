@@ -1,4 +1,4 @@
-package com.capstone.jeconn
+package com.fgr.jeconnadmin
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.capstone.jeconn.ui.theme.JeConnTheme
+import com.fgr.jeconnadmin.ui.theme.JeConnTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +22,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //Test2
                     Greeting("Android")
                 }
             }
