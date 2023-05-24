@@ -3,6 +3,7 @@ package com.capstone.jeconn.ui.screen.dashboard
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -12,11 +13,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -78,7 +83,9 @@ fun BottomBar(navController: NavController) {
     val currentDestination = navBackStackEntry?.destination
     val bottomDestination = screens.any { it.screen.route == currentDestination?.route }
     if (bottomDestination) {
-        BottomNavigation() {
+        BottomNavigation(
+            backgroundColor = MaterialTheme.colorScheme.onPrimary
+        ) {
             screens.forEach { screen ->
                 AddItem(
                     screen = screen,
@@ -102,25 +109,41 @@ fun RowScope.AddItem(
     currentDestination: NavDestination?,
     navController: NavController
 ) {
+
+    val isSelected = rememberSaveable {
+        mutableStateOf(
+            currentDestination?.hierarchy?.any {
+                it.route == screen.screen.route
+            } == true
+        )
+    }
+    val backgroundColor =
+        if (isSelected.value) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onPrimary
+    val clip = if (isSelected.value) RoundedCornerShape(25.dp) else RoundedCornerShape(0.dp)
+    val selectedColor =
+        if (isSelected.value) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+
     BottomNavigationItem(
         label = {
             Text(
                 text = screen.title,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = selectedColor,
                 fontSize = 10.sp,
                 fontFamily = Font.QuickSand,
                 fontWeight = FontWeight.Medium
             )
         },
         icon = {
-            Icon(painterResource(screen.icon), contentDescription = null)
+            Icon(
+                painterResource(screen.icon),
+                contentDescription = null
+            )
         },
-        selected = currentDestination?.hierarchy?.any {
-            it.route == screen.screen.route
-        } == true,
+        selected = isSelected.value,
         modifier = Modifier
-            .background(Color(0xFFE9ECF4)),
-        selectedContentColor = Color(0xFF000000),
+            .clip(clip)
+            .background(backgroundColor),
+        selectedContentColor = MaterialTheme.colorScheme.onPrimary,
         unselectedContentColor = Color(0x30000000),
         onClick = {
             navController.navigate(screen.screen.route) {

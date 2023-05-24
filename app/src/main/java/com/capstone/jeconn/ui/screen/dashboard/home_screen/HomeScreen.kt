@@ -33,5 +33,4 @@ fun HomeScreen(navHostController: NavHostController) {
             )
         }
     }
-
 }
