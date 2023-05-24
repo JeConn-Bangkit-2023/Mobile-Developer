@@ -109,7 +109,6 @@ fun RowScope.AddItem(
     currentDestination: NavDestination?,
     navController: NavController
 ) {
-
     val isSelected = rememberSaveable {
         mutableStateOf(
             currentDestination?.hierarchy?.any {
@@ -122,7 +121,6 @@ fun RowScope.AddItem(
     val clip = if (isSelected.value) RoundedCornerShape(25.dp) else RoundedCornerShape(0.dp)
     val selectedColor =
         if (isSelected.value) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
-
     BottomNavigationItem(
         label = {
             Text(
