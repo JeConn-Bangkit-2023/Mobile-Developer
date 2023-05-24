@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">JeConn</string>
+    <string name="register_title">Login to</string>
+    <string name="not_have_account">Don\'t have an account yet?</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="need_support">Need support?</string>
+    <string name="contact_customer_service">Contact Customer Service</string>
 </resources>
