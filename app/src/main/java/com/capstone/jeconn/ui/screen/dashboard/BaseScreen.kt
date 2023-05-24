@@ -34,6 +34,7 @@ import com.capstone.jeconn.navigation.NavRoute
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+//Test
 fun BaseScreen(
     navHostController: NavHostController,
     content: @Composable (PaddingValues) -> Unit = {}
