@@ -144,7 +144,7 @@ fun LoginScreen(navHostController: NavHostController) {
             modifier = Modifier
                 .padding(vertical = 24.dp)
         ) {
-            //TODO
+            navigateTo(navHostController, NavRoute.BaseScreen)
         }
 
         // Need support text
