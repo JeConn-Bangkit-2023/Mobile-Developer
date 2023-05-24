@@ -6,4 +6,9 @@
     <string name="login">Login</string>
     <string name="need_support">Need support?</string>
     <string name="contact_customer_service">Contact Customer Service</string>
+    <string name="home">Home</string>
+    <string name="vacancies">Vacancies</string>
+    <string name="freelance">Freelancer</string>
+    <string name="status">Status</string>
+    <string name="profile">Profile</string>
 </resources>
