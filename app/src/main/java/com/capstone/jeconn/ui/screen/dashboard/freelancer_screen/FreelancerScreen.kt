@@ -12,24 +12,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.capstone.jeconn.component.Font
-import com.capstone.jeconn.ui.screen.dashboard.BaseScreen
 
 @Composable
 fun FreelancerScreen(navHostController: NavHostController) {
-    BaseScreen(navHostController = navHostController) {
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Text(
-                text = "Freelancer Screen",
-                style = TextStyle(
-                    fontFamily = Font.QuickSand,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 32.sp
-                ),
-            )
-        }
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Text(
+            text = "Freelancer Screen",
+            style = TextStyle(
+                fontFamily = Font.QuickSand,
+                fontWeight = FontWeight.Bold,
+                fontSize = 32.sp
+            ),
+        )
     }
 }

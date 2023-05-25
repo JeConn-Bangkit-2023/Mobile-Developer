@@ -144,7 +144,7 @@ fun LoginScreen(navHostController: NavHostController) {
             modifier = Modifier
                 .padding(vertical = 24.dp)
         ) {
-            navigateTo(navHostController, NavRoute.BaseScreen)
+            navigateTo(navHostController, NavRoute.Dashboard)
         }
 
         // Need support text
