@@ -138,12 +138,14 @@ fun LoginScreen(navHostController: NavHostController) {
             )
         }
 
+
         //Login Button
         CustomButton(
             text = context.getString(R.string.login),
             modifier = Modifier
-                .padding(vertical = 24.dp)
+                .padding(vertical = 24.dp),
         ) {
+
             navigateTo(navHostController, NavRoute.Dashboard)
         }
 
