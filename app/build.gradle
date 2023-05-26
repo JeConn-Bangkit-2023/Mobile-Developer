@@ -78,4 +78,12 @@ dependencies {
     implementation 'androidx.navigation:navigation-compose:2.5.3'
     // kotlin reflect
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.7.21"
+    // system ui controller
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.27.0"
+    // Compose Glide
+    implementation "com.github.bumptech.glide:compose:1.0.0-alpha.1"
+    // FlowRow Compose for Label
+    implementation "androidx.compose.foundation:foundation:1.4.3"
+    // Clip Circle Image from URL
+    implementation "io.coil-kt:coil-compose:2.2.2"
 }

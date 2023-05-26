@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,8 +51,8 @@ fun LoginScreen(navHostController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
-            .fillMaxSize()
             .padding(horizontal = 16.dp)
+            .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
         // Image
@@ -92,6 +93,7 @@ fun LoginScreen(navHostController: NavHostController) {
             label = "Email",
             type = KeyboardType.Email,
             leadingIcon = R.drawable.ic_email,
+            imeAction = ImeAction.Next,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 6.dp),

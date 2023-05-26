@@ -3,7 +3,6 @@ package com.capstone.jeconn.ui.screen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.Surface
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.capstone.jeconn.navigation.SetupNavGraph
@@ -14,11 +13,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             JeConnTheme {
-                // A surface container using the 'background' color from the theme
-                Surface() {
-                    val navHostController: NavHostController = rememberNavController()
-                    SetupNavGraph(navHostController = navHostController)
-                }
+                val navHostController: NavHostController = rememberNavController()
+                SetupNavGraph(navHostController = navHostController)
             }
         }
     }
