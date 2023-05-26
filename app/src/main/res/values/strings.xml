@@ -11,4 +11,13 @@
     <string name="freelance">Freelancer</string>
     <string name="status">Status</string>
     <string name="profile">Profile</string>
+    <string name="talent_in_your_city">Talent in your city</string>
+    <string name="vacancies_in_your_city">Vacancies in your city</string>
+    <string name="just_now">Just now</string>
+    <string name="one_minute">1 Minute</string>
+    <string name="minute">Minutes</string>
+    <string name="one_hour">1 Hour</string>
+    <string name="hours">Hours</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="days">Days</string>
 </resources>

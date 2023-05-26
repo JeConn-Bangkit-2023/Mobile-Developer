@@ -3,6 +3,7 @@ package com.capstone.jeconn.ui.screen.dashboard
 import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.Icon
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,9 +18,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.capstone.jeconn.R
@@ -76,10 +84,38 @@ fun BaseScreen(
             content = { ProfileScreen(navHostController = navHostController) }
         ),
     )
+    val currentTheme = isSystemInDarkTheme()
+
+    val shadowColor = if (currentTheme) {
+        Color.Black.copy(alpha = 0.2f) // Dark Theme
+    } else {
+        Color.Black.copy(alpha = 0.02f) // Light Theme
+    }
+    val shadowElevation = 1.dp
 
     Scaffold(
         bottomBar = {
-            NavigationBar(containerColor = MaterialTheme.colorScheme.onPrimary) {
+            NavigationBar(
+                containerColor = MaterialTheme.colorScheme.background,
+                modifier = Modifier.drawWithContent {
+                    drawContent()
+                    drawRect(
+                        color = shadowColor,
+                        topLeft = Offset(0f, size.height),
+                        size = Size(size.width, shadowElevation.toPx()),
+                        style = Fill
+                    )
+                    drawRect(
+                        color = shadowColor,
+                        topLeft = Offset(-shadowElevation.toPx(), -shadowElevation.toPx()),
+                        size = Size(
+                            size.width + shadowElevation.toPx() * 2,
+                            shadowElevation.toPx() * 2
+                        ),
+                        style = Fill
+                    )
+                }
+            ) {
                 screens.forEachIndexed { index, item ->
                     val selected = contentRoute == index
 
