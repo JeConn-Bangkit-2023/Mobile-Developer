@@ -23,12 +23,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.utils.CropToSquareImage
 import com.capstone.jeconn.utils.getTimeAgo
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun HorizontalVacanciesCard(
     imageUrl: String,
@@ -107,7 +105,6 @@ fun HorizontalVacanciesCard(
                     fontWeight = FontWeight.Normal
                 )
             )
-
         }
     }
 }

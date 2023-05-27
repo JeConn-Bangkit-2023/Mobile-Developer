@@ -4,6 +4,7 @@ package com.capstone.jeconn.data.entities
 // key: username
 data class PublicDataEntity(
     val username: String,
+    val email: String,
     val full_name: String,
     val profile_image_url: String,
     val detail_information: DetailInformation? = null,

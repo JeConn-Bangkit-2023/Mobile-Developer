@@ -20,4 +20,6 @@
     <string name="hours">Hours</string>
     <string name="yesterday">Yesterday</string>
     <string name="days">Days</string>
+    <string name="profile_unready_text">Your profile is not ready yet! Please complete your profile and become a freelancer right now!</string>
+    <string name="setting">Setting</string>
 </resources>
