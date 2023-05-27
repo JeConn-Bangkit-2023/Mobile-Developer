@@ -114,7 +114,8 @@ object DummyData {
                     "https://cdns.klimg.com/kapanlagi.com/p/ukinoah051.jpg"
                 ),
                 isOpen = true
-            )
+            ),
+            email = "johdoe22@gmail.com"
         ),
         PublicDataEntity(
             username = "user2",
@@ -136,7 +137,8 @@ object DummyData {
                     "https://cdns.klimg.com/kapanlagi.com/p/ukinoah051.jpg"
                 ),
                 isOpen = false
-            )
+            ),
+            email = "janesmith1@gmail.com"
         )
     )
 

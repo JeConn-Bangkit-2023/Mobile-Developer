@@ -2,10 +2,8 @@ package com.capstone.jeconn.ui.screen.dashboard.home_screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -36,93 +34,91 @@ import com.capstone.jeconn.data.entities.PublicDataEntity
 @Composable
 fun HomeScreen(navHostController: NavHostController) {
     val context = LocalContext.current
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            item {
-                CustomNavbar {
-                    Text(
-                        text = context.getString(R.string.app_name),
-                        style = TextStyle(
-                            fontSize = 24.sp,
-                            fontFamily = Font.QuickSand,
-                            fontWeight = FontWeight.Bold,
-                        ),
-                    )
-
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    Icon(
-                        imageVector = Icons.Default.Notifications,
-                        contentDescription = null,
-                        modifier = Modifier.size(28.dp)
-                    )
-
-                    Spacer(modifier = Modifier.padding(horizontal = 4.dp))
-
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_message),
-                        contentDescription = null,
-                        modifier = Modifier.size(38.dp)
-                    )
-                }
+        item {
+            CustomNavbar {
                 Text(
-                    text = context.getString(R.string.talent_in_your_city),
+                    text = context.getString(R.string.app_name),
                     style = TextStyle(
-                        fontSize = 16.sp,
+                        fontSize = 24.sp,
                         fontFamily = Font.QuickSand,
                         fontWeight = FontWeight.Bold,
                     ),
-                    modifier = Modifier
-                        .padding(vertical = 16.dp, horizontal = 8.dp)
                 )
 
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = 8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(publicData) { user ->
-                        if (user.detail_information != null && user.jobInformation != null)
-                            VerticalFreelancerCard(
-                                imageUrl = user.profile_image_url,
-                                name = user.full_name,
-                                city = user.detail_information.city,
-                                listSkills = user.jobInformation.skills
-                            )
-                    }
-                }
+                Spacer(modifier = Modifier.weight(1f))
 
-                Text(
-                    text = context.getString(R.string.vacancies_in_your_city),
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        fontFamily = Font.QuickSand,
-                        fontWeight = FontWeight.Bold,
-                    ),
-                    modifier = Modifier
-                        .padding(vertical = 16.dp, horizontal = 8.dp)
+                Icon(
+                    imageVector = Icons.Default.Notifications,
+                    contentDescription = null,
+                    modifier = Modifier.size(28.dp)
+                )
+
+                Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_message),
+                    contentDescription = null,
+                    modifier = Modifier.size(38.dp)
                 )
             }
+            Text(
+                text = context.getString(R.string.talent_in_your_city),
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    fontFamily = Font.QuickSand,
+                    fontWeight = FontWeight.Bold,
+                ),
+                modifier = Modifier
+                    .padding(vertical = 16.dp, horizontal = 12.dp)
+            )
 
-            items(DummyData.vacanciesList) { vacancies ->
-                val user: PublicDataEntity = publicData.find { it.username == vacancies.username }!!
-                Box(
-                    modifier = Modifier.padding(horizontal = 8.dp)
-                ) {
-                    HorizontalVacanciesCard(
-                        imageUrl = user.profile_image_url,
-                        name = user.full_name,
-                        city = vacancies.city,
-                        timestamp = vacancies.timestamp,
-                        description = vacancies.description
-                    )
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = 12.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(publicData) { user ->
+                    if (user.detail_information != null && user.jobInformation != null)
+                        VerticalFreelancerCard(
+                            imageUrl = user.profile_image_url,
+                            name = user.full_name,
+                            city = user.detail_information.city,
+                            listSkills = user.jobInformation.skills
+                        )
                 }
-
             }
+
+            Text(
+                text = context.getString(R.string.vacancies_in_your_city),
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    fontFamily = Font.QuickSand,
+                    fontWeight = FontWeight.Bold,
+                ),
+                modifier = Modifier
+                    .padding(vertical = 16.dp, horizontal = 12.dp)
+            )
+        }
+
+        items(DummyData.vacanciesList) { vacancies ->
+            val user: PublicDataEntity = publicData.find { it.username == vacancies.username }!!
+            Box(
+                modifier = Modifier.padding(horizontal = 12.dp)
+            ) {
+                HorizontalVacanciesCard(
+                    imageUrl = user.profile_image_url,
+                    name = user.full_name,
+                    city = vacancies.city,
+                    timestamp = vacancies.timestamp,
+                    description = vacancies.description
+                )
+            }
+        }
+
+        item {
+            Spacer(modifier = Modifier.padding(vertical = 40.dp))
         }
     }
 }
