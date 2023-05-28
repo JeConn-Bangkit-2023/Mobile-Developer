@@ -66,7 +66,7 @@ fun LoginScreen(navHostController: NavHostController) {
         //Title
         Row {
             Text(
-                text = "${context.getString(R.string.register_title)} ",
+                text = "${context.getString(R.string.login_title)} ",
                 style = TextStyle(
                     fontFamily = Font.QuickSand,
                     fontWeight = FontWeight.Normal,
@@ -124,7 +124,7 @@ fun LoginScreen(navHostController: NavHostController) {
                     fontSize = 12.sp
                 )
             )
-            //Register Button
+            //Register ButtonText
             Text(
                 text = context.getString(R.string.register),
                 style = TextStyle(
