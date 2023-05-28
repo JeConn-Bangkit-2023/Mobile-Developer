@@ -1,16 +1,15 @@
 package com.capstone.jeconn.data.entities
 
-// Private Data
 // key: UID
 data class PrivateDataEntity(
+    val email: String,
     val username: String,
     val created_date: Long,
-    val messages_room_id: List<Long>? = null,
     val notifications: List<Notification>? = null,
-    val payments_id: List<Long>? = null
+    val messages_room_id: List<Int>? = null,
+    val invoice_id: List<Int>? = null,
 )
 
-// key: Randomize by Firebase
 data class Notification(
     val date: Long,
     val subject: String,

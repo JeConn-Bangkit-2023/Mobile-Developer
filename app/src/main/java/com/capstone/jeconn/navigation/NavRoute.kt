@@ -8,4 +8,5 @@ sealed class NavRoute (val route: String) {
 
     object Dashboard: NavRoute(route = "dashboard_screen")
     object BaseScreen: NavRoute(route = "base_screen")
+    object SettingScreen: NavRoute(route = "setting_screen")
 }

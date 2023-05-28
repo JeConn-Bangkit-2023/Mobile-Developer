@@ -1,6 +1,5 @@
 package com.capstone.jeconn.ui.screen.dashboard
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -14,9 +13,11 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -30,8 +31,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.capstone.jeconn.R
 import com.capstone.jeconn.component.Font
+import com.capstone.jeconn.navigation.NavRoute
 import com.capstone.jeconn.ui.screen.dashboard.freelancer_screen.FreelancerScreen
 import com.capstone.jeconn.ui.screen.dashboard.home_screen.HomeScreen
 import com.capstone.jeconn.ui.screen.dashboard.profile_screen.ProfileScreen
@@ -39,15 +42,21 @@ import com.capstone.jeconn.ui.screen.dashboard.status_screen.StatusScreen
 import com.capstone.jeconn.ui.screen.dashboard.vacancies_screen.VacanciesScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun BaseScreen(
     navHostController: NavHostController,
 ) {
     val context = LocalContext.current
-    var contentRoute by remember {
-        mutableStateOf(0)
+    var contentRoute by rememberSaveable { mutableStateOf(0) }
+
+    var myPaddingValues by remember {
+        mutableStateOf(PaddingValues())
     }
+
+    // Storing Back Stack Entry
+    val backStackEntry = navHostController.currentBackStackEntryAsState()
+
+    val currentContentIndex = rememberSaveable { mutableStateOf(0) }
 
     BackHandler {
         if (contentRoute == 0) {
@@ -61,22 +70,22 @@ fun BaseScreen(
         DashboardContent(
             title = context.getString(R.string.home),
             icon = R.drawable.ic_home,
-            content = { HomeScreen(navHostController = navHostController) }
+            content = { HomeScreen(navHostController = navHostController, myPaddingValues) }
         ),
         DashboardContent(
             title = context.getString(R.string.vacancies),
             icon = R.drawable.ic_vacancies,
-            content = { VacanciesScreen(navHostController = navHostController) }
+            content = { VacanciesScreen(navHostController = navHostController, myPaddingValues) }
         ),
         DashboardContent(
             title = context.getString(R.string.freelance),
             icon = R.drawable.ic_freelancer,
-            content = { FreelancerScreen(navHostController = navHostController) }
+            content = { FreelancerScreen(navHostController = navHostController, myPaddingValues) }
         ),
         DashboardContent(
             title = context.getString(R.string.status),
             icon = R.drawable.ic_status,
-            content = { StatusScreen(navHostController = navHostController) }
+            content = { StatusScreen(navHostController = navHostController, myPaddingValues) }
         ),
         DashboardContent(
             title = context.getString(R.string.profile),
@@ -151,7 +160,24 @@ fun BaseScreen(
             }
         }
     ) { paddingValues ->
-        screens[contentRoute].content.invoke(paddingValues)
+        myPaddingValues = paddingValues
+        screens[contentRoute].content.invoke(myPaddingValues)
+    }
+
+    // When Back Stack Entry happens
+    LaunchedEffect(backStackEntry) {
+        if (backStackEntry.value?.destination?.route != null) {
+            // Set the index into the position
+            currentContentIndex.value = getIndexFromDestination(backStackEntry.value?.destination?.route)
+        }
+    }
+
+}
+private fun getIndexFromDestination(route: String?): Int {
+    return when (route) {
+        // Set the index position based on Back Stack Entry
+        NavRoute.SettingScreen.route -> 4
+        else -> 0
     }
 }
 

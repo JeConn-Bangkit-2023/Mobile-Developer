@@ -15,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -38,7 +39,7 @@ fun CustomTextField(
     length: Int = 50,
     type: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done,
-    leadingIcon: Int? = null,
+    leadingIcon: Any? = null,
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -73,20 +74,40 @@ fun CustomTextField(
         modifier = modifier,
         leadingIcon = {
             if (leadingIcon != null) {
-                Icon(
-                    painter = painterResource(id = leadingIcon),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(25.dp)
-                        .clickable {
-                            if (isPassword.value) {
-                                visible.value = !visible.value
-                            } else {
-                                state.text = ""
-                            }
-                        },
-                    tint = MaterialTheme.colorScheme.onSurface
-                )
+                when (leadingIcon) {
+                    is Int -> {
+                        Icon(
+                            painter = painterResource(id = leadingIcon),
+                            contentDescription = "",
+                            modifier = Modifier
+                                .size(25.dp)
+                                .clickable {
+                                    if (isPassword.value) {
+                                        visible.value = !visible.value
+                                    } else {
+                                        state.text = ""
+                                    }
+                                },
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                    is ImageVector -> {
+                        Icon(
+                            imageVector = leadingIcon,
+                            contentDescription = "",
+                            modifier = Modifier
+                                .size(25.dp)
+                                .clickable {
+                                    if (isPassword.value) {
+                                        visible.value = !visible.value
+                                    } else {
+                                        state.text = ""
+                                    }
+                                },
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
             }
         },
         trailingIcon =

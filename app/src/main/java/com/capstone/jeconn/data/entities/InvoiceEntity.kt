@@ -1,6 +1,6 @@
 package com.capstone.jeconn.data.entities
 
-//key: invoiceId
+//key: invoice_id (Int)
 data class InvoiceEntity(
     /*
     Status code:
@@ -11,7 +11,7 @@ data class InvoiceEntity(
     4 = Finish
     5 = Canceled
     */
-    val invoice_id: Long,
+    val invoice_id: Int,
     val freelancer_username: String,
     val tenant_username: String,
     val status: Int = 0,
