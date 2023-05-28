@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.capstone.jeconn.BuildConfig
 import com.capstone.jeconn.R
 import com.capstone.jeconn.component.CustomNavbar
 import com.capstone.jeconn.component.Font
@@ -33,7 +34,6 @@ import com.google.android.gms.maps.model.LatLng
 
 @Composable
 fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValues) {
-
     val context = LocalContext.current
     val myUid = DummyData.UID
     val publicData = DummyData.publicData.values.toList()
