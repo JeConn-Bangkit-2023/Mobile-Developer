@@ -34,7 +34,6 @@ import com.google.android.gms.maps.model.LatLng
 
 @Composable
 fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValues) {
-
     val context = LocalContext.current
     val myUid = DummyData.UID
     val publicData = DummyData.publicData.values.toList()
