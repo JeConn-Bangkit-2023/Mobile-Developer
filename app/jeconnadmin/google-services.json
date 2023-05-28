@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "793733591277",
+    "project_id": "job-entertainment-connecting",
+    "storage_bucket": "job-entertainment-connecting.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:793733591277:android:d8b985f67701dbb61cdce4",
+        "android_client_info": {
+          "package_name": "com.capstone.jeconn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "793733591277-ps3igj39nij3vvf147jdicm68ccl96q5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdOTArN6YoPJjUpRH7RQ_YT104VKetGro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "793733591277-ps3igj39nij3vvf147jdicm68ccl96q5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:793733591277:android:3bbadaca6a08c1801cdce4",
+        "android_client_info": {
+          "package_name": "com.fgr.jeconnadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "793733591277-ps3igj39nij3vvf147jdicm68ccl96q5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdOTArN6YoPJjUpRH7RQ_YT104VKetGro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "793733591277-ps3igj39nij3vvf147jdicm68ccl96q5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
