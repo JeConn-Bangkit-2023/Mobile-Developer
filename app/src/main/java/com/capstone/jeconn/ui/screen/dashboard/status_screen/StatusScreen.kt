@@ -35,6 +35,7 @@ fun StatusScreen(navHostController: NavHostController, myPaddingValues: PaddingV
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(singapore, 10f)
     }
+    //Testing Google Map
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
         cameraPositionState = cameraPositionState
