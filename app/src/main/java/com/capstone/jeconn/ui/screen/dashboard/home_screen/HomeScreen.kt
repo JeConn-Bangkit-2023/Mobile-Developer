@@ -28,12 +28,16 @@ import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.component.card.HorizontalVacanciesCard
 import com.capstone.jeconn.component.card.VerticalFreelancerCard
 import com.capstone.jeconn.data.dummy.DummyData
-import com.capstone.jeconn.data.dummy.DummyData.publicData
-import com.capstone.jeconn.data.entities.PublicDataEntity
+import com.capstone.jeconn.utils.calculateDistance
+import com.google.android.gms.maps.model.LatLng
 
 @Composable
-fun HomeScreen(navHostController: NavHostController) {
+fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValues) {
+
     val context = LocalContext.current
+    val myUid = DummyData.UID
+    val publicData = DummyData.publicData.values.toList()
+    val vacancies = DummyData.vacancies.values.toList()
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -56,7 +60,7 @@ fun HomeScreen(navHostController: NavHostController) {
                     modifier = Modifier.size(28.dp)
                 )
 
-                Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+                Spacer(modifier = Modifier.padding(horizontal = 8.dp))
 
                 Icon(
                     painter = painterResource(id = R.drawable.ic_message),
@@ -65,7 +69,7 @@ fun HomeScreen(navHostController: NavHostController) {
                 )
             }
             Text(
-                text = context.getString(R.string.talent_in_your_city),
+                text = context.getString(R.string.nearby_talent),
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontFamily = Font.QuickSand,
@@ -80,18 +84,22 @@ fun HomeScreen(navHostController: NavHostController) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(publicData) { user ->
-                    if (user.detail_information != null && user.jobInformation != null)
+                    if (user.jobInformation != null && user.detail_information != null && user.jobInformation.isOpen) {
                         VerticalFreelancerCard(
                             imageUrl = user.profile_image_url,
                             name = user.full_name,
-                            city = user.detail_information.city,
+                            range = calculateDistance(
+                                user.jobInformation.location!!,
+                                LatLng(51.5074, -0.1278)
+                            ),
                             listSkills = user.jobInformation.skills
                         )
+                    }
                 }
             }
 
             Text(
-                text = context.getString(R.string.vacancies_in_your_city),
+                text = context.getString(R.string.nearby_vacancies),
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontFamily = Font.QuickSand,
@@ -102,15 +110,15 @@ fun HomeScreen(navHostController: NavHostController) {
             )
         }
 
-        items(DummyData.vacanciesList) { vacancies ->
-            val user: PublicDataEntity = publicData.find { it.username == vacancies.username }!!
+        items(vacancies) { vacancies ->
             Box(
                 modifier = Modifier.padding(horizontal = 12.dp)
             ) {
+                val tenant = DummyData.publicData[vacancies.username]!!
                 HorizontalVacanciesCard(
-                    imageUrl = user.profile_image_url,
-                    name = user.full_name,
-                    city = vacancies.city,
+                    imageUrl = tenant.profile_image_url,
+                    name = tenant.full_name,
+                    range = calculateDistance(LatLng(51.5074, -0.1278), vacancies.location),
                     timestamp = vacancies.timestamp,
                     description = vacancies.description
                 )
@@ -118,7 +126,7 @@ fun HomeScreen(navHostController: NavHostController) {
         }
 
         item {
-            Spacer(modifier = Modifier.padding(vertical = 40.dp))
+            Spacer(modifier = Modifier.padding(vertical = paddingValues.calculateBottomPadding()))
         }
     }
 }

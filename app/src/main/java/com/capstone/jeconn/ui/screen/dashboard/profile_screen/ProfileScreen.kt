@@ -27,7 +27,9 @@ import com.capstone.jeconn.component.CustomNavbar
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.component.card.HorizontalProfileCard
 import com.capstone.jeconn.data.dummy.DummyData
+import com.capstone.jeconn.navigation.NavRoute
 import com.capstone.jeconn.utils.CropToSquareImage
+import com.capstone.jeconn.utils.navigateTo
 
 @Composable
 fun ProfileScreen(navHostController: NavHostController) {
@@ -36,7 +38,9 @@ fun ProfileScreen(navHostController: NavHostController) {
         modifier = Modifier.fillMaxSize()
     ) {
         val context = LocalContext.current
-        val profileData = DummyData.publicData[0]
+        val uid = DummyData.UID
+        val privateData = DummyData.privateData[uid]!!
+        val publicData = DummyData.publicData[privateData.username]!!
 
         CustomNavbar(
             modifier = Modifier
@@ -47,7 +51,7 @@ fun ProfileScreen(navHostController: NavHostController) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 CropToSquareImage(
-                    imageUrl = profileData.profile_image_url,
+                    imageUrl = publicData.profile_image_url,
                     contentDescription = null,
                     modifier = Modifier
                         .size(90.dp)
@@ -56,7 +60,7 @@ fun ProfileScreen(navHostController: NavHostController) {
 
                 Column() {
                     Text(
-                        text = profileData.full_name,
+                        text = publicData.full_name,
                         style = TextStyle(
                             fontSize = 24.sp,
                             fontFamily = Font.QuickSand,
@@ -65,7 +69,7 @@ fun ProfileScreen(navHostController: NavHostController) {
                     )
 
                     Text(
-                        text = "@${profileData.username}",
+                        text = "@${publicData.username}",
                         style = TextStyle(
                             fontSize = 14.sp,
                             fontFamily = Font.QuickSand,
@@ -74,7 +78,7 @@ fun ProfileScreen(navHostController: NavHostController) {
                     )
 
                     Text(
-                        text = profileData.email,
+                        text = privateData.email,
                         style = TextStyle(
                             fontSize = 14.sp,
                             fontFamily = Font.QuickSand,
@@ -99,7 +103,9 @@ fun ProfileScreen(navHostController: NavHostController) {
             HorizontalProfileCard(
                 subject = context.getString(R.string.setting),
                 icon = Icons.Default.Settings,
-            )
+            ) {
+                navigateTo(navHostController, NavRoute.SettingScreen)
+            }
         }
     }
 }

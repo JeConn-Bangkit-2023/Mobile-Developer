@@ -31,7 +31,7 @@ import com.capstone.jeconn.utils.getTimeAgo
 fun HorizontalVacanciesCard(
     imageUrl: String,
     name: String,
-    city: String,
+    range: String,
     timestamp: Long,
     description: String,
 ) {
@@ -39,7 +39,7 @@ fun HorizontalVacanciesCard(
     Card(
         modifier = Modifier
             .fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
         Column(
             modifier = Modifier
@@ -73,7 +73,7 @@ fun HorizontalVacanciesCard(
                         )
                     )
                     Text(
-                        text = city,
+                        text = range,
                         style = TextStyle(
                             fontFamily = Font.QuickSand,
                             fontSize = 14.sp,

@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -114,13 +116,12 @@ fun RegisterScreen(navHostController: NavHostController) {
             state = fullnameState,
             label = "Full Name",
             type = KeyboardType.Text,
-            leadingIcon = R.drawable.ic_account,
+            leadingIcon = Icons.Default.Person,
             imeAction = ImeAction.Next,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 6.dp),
         )
-
 
         //Email Text Field
         CustomTextField(

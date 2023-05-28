@@ -11,6 +11,7 @@ fun getTimeAgo(context: Context, mills: Long): String {
     val minuteMills = 60 * 1000L
     val hourMills = 60 * minuteMills
     val dayMills = 24 * hourMills
+    (dayMills * 4) + 1685251029
 
 
     val now = System.currentTimeMillis()

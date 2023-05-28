@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -35,14 +36,14 @@ import com.capstone.jeconn.component.Font
 fun VerticalFreelancerCard(
     imageUrl: String,
     name: String,
-    city: String,
+    range: String,
     listSkills: List<String>
 ) {
     Card(
         modifier = Modifier
             .height(250.dp)
             .width(200.dp),
-        elevation = CardDefaults.cardElevation(2.dp)
+        elevation = CardDefaults.cardElevation(5.dp)
     ) {
         Column(
             modifier = Modifier
@@ -52,12 +53,13 @@ fun VerticalFreelancerCard(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .heightIn(max = 135.dp)
             ) {
                 GlideImage(
                     model = imageUrl,
                     contentDescription = null,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .heightIn(max = 135.dp)
                         .align(Alignment.Center)
                 ) {
                     it
@@ -78,7 +80,7 @@ fun VerticalFreelancerCard(
                 )
 
                 Text(
-                    text = city,
+                    text = range,
                     style = TextStyle(
                         fontFamily = Font.QuickSand,
                         fontSize = 14.sp,

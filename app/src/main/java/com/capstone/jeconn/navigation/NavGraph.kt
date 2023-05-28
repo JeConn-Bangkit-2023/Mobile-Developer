@@ -9,6 +9,7 @@ import com.capstone.jeconn.ui.screen.authentication.login_screen.LoginScreen
 import com.capstone.jeconn.ui.screen.authentication.register_screen.RegisterScreen
 import com.capstone.jeconn.ui.screen.authentication.required_info_screen.RequiredInfoScreen
 import com.capstone.jeconn.ui.screen.dashboard.BaseScreen
+import com.capstone.jeconn.ui.screen.dashboard.profile_screen.setting.SettingScreen
 
 @Composable
 fun SetupNavGraph(
@@ -45,6 +46,11 @@ fun SetupNavGraph(
                 route = NavRoute.BaseScreen.route,
             ) {
                 BaseScreen(navHostController = navHostController)
+            }
+            composable(
+                route = NavRoute.SettingScreen.route,
+            ) {
+                SettingScreen(navHostController = navHostController)
             }
         }
     }

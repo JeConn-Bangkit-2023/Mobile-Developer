@@ -13,8 +13,8 @@
     <string name="freelance">Freelancer</string>
     <string name="status">Status</string>
     <string name="profile">Profile</string>
-    <string name="talent_in_your_city">Talent in your city</string>
-    <string name="vacancies_in_your_city">Vacancies in your city</string>
+    <string name="nearby_talent">Nearby Talent</string>
+    <string name="nearby_vacancies">Nearby Vacancies</string>
     <string name="just_now">Just now</string>
     <string name="one_minute">1 Minute</string>
     <string name="minute">Minutes</string>
@@ -24,4 +24,6 @@
     <string name="days">Days</string>
     <string name="profile_unready_text">Your profile is not ready yet! Please complete your profile and become a freelancer right now!</string>
     <string name="setting">Setting</string>
+    <string name="language">Language</string>
+    <string name="logout">Logout</string>
 </resources>

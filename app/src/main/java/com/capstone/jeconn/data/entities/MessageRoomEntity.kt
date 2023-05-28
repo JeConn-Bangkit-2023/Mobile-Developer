@@ -1,6 +1,6 @@
 package com.capstone.jeconn.data.entities
 
-// key: message_room_id
+// key: message_room_id (Int)
 data class MessageRoomEntity(
     val members_username: List<String>,
     val messages: List<Message>
