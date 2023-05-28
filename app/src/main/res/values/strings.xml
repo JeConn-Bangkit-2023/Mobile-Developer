@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">JeConn</string>
-    <string name="register_title">Login to</string>
+    <string name="login_title">Login to</string>
+    <string name="register_title">Register to</string>
+    <string name="alredy_have_account">Alredy have an account?</string>
     <string name="not_have_account">Don\'t have an account yet?</string>
     <string name="register">Register</string>
     <string name="login">Login</string>
