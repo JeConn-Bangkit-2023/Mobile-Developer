@@ -1,6 +1,7 @@
 package com.capstone.jeconn.ui.screen.authentication.required_info_screen
 
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -34,13 +35,16 @@ import com.capstone.jeconn.component.CustomButton
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.navigation.NavRoute
 import com.capstone.jeconn.utils.intentWhatsApp
-import com.capstone.jeconn.utils.navigateTo
+import com.capstone.jeconn.utils.navigateToTop
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 @Composable
 fun RequiredInfoScreen(navHostController: NavHostController) {
 
     val context = LocalContext.current
+    val auth = Firebase.auth
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -101,24 +105,26 @@ fun RequiredInfoScreen(navHostController: NavHostController) {
 
         //Button Refresh
         Button(
-            onClick = { },
+            onClick = {
+                //TODO
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
-                contentColor = MaterialTheme.colorScheme.onBackground
+                contentColor = MaterialTheme.colorScheme.onPrimary
             ),
         )
         {
             Icon(
                 imageVector = Icons.Filled.Refresh,
                 contentDescription = null,
-                )
+            )
         }
 
         //Spacing
         Spacer(modifier = Modifier.padding(vertical = 12.dp))
         //Text Pleass
         Text(
-            text = "${context.getString(R.string.please_prees__)} ",
+            text = "${context.getString(R.string.please_prees)} ",
             style = TextStyle(
                 fontFamily = Font.QuickSand,
                 fontWeight = FontWeight.Normal,
@@ -138,10 +144,16 @@ fun RequiredInfoScreen(navHostController: NavHostController) {
         CustomButton(
             text = context.getString(R.string.Back_to_login),
             modifier = Modifier
-                .padding(vertical = 24.dp).padding(horizontal = 24.dp),
+                .padding(vertical = 24.dp)
+                .padding(horizontal = 24.dp),
         ) {
-
-            navigateTo(navHostController, NavRoute.LoginScreen)
+            try {
+                auth.signOut()
+            } catch (e: Exception) {
+                Log.e("RequiredInfoScreen", e.message.toString())
+            } finally {
+                navigateToTop(navHostController, NavRoute.ROOT)
+            }
         }
 
         // Need support text

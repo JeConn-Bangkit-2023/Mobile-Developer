@@ -2,7 +2,7 @@
     <string name="verify_ur_acount">Verify your account</string>
     <string name="verify_ur_acount_text1">A verification link has been sent to your e-mail.</string>
     <string name="verify_ur_acount_text2">Check your e-mail inbox/spam folder immediately.</string>
-    <string name="please_prees..">Please press the refresh button above if you have</string>
+    <string name="please_prees">Please press the refresh button above if you have</string>
     <string name="verified">verified</string>
     <string name="Back_to_login">Back to Login</string>
     <string name="not_reciev">Not reciving emails?</string>
@@ -34,4 +34,15 @@
     <string name="setting">Setting</string>
     <string name="language">Language</string>
     <string name="logout">Logout</string>
+    <string name="success_regis">Account registration successful</string>
+    <string name="success_login">Successfully logged in</string>
+    <string name="fullname">Full Name</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="empty_username">Please fill in your username</string>
+    <string name="empty_full_name">Please fill in your full name</string>
+    <string name="empty_email">Please fill in your email</string>
+    <string name="empty_password">Please fill in your password</string>
+    <string name="empty_password_conf">Please fill in your password confirmation</string>
+    <string name="password_confirm_wrong">Confirmation password doesn\'t match</string>
 </resources>

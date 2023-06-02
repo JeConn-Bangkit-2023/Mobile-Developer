@@ -1,7 +1,6 @@
 package com.capstone.jeconn.ui.screen.dashboard.home_screen
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -30,11 +29,13 @@ import com.capstone.jeconn.component.card.VerticalFreelancerCard
 import com.capstone.jeconn.data.dummy.DummyData
 import com.capstone.jeconn.utils.calculateDistance
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValues) {
+    val auth = Firebase.auth
     val context = LocalContext.current
-    val myUid = DummyData.UID
     val publicData = DummyData.publicData.values.toList()
     val vacancies = DummyData.vacancies.values.toList()
     LazyColumn(

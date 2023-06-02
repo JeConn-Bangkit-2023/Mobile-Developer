@@ -25,12 +25,15 @@ import com.capstone.jeconn.component.CustomNavbar
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.component.card.HorizontalProfileCard
 import com.capstone.jeconn.navigation.NavRoute
-import com.capstone.jeconn.utils.navigateTo
+import com.capstone.jeconn.utils.navigateToTop
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun SettingScreen(navHostController: NavHostController) {
 
     val context = LocalContext.current
+    val auth = Firebase.auth
 
     Column(
         modifier = Modifier
@@ -79,7 +82,8 @@ fun SettingScreen(navHostController: NavHostController) {
                 icon = Icons.Default.ExitToApp,
                 isSetting = true
             ) {
-                //TODO
+                auth.signOut()
+                navigateToTop(navHostController, NavRoute.ROOT)
             }
         }
     }
