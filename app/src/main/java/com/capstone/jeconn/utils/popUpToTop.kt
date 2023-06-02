@@ -2,10 +2,16 @@ package com.capstone.jeconn.utils
 
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
+import com.capstone.jeconn.navigation.NavRoute
 
-fun NavOptionsBuilder.popUpToTop(navController: NavHostController) {
-    launchSingleTop = true
-    popUpTo(navController.currentBackStackEntry?.destination?.route ?: return) {
-        inclusive =  true
+fun navigateToTop(
+    navHostController: NavHostController,
+    destination: NavRoute,
+) {
+    navHostController.navigate(destination.route) {
+        launchSingleTop = true
+        popUpTo(destination.route) {
+            inclusive = true
+        }
     }
 }

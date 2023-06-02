@@ -24,6 +24,8 @@ import com.capstone.jeconn.R
 import com.capstone.jeconn.component.CustomNavbar
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.component.card.HorizontalProfileCard
+import com.capstone.jeconn.navigation.NavRoute
+import com.capstone.jeconn.utils.navigateTo
 
 @Composable
 fun SettingScreen(navHostController: NavHostController) {
@@ -68,7 +70,9 @@ fun SettingScreen(navHostController: NavHostController) {
                 subject = context.getString(R.string.language),
                 icon = R.drawable.ic_language,
                 isSetting = true
-            )
+            ) {
+                //TODO
+            }
 
             HorizontalProfileCard(
                 subject = context.getString(R.string.logout),

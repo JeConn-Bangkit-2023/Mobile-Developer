@@ -38,7 +38,8 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
     val publicData = DummyData.publicData.values.toList()
     val vacancies = DummyData.vacancies.values.toList()
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding())
     ) {
         item {
             CustomNavbar {
@@ -110,22 +111,17 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
         }
 
         items(vacancies) { vacancies ->
-            Box(
-                modifier = Modifier.padding(horizontal = 12.dp)
-            ) {
-                val tenant = DummyData.publicData[vacancies.username]!!
-                HorizontalVacanciesCard(
-                    imageUrl = tenant.profile_image_url,
-                    name = tenant.full_name,
-                    range = calculateDistance(LatLng(51.5074, -0.1278), vacancies.location),
-                    timestamp = vacancies.timestamp,
-                    description = vacancies.description
-                )
-            }
+            val tenant = DummyData.publicData[vacancies.username]!!
+            HorizontalVacanciesCard(
+                imageUrl = tenant.profile_image_url,
+                name = tenant.full_name,
+                range = calculateDistance(LatLng(51.5074, -0.1278), vacancies.location),
+                timestamp = vacancies.timestamp,
+                description = vacancies.description
+            )
         }
-
         item {
-            Spacer(modifier = Modifier.padding(vertical = paddingValues.calculateBottomPadding()))
+            Spacer(modifier = Modifier.padding(vertical = 4.dp))
         }
     }
 }

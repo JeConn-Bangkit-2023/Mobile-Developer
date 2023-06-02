@@ -35,6 +35,7 @@ import com.capstone.jeconn.component.TextFieldState
 import com.capstone.jeconn.navigation.NavRoute
 import com.capstone.jeconn.utils.intentWhatsApp
 import com.capstone.jeconn.utils.navigateTo
+import com.capstone.jeconn.utils.navigateToTop
 
 @Composable
 fun LoginScreen(navHostController: NavHostController) {
@@ -135,7 +136,7 @@ fun LoginScreen(navHostController: NavHostController) {
                 ),
                 modifier = Modifier
                     .clickable {
-                        navigateTo(navHostController, NavRoute.RegisterScreen)
+                        navigateToTop(navHostController, NavRoute.RegisterScreen)
                     }
             )
         }
@@ -147,7 +148,6 @@ fun LoginScreen(navHostController: NavHostController) {
             modifier = Modifier
                 .padding(vertical = 24.dp),
         ) {
-
             navigateTo(navHostController, NavRoute.Dashboard)
         }
 
