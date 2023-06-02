@@ -4,6 +4,7 @@ import com.google.android.gms.maps.model.LatLng
 
 // key: username
 data class PublicDataEntity(
+    val phoneNumber: String,
     val username: String,
     val full_name: String,
     val profile_image_url: String,

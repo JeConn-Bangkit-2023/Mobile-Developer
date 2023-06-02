@@ -36,7 +36,8 @@ object DummyData {
                 isOpen = true,
                 location = LatLng(37.7749, -122.4194) // San Francisco location
             ),
-            vacanciesPostId = listOf(1, 2)
+            vacanciesPostId = listOf(1, 2),
+            phoneNumber = "082260012008"
         ),
         "jane_smith66" to PublicDataEntity(
             username = "jane_smith66",
@@ -57,7 +58,8 @@ object DummyData {
                 isOpen = false,
                 location = null
             ),
-            vacanciesPostId = listOf(3)
+            vacanciesPostId = listOf(3),
+            phoneNumber = "081381425124"
         )
     )
 
