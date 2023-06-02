@@ -193,7 +193,7 @@ fun RegisterScreen(navHostController: NavHostController) {
                 .padding(vertical = 24.dp),
         ) {
 
-            navigateTo(navHostController, NavRoute.Dashboard)
+            navigateTo(navHostController, NavRoute.RequiredInfoScreen)
         }
 
         // Need support text

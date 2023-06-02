@@ -1,4 +1,12 @@
 <resources>
+    <string name="verify_ur_acount">Verify your account</string>
+    <string name="verify_ur_acount_text1">A verification link has been sent to your e-mail.</string>
+    <string name="verify_ur_acount_text2">Check your e-mail inbox/spam folder immediately.</string>
+    <string name="please_prees..">Please press the refresh button above if you have</string>
+    <string name="verified">verified</string>
+    <string name="Back_to_login">Back to Login</string>
+    <string name="not_reciev">Not reciving emails?</string>
+    <string name="send_agin">Send Again</string>
     <string name="app_name">JeConn</string>
     <string name="login_title">Login to</string>
     <string name="register_title">Register to</string>
