@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -89,10 +90,14 @@ dependencies {
     // Clip Circle Image from URL
     implementation "io.coil-kt:coil-compose:2.2.2"
     //Gmaps Maps for Compose
-    implementation 'com.google.maps.android:maps-compose:2.11.0'
+    implementation 'com.google.maps.android:maps-compose:2.11.4'
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     //Service Location
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     //Firebase Auth
     implementation 'com.google.firebase:firebase-auth-ktx:22.0.0'
+    // Tensorflow Lite dependencies
+    implementation 'org.tensorflow:tensorflow-lite-task-vision-play-services:0.4.2'
+    implementation 'com.google.android.gms:play-services-tflite-gpu:16.2.0'
+
 }

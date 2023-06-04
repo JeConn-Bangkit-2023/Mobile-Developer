@@ -1,8 +1,10 @@
-package com.capstone.jeconn.ui.screen.authentication
+package com.capstone.jeconn.repository
 
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import com.capstone.jeconn.R
 import com.capstone.jeconn.data.entities.AuthEntity
 import com.capstone.jeconn.state.UiState
@@ -21,6 +23,10 @@ class AuthRepository(
 
     val loginState: MutableStateFlow<UiState<String>> = MutableStateFlow(UiState.Empty)
 
+    val sendEmailVerificationState: MutableState<UiState<String>> = mutableStateOf(UiState.Empty)
+
+    val isEmailVerifiedState: MutableState<UiState<String>> = mutableStateOf(UiState.Empty)
+
 
     fun registerUser(user: AuthEntity) {
         registerState.value = UiState.Loading
@@ -36,6 +42,7 @@ class AuthRepository(
                     firebaseUser?.updateProfile(profileUpdates)
                         ?.addOnCompleteListener { profileUpdateTask ->
                             if (profileUpdateTask.isSuccessful) {
+                                sendEmailVerification()
                                 registerState.value =
                                     UiState.Success(context.getString(R.string.success_regis))
                             } else {
@@ -63,8 +70,57 @@ class AuthRepository(
                     // Sign in success, update UI with the signed-in user's information
                 } else {
                     // If sign in fails, display a message to the user.
-                    loginState.value = UiState.Success(task.exception?.message.toString())
+                    loginState.value = UiState.Error(task.exception?.message.toString())
                 }
             }
+    }
+
+    fun sendEmailVerification() {
+        sendEmailVerificationState.value = UiState.Loading
+        try {
+            auth.currentUser!!.reload()
+        } catch (e: Exception) {
+            sendEmailVerificationState.value = UiState.Error(e.message.toString())
+        } finally {
+            if (!auth.currentUser!!.isEmailVerified) {
+                auth.currentUser!!.sendEmailVerification()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            sendEmailVerificationState.value =
+                                UiState.Success(context.getString(R.string.email_verification_sent))
+                        } else {
+                            sendEmailVerificationState.value =
+                                UiState.Error(context.getString(R.string.email_verification_not_sent))
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        sendEmailVerificationState.value =
+                            UiState.Error(exception.message.toString())
+                    }
+            } else {
+                Log.e("AuthRepo", "99")
+                sendEmailVerificationState.value =
+                    UiState.Error(context.getString(R.string.already_verified))
+            }
+        }
+    }
+
+    fun isEmailVerified() {
+        isEmailVerifiedState.value = UiState.Loading
+        try {
+            auth.currentUser!!.reload()
+        } catch (e: Exception) {
+            Log.e("AuthRepository", "Failed Reload")
+            isEmailVerifiedState.value = UiState.Error(e.message.toString())
+        } finally {
+            if (auth.currentUser!!.isEmailVerified) {
+                Log.e("AuthRepo", "91")
+                isEmailVerifiedState.value =
+                    UiState.Success(context.getString(R.string.email_successfully_verified))
+            } else {
+                isEmailVerifiedState.value =
+                    UiState.Error(context.getString(R.string.email_has_not_been_verified))
+            }
+        }
     }
 }

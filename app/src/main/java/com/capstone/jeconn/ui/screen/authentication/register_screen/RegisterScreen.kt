@@ -23,6 +23,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -33,53 +34,47 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.capstone.jeconn.R
 import com.capstone.jeconn.component.CustomButton
 import com.capstone.jeconn.component.CustomTextField
 import com.capstone.jeconn.component.Font
-import com.capstone.jeconn.component.TextFieldState
 import com.capstone.jeconn.data.entities.AuthEntity
 import com.capstone.jeconn.di.Injection
 import com.capstone.jeconn.navigation.NavRoute
 import com.capstone.jeconn.state.UiState
 import com.capstone.jeconn.utils.AuthViewModelFactory
-import com.capstone.jeconn.utils.MakeToast
 import com.capstone.jeconn.utils.intentWhatsApp
-import com.capstone.jeconn.utils.navigateTo
 import com.capstone.jeconn.utils.navigateToTop
 
 @Composable
 fun RegisterScreen(navHostController: NavHostController) {
-    val emailState = remember {
-        TextFieldState()
+    val emailState = rememberSaveable {
+        mutableStateOf("")
     }
 
-    val usernameState = remember {
-        TextFieldState()
+    val usernameState = rememberSaveable {
+        mutableStateOf("")
     }
 
-    val fullNameState = remember {
-        TextFieldState()
+    val fullNameState = rememberSaveable {
+        mutableStateOf("")
     }
 
 
-    val passwordState = remember {
-        TextFieldState()
+    val passwordState = rememberSaveable {
+        mutableStateOf("")
     }
 
-    val passwordConfirmationState = remember {
-        TextFieldState()
+    val passwordConfirmationState = rememberSaveable {
+        mutableStateOf("")
     }
 
     val context = LocalContext.current
 
-    val registerViewModel: RegisterViewModel = viewModel(
-        factory = AuthViewModelFactory(
-            Injection.provideAuthRepository(context)
-        )
-    )
+    val registerViewModel: RegisterViewModel = remember {
+        AuthViewModelFactory(Injection.provideAuthRepository(context)).create(RegisterViewModel::class.java)
+    }
 
     val buttonState = remember {
         mutableStateOf(true)
@@ -96,7 +91,13 @@ fun RegisterScreen(navHostController: NavHostController) {
             is UiState.Success -> {
                 buttonState.value = true
                 Toast.makeText(context, registerState.data, Toast.LENGTH_SHORT).show()
-                navigateTo(navHostController, NavRoute.RequiredInfoScreen)
+                navHostController.navigate(
+                    NavRoute.RequiredInfoScreen.navigateFromRegister(
+                        isFromRegister = "true"
+                    )
+                ) {
+                    launchSingleTop = true
+                }
             }
 
             is UiState.Error -> {
@@ -215,7 +216,7 @@ fun RegisterScreen(navHostController: NavHostController) {
         ) {
             //Don't have account
             Text(
-                text = "${context.getString(R.string.alredy_have_account)} ",
+                text = "${context.getString(R.string.already_have_account)} ",
                 style = TextStyle(
                     fontFamily = Font.QuickSand,
                     fontWeight = FontWeight.Normal,
@@ -246,29 +247,29 @@ fun RegisterScreen(navHostController: NavHostController) {
                 .padding(vertical = 24.dp),
         ) {
             when {
-                (usernameState.text == "") -> {
-                    MakeToast.short(context, context.getString(R.string.empty_username))
-                }
-
-                (fullNameState.text == "") -> {
-                    MakeToast.short(context, context.getString(R.string.empty_full_name))
-                }
-
-                (emailState.text == "") -> {
-                    MakeToast.short(context, context.getString(R.string.empty_email))
-                }
-
-                (passwordState.text == "") -> {
-                    MakeToast.short(context, context.getString(R.string.empty_password))
-                }
-
-                (passwordState.text == "") -> {
-                    MakeToast.short(context, context.getString(R.string.empty_password_conf))
-                }
-
-                (passwordState.text != passwordConfirmationState.text) -> {
-                    MakeToast.short(context, context.getString(R.string.password_confirm_wrong))
-                }
+//                (usernameState.text == "") -> {
+//                    MakeToast.short(context, context.getString(R.string.empty_username))
+//                }
+//
+//                (fullNameState.text == "") -> {
+//                    MakeToast.short(context, context.getString(R.string.empty_full_name))
+//                }
+//
+//                (emailState.text == "") -> {
+//                    MakeToast.short(context, context.getString(R.string.empty_email))
+//                }
+//
+//                (passwordState.text == "") -> {
+//                    MakeToast.short(context, context.getString(R.string.empty_password))
+//                }
+//
+//                (passwordState.text == "") -> {
+//                    MakeToast.short(context, context.getString(R.string.empty_password_conf))
+//                }
+//
+//                (passwordState.text != passwordConfirmationState.text) -> {
+//                    MakeToast.short(context, context.getString(R.string.password_confirm_wrong))
+//                }
 
                 else -> {
                     registerViewModel.registerUser(
@@ -278,8 +279,8 @@ fun RegisterScreen(navHostController: NavHostController) {
 //                            password = passwordState.text
 //                        )
                         AuthEntity(
-                            username = "fauzanramadhani06",
-                            email = "fauzan1@gmail.com",
+                            username = "fauzanramadhani062",
+                            email = "fauzanramadhani06@gmail.com",
                             password = "apahayoo12321"
                         )
                     )
@@ -311,12 +312,5 @@ fun RegisterScreen(navHostController: NavHostController) {
                     intentWhatsApp(context)
                 }
         )
-
-        //Spacing
-        Spacer(modifier = Modifier.padding(vertical = 20.dp))
-
-
     }
-
-
 }

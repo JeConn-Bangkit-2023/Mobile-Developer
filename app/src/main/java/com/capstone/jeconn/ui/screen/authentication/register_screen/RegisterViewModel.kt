@@ -3,7 +3,7 @@ package com.capstone.jeconn.ui.screen.authentication.register_screen
 import androidx.lifecycle.ViewModel
 import com.capstone.jeconn.data.entities.AuthEntity
 import com.capstone.jeconn.state.UiState
-import com.capstone.jeconn.ui.screen.authentication.AuthRepository
+import com.capstone.jeconn.repository.AuthRepository
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 

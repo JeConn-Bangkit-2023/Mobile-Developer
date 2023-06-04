@@ -2,16 +2,15 @@ package com.capstone.jeconn.ui.screen.authentication.login_screen
 
 import androidx.lifecycle.ViewModel
 import com.capstone.jeconn.data.entities.AuthEntity
+import com.capstone.jeconn.repository.AuthRepository
 import com.capstone.jeconn.state.UiState
-import com.capstone.jeconn.ui.screen.authentication.AuthRepository
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
 class LoginViewModel(
     private val authRepository: AuthRepository
 ) : ViewModel() {
-    val registerState: StateFlow<UiState<String>> by lazy {
-        authRepository.loginState.asStateFlow()
+    val loginState: StateFlow<UiState<String>> by lazy {
+        authRepository.loginState
     }
 
     fun loginUser(user: AuthEntity) {
