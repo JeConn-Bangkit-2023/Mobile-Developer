@@ -200,26 +200,20 @@ fun LoginScreen(
                 modifier = Modifier.padding(vertical = 24.dp),
             ) {
                 when {
-//                (emailState.text == "") -> {
-//                    MakeToast.short(context, context.getString(R.string.empty_email))
-//                }
-//
-//                (passwordState.text == "") -> {
-//                    MakeToast.short(context, context.getString(R.string.empty_password))
-//                }
+                (emailState.value == "") -> {
+                    MakeToast.short(context, context.getString(R.string.empty_email))
+                }
+
+                (passwordState.value == "") -> {
+                    MakeToast.short(context, context.getString(R.string.empty_password))
+                }
 
                     else -> {
                         scope.launch {
                             loginViewModel.loginUser(
-//                        AuthEntity(
-//                            username = usernameState.text,
-//                            email = emailState.text,
-//                            password = passwordState.text
-//                        )
                                 AuthEntity(
-                                    username = "fauzanramadhani06",
-                                    email = "fauzanramadhani06@gmail.com",
-                                    password = "apahayoo12321"
+                                    email = emailState.value,
+                                    password = passwordState.value
                                 )
                             )
                         }
