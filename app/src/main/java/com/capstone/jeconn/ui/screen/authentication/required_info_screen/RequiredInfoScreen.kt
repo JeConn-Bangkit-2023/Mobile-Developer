@@ -1,7 +1,7 @@
 package com.capstone.jeconn.ui.screen.authentication.required_info_screen
 
 
-import android.util.Log
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,42 +9,136 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavHostController
 import com.capstone.jeconn.R
 import com.capstone.jeconn.component.CustomButton
 import com.capstone.jeconn.component.Font
+import com.capstone.jeconn.di.Injection
 import com.capstone.jeconn.navigation.NavRoute
+import com.capstone.jeconn.state.UiState
+import com.capstone.jeconn.utils.AuthViewModelFactory
+import com.capstone.jeconn.utils.MakeToast
 import com.capstone.jeconn.utils.intentWhatsApp
-import com.capstone.jeconn.utils.navigateToTop
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.capstone.jeconn.utils.navigateTo
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun RequiredInfoScreen(navHostController: NavHostController) {
+fun RequiredInfoScreen(navHostController: NavHostController, isFromRegister: String?) {
+
+    val getParams = isFromRegister.toBoolean()
 
     val context = LocalContext.current
-    val auth = Firebase.auth
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    val requireInfoViewModel: RequireInfoViewModel = remember {
+        AuthViewModelFactory(Injection.provideAuthRepository(context)).create(RequireInfoViewModel::class.java)
+    }
+
+    val isEmailVerifiedState by requireInfoViewModel.isEmailVerifiedState
+    var refreshButtonState by remember {
+        mutableStateOf(true)
+    }
+
+    val scope = rememberCoroutineScope()
+    val sentEmailVerificationState by rememberUpdatedState(newValue = requireInfoViewModel.sentEmailVerification.value)
+    var countdown by rememberSaveable {
+        mutableStateOf(
+            if (getParams) {
+                60
+            } else {
+                0
+            }
+        )
+    }
+
+    var sentEmailButtonState by rememberSaveable {
+        mutableStateOf(true)
+    }
+
+    val currentOnStart by rememberUpdatedState(scope)
+
+    LaunchedEffect(countdown) {
+        sentEmailButtonState = countdown == 0
+    }
+
+    DisposableEffect(sentEmailVerificationState) {
+
+        when (val currentState = sentEmailVerificationState) {
+            is UiState.Loading -> {
+                sentEmailButtonState = false
+            }
+
+            is UiState.Success -> {
+                countdown = 60
+                MakeToast.short(context, currentState.data)
+            }
+
+            is UiState.Error -> {
+                MakeToast.short(context, currentState.errorMessage)
+                sentEmailButtonState = true
+            }
+
+            else -> {
+                //Nothing
+            }
+        }
+
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                currentOnStart.launch {
+                    if (countdown > 0) {
+                        for (i in countdown downTo 0) {
+                            delay(1000)
+                            countdown = i
+                        }
+                    }
+                }
+            }
+        }
+
+        // Add the observer to the lifecycle
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        // When the effect leaves the Composition, remove the observer
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -61,101 +155,147 @@ fun RequiredInfoScreen(navHostController: NavHostController) {
                 .height(200.dp)
         )
 
+        Spacer(modifier = Modifier.padding(vertical = 12.dp))
+
+        Text(
+            text = "${context.getString(R.string.verify_ur_account)} ",
+            style = TextStyle(
+                fontFamily = Font.QuickSand,
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp,
+                textAlign = TextAlign.Center
+            )
+        )
+
+        Spacer(modifier = Modifier.padding(vertical = 12.dp))
+
+        Text(
+            text = "${context.getString(R.string.verify_ur_account_description)} ",
+            style = TextStyle(
+                fontFamily = Font.QuickSand,
+                fontWeight = FontWeight.Normal,
+                fontSize = 12.sp,
+                textAlign = TextAlign.Center
+            )
+        )
+
+
         //Spacing
         Spacer(modifier = Modifier.padding(vertical = 12.dp))
 
-        //Title
-        Row {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            //Text Refresh
             Text(
-                text = "${context.getString(R.string.verify_ur_acount)} ",
+                text = "${context.getString(R.string.is_verified)} ",
                 style = TextStyle(
                     fontFamily = Font.QuickSand,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center
                 )
             )
 
-        }
+            //Button Refresh
+            CustomButton(
+                text = context.getString(R.string.refresh),
+                modifier = Modifier
+                    .width(110.dp)
+                    .height(40.dp),
+                enabled = refreshButtonState
+            ) {
+                requireInfoViewModel.isEmailVerified()
+                when (val currentState = isEmailVerifiedState) {
+                    is UiState.Loading -> {
+                        refreshButtonState = false
+                    }
 
-        //Spacing
-        Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                    is UiState.Success -> {
+                        MakeToast.short(context, currentState.data)
+                        refreshButtonState = true
+                        navigateTo(navHostController, NavRoute.BaseScreen)
+                    }
 
-        //Teext Deskripsi
-        Text(
-            text = "${context.getString(R.string.verify_ur_acount_text1)} ",
-            style = TextStyle(
-                fontFamily = Font.QuickSand,
-                fontWeight = FontWeight.Normal,
-                fontSize = 12.sp
-            )
-        )
+                    is UiState.Error -> {
+                        MakeToast.short(context, currentState.errorMessage)
+                        refreshButtonState = true
+                    }
 
-        //Teext Deskripsi
-        Text(
-            text = "${context.getString(R.string.verify_ur_acount_text2)} ",
-            style = TextStyle(
-                fontFamily = Font.QuickSand,
-                fontWeight = FontWeight.Normal,
-                fontSize = 12.sp
-            )
-        )
-
-        //Spacing
-        Spacer(modifier = Modifier.padding(vertical = 12.dp))
-
-        //Button Refresh
-        Button(
-            onClick = {
-                //TODO
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
-            ),
-        )
-        {
-            Icon(
-                imageVector = Icons.Filled.Refresh,
-                contentDescription = null,
-            )
-        }
-
-        //Spacing
-        Spacer(modifier = Modifier.padding(vertical = 12.dp))
-        //Text Pleass
-        Text(
-            text = "${context.getString(R.string.please_prees)} ",
-            style = TextStyle(
-                fontFamily = Font.QuickSand,
-                fontWeight = FontWeight.Normal,
-                fontSize = 12.sp
-            )
-        )
-        //Text Veriifed
-        Text(
-            text = "${context.getString(R.string.verified)} ",
-            style = TextStyle(
-                fontFamily = Font.QuickSand,
-                fontWeight = FontWeight.Normal,
-                fontSize = 12.sp
-            )
-        )
-        //Login Button
-        CustomButton(
-            text = context.getString(R.string.Back_to_login),
-            modifier = Modifier
-                .padding(vertical = 24.dp)
-                .padding(horizontal = 24.dp),
-        ) {
-            try {
-                auth.signOut()
-            } catch (e: Exception) {
-                Log.e("RequiredInfoScreen", e.message.toString())
-            } finally {
-                navigateToTop(navHostController, NavRoute.ROOT)
+                    else -> {
+                        refreshButtonState = true
+                    }
+                }
             }
         }
 
+        Spacer(modifier = Modifier.padding(vertical = 12.dp))
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "${context.getString(R.string.not_get_email)} ",
+                style = TextStyle(
+                    fontFamily = Font.QuickSand,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center
+                )
+            )
+
+            //Resend Button
+            CustomButton(
+                text = if (countdown == 0) {
+                    context.getString(R.string.resend)
+                } else {
+                    "$countdown"
+                },
+                enabled = sentEmailButtonState,
+                modifier = Modifier
+                    .width(110.dp)
+                    .height(40.dp),
+            ) {
+                requireInfoViewModel.sendEmailVerification()
+            }
+        }
+
+        Spacer(modifier = Modifier.padding(vertical = 12.dp))
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "${context.getString(R.string.back_to_login)} ",
+                style = TextStyle(
+                    fontFamily = Font.QuickSand,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center
+                )
+            )
+
+            //Logout Button
+            CustomButton(
+                text = context.getString(R.string.logout),
+                modifier = Modifier
+                    .width(110.dp)
+                    .height(40.dp)
+            ) {
+                //TODO
+            }
+        }
+
+        Spacer(modifier = Modifier.padding(vertical = 24.dp))
         // Need support text
         Text(
             text = context.getString(R.string.need_support),

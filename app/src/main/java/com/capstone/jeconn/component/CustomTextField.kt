@@ -10,10 +10,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
@@ -25,23 +24,19 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.capstone.jeconn.R
 
-
-class TextFieldState {
-    var text by mutableStateOf("")
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTextField(
     modifier: Modifier = Modifier,
     label: String,
-    state: TextFieldState = remember { TextFieldState() },
     length: Int = 50,
     type: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done,
     leadingIcon: Any? = null,
+    state: MutableState<String>,
 ) {
     val focusManager = LocalFocusManager.current
+
 
     val isPassword = remember {
         mutableStateOf(type == KeyboardType.Password || type == KeyboardType.NumberPassword)
@@ -64,9 +59,9 @@ fun CustomTextField(
     }
 
     OutlinedTextField(
-        value = state.text,
+        value = state.value,
         onValueChange = {
-            if (it.length <= length) state.text = it
+            if (it.length <= length) state.value = it
         },
         label = {
             Text(text = label)
@@ -85,7 +80,7 @@ fun CustomTextField(
                                     if (isPassword.value) {
                                         visible.value = !visible.value
                                     } else {
-                                        state.text = ""
+                                        state.value = ""
                                     }
                                 },
                             tint = MaterialTheme.colorScheme.onSurface
@@ -101,7 +96,7 @@ fun CustomTextField(
                                     if (isPassword.value) {
                                         visible.value = !visible.value
                                     } else {
-                                        state.text = ""
+                                        state.value = ""
                                     }
                                 },
                             tint = MaterialTheme.colorScheme.onSurface
@@ -121,7 +116,7 @@ fun CustomTextField(
                         if (isPassword.value) {
                             visible.value = !visible.value
                         } else {
-                            state.text = ""
+                            state.value = ""
                         }
                     },
                 tint = MaterialTheme.colorScheme.onSurface

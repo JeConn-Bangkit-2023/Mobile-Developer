@@ -1,16 +1,16 @@
 <resources>
-    <string name="verify_ur_acount">Verify your account</string>
-    <string name="verify_ur_acount_text1">A verification link has been sent to your e-mail.</string>
-    <string name="verify_ur_acount_text2">Check your e-mail inbox/spam folder immediately.</string>
-    <string name="please_prees">Please press the refresh button above if you have</string>
+    <string name="verify_ur_account">Verify your account</string>
+    <string name="verify_ur_account_description">A verification link has been sent to your e-mail. Check your e-mail inbox/spam folder immediately.</string>
+    <string name="is_verified">Already verified?</string>
+    <string name="refresh">Refresh</string>
     <string name="verified">verified</string>
-    <string name="Back_to_login">Back to Login</string>
-    <string name="not_reciev">Not reciving emails?</string>
-    <string name="send_agin">Send Again</string>
+    <string name="back_to_login">Back to login?</string>
+    <string name="not_get_email">Didn\'t get an email yet?</string>
+    <string name="resend">Resend</string>
     <string name="app_name">JeConn</string>
     <string name="login_title">Login to</string>
     <string name="register_title">Register to</string>
-    <string name="alredy_have_account">Alredy have an account?</string>
+    <string name="already_have_account">Alredy have an account?</string>
     <string name="not_have_account">Don\'t have an account yet?</string>
     <string name="register">Register</string>
     <string name="login">Login</string>
@@ -45,4 +45,9 @@
     <string name="empty_password">Please fill in your password</string>
     <string name="empty_password_conf">Please fill in your password confirmation</string>
     <string name="password_confirm_wrong">Confirmation password doesn\'t match</string>
+    <string name="email_successfully_verified">Email successfully verified</string>
+    <string name="email_has_not_been_verified">Email has not been verified</string>
+    <string name="email_verification_sent">Email verification sent</string>
+    <string name="email_verification_not_sent">Failed to send verification email, please check your internet connection</string>
+    <string name="already_verified">Email is already verified</string>
 </resources>
