@@ -200,13 +200,13 @@ fun LoginScreen(
                 modifier = Modifier.padding(vertical = 24.dp),
             ) {
                 when {
-//                (emailState.value == "") -> {
-//                    MakeToast.short(context, context.getString(R.string.empty_email))
-//                }
-//
-//                (passwordState.value == "") -> {
-//                    MakeToast.short(context, context.getString(R.string.empty_password))
-//                }
+                (emailState.value == "") -> {
+                    MakeToast.short(context, context.getString(R.string.empty_email))
+                }
+
+                (passwordState.value == "") -> {
+                    MakeToast.short(context, context.getString(R.string.empty_password))
+                }
 
                     else -> {
                         scope.launch {

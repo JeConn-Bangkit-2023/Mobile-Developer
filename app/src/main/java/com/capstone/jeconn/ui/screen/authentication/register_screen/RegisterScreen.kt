@@ -44,6 +44,7 @@ import com.capstone.jeconn.di.Injection
 import com.capstone.jeconn.navigation.NavRoute
 import com.capstone.jeconn.state.UiState
 import com.capstone.jeconn.utils.AuthViewModelFactory
+import com.capstone.jeconn.utils.MakeToast
 import com.capstone.jeconn.utils.intentWhatsApp
 import com.capstone.jeconn.utils.navigateToTop
 
@@ -247,33 +248,33 @@ fun RegisterScreen(navHostController: NavHostController) {
                 .padding(vertical = 24.dp),
         ) {
             when {
-//                (usernameState.value.trim() == "") -> {
-//                    MakeToast.short(context, context.getString(R.string.invalid_username))
-//                }
-//
-//                (usernameState.value.contains(" ")) -> {
-//
-//                }
-//
-//                (fullNameState.value.trim() == "") -> {
-//                    MakeToast.short(context, context.getString(R.string.empty_full_name))
-//                }
-//
-//                (emailState.value.trim() == "") -> {
-//                    MakeToast.short(context, context.getString(R.string.empty_email))
-//                }
-//
-//                (passwordState.value.trim() == "") -> {
-//                    MakeToast.short(context, context.getString(R.string.empty_password))
-//                }
-//
-//                (passwordState.value.trim() == "") -> {
-//                    MakeToast.short(context, context.getString(R.string.empty_password_conf))
-//                }
-//
-//                (passwordState.value.trim() != passwordConfirmationState.value) -> {
-//                    MakeToast.short(context, context.getString(R.string.password_confirm_wrong))
-//                }
+                (usernameState.value.trim() == "") -> {
+                    MakeToast.short(context, context.getString(R.string.invalid_username))
+                }
+
+                (usernameState.value.contains(" ")) -> {
+
+                }
+
+                (fullNameState.value.trim() == "") -> {
+                    MakeToast.short(context, context.getString(R.string.empty_full_name))
+                }
+
+                (emailState.value.trim() == "") -> {
+                    MakeToast.short(context, context.getString(R.string.empty_email))
+                }
+
+                (passwordState.value.trim() == "") -> {
+                    MakeToast.short(context, context.getString(R.string.empty_password))
+                }
+
+                (passwordState.value.trim() == "") -> {
+                    MakeToast.short(context, context.getString(R.string.empty_password_conf))
+                }
+
+                (passwordState.value.trim() != passwordConfirmationState.value) -> {
+                    MakeToast.short(context, context.getString(R.string.password_confirm_wrong))
+                }
 
                 else -> {
                     registerViewModel.registerUser(
