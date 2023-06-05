@@ -13,6 +13,7 @@ import com.capstone.jeconn.ui.screen.authentication.login_screen.LoginScreen
 import com.capstone.jeconn.ui.screen.authentication.register_screen.RegisterScreen
 import com.capstone.jeconn.ui.screen.authentication.required_info_screen.RequiredInfoScreen
 import com.capstone.jeconn.ui.screen.dashboard.BaseScreen
+import com.capstone.jeconn.ui.screen.dashboard.profile_screen.myprofile.EditDetailInfoScreen
 import com.capstone.jeconn.ui.screen.dashboard.profile_screen.setting.SettingScreen
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -65,6 +66,12 @@ fun SetupNavGraph(
             route = NavRoute.SettingScreen.route,
         ) {
             SettingScreen(navHostController = navHostController)
+        }
+
+        composable(
+            route = NavRoute.EditDetailInfoScreen.route,
+        ) {
+            EditDetailInfoScreen(navHostController = navHostController)
         }
     }
 }

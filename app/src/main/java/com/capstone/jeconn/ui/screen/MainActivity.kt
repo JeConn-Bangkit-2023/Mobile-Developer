@@ -11,6 +11,7 @@ import com.capstone.jeconn.ui.theme.JeConnTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 //        val modelML = "nsfwmodel.tflite"
 //        val options = TfLiteInitializationOptions.builder()
 //            .setEnableGpuDelegateSupport(true)

@@ -32,6 +32,7 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+        coreLibraryDesugaringEnabled true
     }
     kotlinOptions {
         jvmTarget = '1.8'
@@ -83,7 +84,7 @@ dependencies {
     // kotlin reflect
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.7.21"
     // system ui controller
-    implementation "com.google.accompanist:accompanist-systemuicontroller:0.27.0"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.28.0"
     // Compose Glide
     implementation "com.github.bumptech.glide:compose:1.0.0-alpha.1"
     // FlowRow Compose for Label
@@ -97,8 +98,14 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     //Firebase Auth
     implementation 'com.google.firebase:firebase-auth-ktx:22.0.0'
+    //Firebase realtime database
+    implementation 'com.google.firebase:firebase-database-ktx:20.2.2'
     // Tensorflow Lite dependencies
     implementation 'org.tensorflow:tensorflow-lite-task-vision-play-services:0.4.2'
     implementation 'com.google.android.gms:play-services-tflite-gpu:16.2.0'
+    //Compose Wheel Date Time Picker
+    implementation 'com.github.commandiron:WheelPickerCompose:1.1.10'
+    // Desugar
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.3"
 
 }

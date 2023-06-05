@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.capstone.jeconn.R
 import com.capstone.jeconn.component.CustomButton
-import com.capstone.jeconn.component.CustomTextField
+import com.capstone.jeconn.component.CustomIconTextField
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.data.entities.AuthEntity
 import com.capstone.jeconn.di.Injection
@@ -154,7 +154,7 @@ fun RegisterScreen(navHostController: NavHostController) {
         Spacer(modifier = Modifier.padding(vertical = 12.dp))
 
         //Username Text Field
-        CustomTextField(
+        CustomIconTextField(
             state = usernameState,
             label = "Username",
             type = KeyboardType.Text,
@@ -166,9 +166,9 @@ fun RegisterScreen(navHostController: NavHostController) {
         )
 
         //Full Name Text Field
-        CustomTextField(
+        CustomIconTextField(
             state = fullNameState,
-            label = context.getString(R.string.fullname),
+            label = context.getString(R.string.fullName),
             type = KeyboardType.Text,
             leadingIcon = Icons.Default.Person,
             imeAction = ImeAction.Next,
@@ -178,7 +178,7 @@ fun RegisterScreen(navHostController: NavHostController) {
         )
 
         //Email Text Field
-        CustomTextField(
+        CustomIconTextField(
             state = emailState,
             label = "Email",
             type = KeyboardType.Email,
@@ -190,7 +190,7 @@ fun RegisterScreen(navHostController: NavHostController) {
         )
 
         //Password Text Field
-        CustomTextField(
+        CustomIconTextField(
             state = passwordState,
             label = context.getString(R.string.password),
             type = KeyboardType.Password,
@@ -201,7 +201,7 @@ fun RegisterScreen(navHostController: NavHostController) {
         )
 
         //Confirm Password Text Field
-        CustomTextField(
+        CustomIconTextField(
             state = passwordConfirmationState,
             label = context.getString(R.string.confirm_password),
             type = KeyboardType.Password,
@@ -248,27 +248,31 @@ fun RegisterScreen(navHostController: NavHostController) {
                 .padding(vertical = 24.dp),
         ) {
             when {
-                (usernameState.value == "") -> {
-                    MakeToast.short(context, context.getString(R.string.empty_username))
+                (usernameState.value.trim() == "") -> {
+                    MakeToast.short(context, context.getString(R.string.invalid_username))
                 }
 
-                (fullNameState.value == "") -> {
+                (usernameState.value.contains(" ")) -> {
+
+                }
+
+                (fullNameState.value.trim() == "") -> {
                     MakeToast.short(context, context.getString(R.string.empty_full_name))
                 }
 
-                (emailState.value == "") -> {
+                (emailState.value.trim() == "") -> {
                     MakeToast.short(context, context.getString(R.string.empty_email))
                 }
 
-                (passwordState.value == "") -> {
+                (passwordState.value.trim() == "") -> {
                     MakeToast.short(context, context.getString(R.string.empty_password))
                 }
 
-                (passwordState.value == "") -> {
+                (passwordState.value.trim() == "") -> {
                     MakeToast.short(context, context.getString(R.string.empty_password_conf))
                 }
 
-                (passwordState.value != passwordConfirmationState.value) -> {
+                (passwordState.value.trim() != passwordConfirmationState.value) -> {
                     MakeToast.short(context, context.getString(R.string.password_confirm_wrong))
                 }
 
@@ -277,8 +281,16 @@ fun RegisterScreen(navHostController: NavHostController) {
                         AuthEntity(
                             username = usernameState.value,
                             email = emailState.value,
-                            password = passwordState.value
+                            password = passwordState.value,
+                            fullName = fullNameState.value
                         )
+//                        AuthEntity(
+//                            username = "jane_smith6",
+//                            email = "fauzanramadhani06@gmail.com",
+//                            password = "fauzanguanteng123",
+//                            fullName = "fauzan ramadhani",
+//                        )
+
                     )
                 }
             }
@@ -308,5 +320,7 @@ fun RegisterScreen(navHostController: NavHostController) {
                     intentWhatsApp(context)
                 }
         )
+
+        Spacer(modifier = Modifier.padding(vertical = 24.dp))
     }
 }
