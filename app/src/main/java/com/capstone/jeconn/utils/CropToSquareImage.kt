@@ -20,7 +20,7 @@ fun CropToSquareImage(
             ImageRequest.Builder // Crop the image to fit the square
                 (LocalContext.current).data(data = imageUrl)
                 .apply(block = fun ImageRequest.Builder.() {
-                    size(100, 100) // Set the desired size to a square
+                    size(500, 500) // Set the desired size to a square
                     scale(Scale.FILL) // Crop the image to fit the square
                 }).build()
         )

@@ -7,9 +7,12 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.capstone.jeconn.R
 import com.capstone.jeconn.data.entities.AuthEntity
+import com.capstone.jeconn.data.entities.PrivateDataEntity
+import com.capstone.jeconn.data.entities.PublicDataEntity
 import com.capstone.jeconn.state.UiState
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -19,6 +22,8 @@ class AuthRepository(
 
     private val auth = Firebase.auth
 
+    private val ref = Firebase.database.reference
+
     val registerState: MutableStateFlow<UiState<String>> = MutableStateFlow(UiState.Empty)
 
     val loginState: MutableStateFlow<UiState<String>> = MutableStateFlow(UiState.Empty)
@@ -27,38 +32,87 @@ class AuthRepository(
 
     val isEmailVerifiedState: MutableState<UiState<String>> = mutableStateOf(UiState.Empty)
 
-
     fun registerUser(user: AuthEntity) {
         registerState.value = UiState.Loading
-        auth.createUserWithEmailAndPassword(user.email, user.password)
-            .addOnCompleteListener(context as Activity) { task ->
-                if (task.isSuccessful) {
-                    val firebaseUser = auth.currentUser
 
-                    val profileUpdates = UserProfileChangeRequest.Builder()
-                        .setDisplayName(user.username)
-                        .build()
+        ref.child("publicData").get()
+            .addOnSuccessListener { publicData ->
 
-                    firebaseUser?.updateProfile(profileUpdates)
-                        ?.addOnCompleteListener { profileUpdateTask ->
-                            if (profileUpdateTask.isSuccessful) {
-                                sendEmailVerification()
-                                registerState.value =
-                                    UiState.Success(context.getString(R.string.success_regis))
+                //Task 1
+                val usernameExists = publicData.children.any { username ->
+                    user.username == username.key.toString()
+                }
+
+                //Task 2
+                if (!usernameExists) {
+                    auth.createUserWithEmailAndPassword(user.email, user.password)
+                        .addOnCompleteListener(context as Activity) { task ->
+                            if (task.isSuccessful) {
+
+                                val profileUpdates = UserProfileChangeRequest.Builder()
+                                    .setDisplayName(user.username)
+                                    .build()
+
+                                auth.currentUser?.updateProfile(profileUpdates)
+                                    ?.addOnCompleteListener { profileUpdateTask ->
+                                        if (profileUpdateTask.isSuccessful) {
+
+                                            val newPrivateData =  mapOf(
+                                                auth.currentUser!!.uid to PrivateDataEntity(
+                                                    email = auth.currentUser!!.email!!,
+                                                    username = auth.currentUser!!.displayName!!,
+                                                    created_date = System.currentTimeMillis(),
+                                                )
+                                            )
+
+                                            val newPublicData =  mapOf(
+                                                auth.currentUser!!.displayName!! to PublicDataEntity(
+                                                    username = auth.currentUser!!.displayName!!,
+                                                    full_name = user.fullName,
+                                                    profile_image_url = "https://static.vecteezy.com/system/resources/previews/005/544/718/original/profile-icon-design-free-vector.jpg",
+                                                )
+                                            )
+                                            ref.child("privateData").updateChildren(newPrivateData)
+                                                .addOnSuccessListener {
+
+                                                    ref.child("publicData").updateChildren(newPublicData)
+                                                        .addOnSuccessListener {
+                                                            registerState.value =
+                                                                UiState.Success(context.getString(R.string.success_regis))
+                                                            sendEmailVerification()
+                                                        }
+                                                        .addOnFailureListener { uploadPublicData ->
+                                                            UiState.Error(uploadPublicData.message.toString())
+                                                            Log.e("publicData", uploadPublicData.message.toString())
+                                                        }
+                                                }.addOnFailureListener { uploadPrivateData ->
+                                                    UiState.Error(uploadPrivateData.message.toString())
+                                                }
+
+                                        } else {
+                                            registerState.value =
+                                                UiState.Error(profileUpdateTask.exception?.message.toString())
+                                            Log.e(
+                                                "AuthRepository",
+                                                "Failed to update user profile: ${profileUpdateTask.exception}"
+                                            )
+                                        }
+                                    }
                             } else {
                                 registerState.value =
-                                    UiState.Error(profileUpdateTask.exception?.message.toString())
-                                Log.e(
-                                    "AuthRepository",
-                                    "Failed to update user profile: ${profileUpdateTask.exception}"
-                                )
+                                    UiState.Error(task.exception?.message.toString())
+                                Log.e("AuthRepository", "Register failed: ${task.exception}")
                             }
                         }
                 } else {
-                    registerState.value = UiState.Error(task.exception?.message.toString())
-                    Log.e("AuthRepository", "Register failed: ${task.exception}")
+                    registerState.value =
+                        UiState.Error(context.getString(R.string.username_already_taken))
                 }
             }
+            .addOnFailureListener { exception ->
+                Log.e("firebase", "Error getting data", exception)
+            }
+
     }
 
     fun loginUser(user: AuthEntity) {

@@ -36,7 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.capstone.jeconn.R
 import com.capstone.jeconn.component.CustomButton
-import com.capstone.jeconn.component.CustomTextField
+import com.capstone.jeconn.component.CustomIconTextField
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.data.entities.AuthEntity
 import com.capstone.jeconn.di.Injection
@@ -147,7 +147,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.padding(vertical = 12.dp))
 
             //Email Text Field
-            CustomTextField(
+            CustomIconTextField(
                 state = emailState,
                 label = "Email",
                 type = KeyboardType.Email,
@@ -159,7 +159,7 @@ fun LoginScreen(
             )
 
             //Password Text Field
-            CustomTextField(
+            CustomIconTextField(
                 state = passwordState,
                 label = "Password",
                 type = KeyboardType.Password,
@@ -200,13 +200,13 @@ fun LoginScreen(
                 modifier = Modifier.padding(vertical = 24.dp),
             ) {
                 when {
-                (emailState.value == "") -> {
-                    MakeToast.short(context, context.getString(R.string.empty_email))
-                }
-
-                (passwordState.value == "") -> {
-                    MakeToast.short(context, context.getString(R.string.empty_password))
-                }
+//                (emailState.value == "") -> {
+//                    MakeToast.short(context, context.getString(R.string.empty_email))
+//                }
+//
+//                (passwordState.value == "") -> {
+//                    MakeToast.short(context, context.getString(R.string.empty_password))
+//                }
 
                     else -> {
                         scope.launch {
@@ -215,6 +215,13 @@ fun LoginScreen(
                                     email = emailState.value,
                                     password = passwordState.value
                                 )
+
+//                                AuthEntity(
+//                                    username = "jane_smith6",
+//                                    email = "fauzanramadhani06@gmail.com",
+//                                    password = "fauzanguanteng123",
+//                                    fullName = "fauzan ramadhani",
+//                                )
                             )
                         }
                     }

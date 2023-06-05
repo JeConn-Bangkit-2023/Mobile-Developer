@@ -2,6 +2,7 @@ package com.capstone.jeconn.ui.screen.authentication.required_info_screen
 
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -50,6 +51,9 @@ import com.capstone.jeconn.utils.AuthViewModelFactory
 import com.capstone.jeconn.utils.MakeToast
 import com.capstone.jeconn.utils.intentWhatsApp
 import com.capstone.jeconn.utils.navigateTo
+import com.capstone.jeconn.utils.navigateToTop
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -291,7 +295,15 @@ fun RequiredInfoScreen(navHostController: NavHostController, isFromRegister: Str
                     .width(110.dp)
                     .height(40.dp)
             ) {
-                //TODO
+                try {
+                    Firebase.auth.signOut()
+                } catch (e: Exception) {
+                    Log.e("Error Sign out", e.message.toString())
+                } finally {
+                    navigateToTop(navHostController, NavRoute.ROOT)
+                }
+
+
             }
         }
 
