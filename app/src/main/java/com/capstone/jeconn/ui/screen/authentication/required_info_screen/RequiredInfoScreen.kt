@@ -4,6 +4,7 @@ package com.capstone.jeconn.ui.screen.authentication.required_info_screen
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -60,7 +61,10 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun RequiredInfoScreen(navHostController: NavHostController, isFromRegister: String?) {
+fun RequiredInfoScreen(
+    navHostController: NavHostController,
+    isFromRegister: String?
+) {
 
     val getParams = isFromRegister.toBoolean()
 
@@ -147,6 +151,7 @@ fun RequiredInfoScreen(navHostController: NavHostController, isFromRegister: Str
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 16.dp)
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
@@ -167,7 +172,8 @@ fun RequiredInfoScreen(navHostController: NavHostController, isFromRegister: Str
                 fontFamily = Font.QuickSand,
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.secondary
             )
         )
 
@@ -179,7 +185,8 @@ fun RequiredInfoScreen(navHostController: NavHostController, isFromRegister: Str
                 fontFamily = Font.QuickSand,
                 fontWeight = FontWeight.Normal,
                 fontSize = 12.sp,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onBackground
             )
         )
 
@@ -200,7 +207,8 @@ fun RequiredInfoScreen(navHostController: NavHostController, isFromRegister: Str
                     fontFamily = Font.QuickSand,
                     fontWeight = FontWeight.Normal,
                     fontSize = 16.sp,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             )
 
@@ -250,7 +258,8 @@ fun RequiredInfoScreen(navHostController: NavHostController, isFromRegister: Str
                     fontFamily = Font.QuickSand,
                     fontWeight = FontWeight.Normal,
                     fontSize = 16.sp,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             )
 
@@ -284,7 +293,8 @@ fun RequiredInfoScreen(navHostController: NavHostController, isFromRegister: Str
                     fontFamily = Font.QuickSand,
                     fontWeight = FontWeight.Normal,
                     fontSize = 16.sp,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             )
 
@@ -314,7 +324,8 @@ fun RequiredInfoScreen(navHostController: NavHostController, isFromRegister: Str
             style = TextStyle(
                 fontFamily = Font.QuickSand,
                 fontWeight = FontWeight.Normal,
-                fontSize = 12.sp
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onBackground
             ),
         )
         // Customer Service Button
@@ -331,6 +342,8 @@ fun RequiredInfoScreen(navHostController: NavHostController, isFromRegister: Str
                     intentWhatsApp(context)
                 }
         )
+
+        Spacer(modifier = Modifier.padding(vertical = 24.dp))
     }
 }
 

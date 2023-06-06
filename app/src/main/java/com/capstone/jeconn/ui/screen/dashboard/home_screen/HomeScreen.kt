@@ -118,7 +118,9 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
                 name = tenant.full_name,
                 range = calculateDistance(LatLng(51.5074, -0.1278), vacancies.location),
                 timestamp = vacancies.timestamp,
-                description = vacancies.description
+                description = vacancies.description,
+                modifier = Modifier
+                    .padding(horizontal = 12.dp)
             )
         }
         item {

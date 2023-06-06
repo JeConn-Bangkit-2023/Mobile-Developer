@@ -3,6 +3,7 @@ package com.capstone.jeconn.ui.screen.authentication.register_screen
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -117,6 +118,7 @@ fun RegisterScreen(navHostController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
         modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 16.dp)
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
@@ -136,7 +138,8 @@ fun RegisterScreen(navHostController: NavHostController) {
                 style = TextStyle(
                     fontFamily = Font.QuickSand,
                     fontWeight = FontWeight.Normal,
-                    fontSize = 22.sp
+                    fontSize = 22.sp,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             )
             Text(
@@ -221,7 +224,8 @@ fun RegisterScreen(navHostController: NavHostController) {
                 style = TextStyle(
                     fontFamily = Font.QuickSand,
                     fontWeight = FontWeight.Normal,
-                    fontSize = 12.sp
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             )
             //Login ButtonText
@@ -303,7 +307,8 @@ fun RegisterScreen(navHostController: NavHostController) {
             style = TextStyle(
                 fontFamily = Font.QuickSand,
                 fontWeight = FontWeight.Normal,
-                fontSize = 12.sp
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onBackground
             ),
         )
         // Customer Service Button

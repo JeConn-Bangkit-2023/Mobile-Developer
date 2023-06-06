@@ -34,10 +34,11 @@ fun HorizontalVacanciesCard(
     range: String,
     timestamp: Long,
     description: String,
+    modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
