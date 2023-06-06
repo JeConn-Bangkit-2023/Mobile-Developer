@@ -1,6 +1,7 @@
 package com.capstone.jeconn.ui.screen.dashboard.vacancies_screen
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
@@ -14,7 +15,7 @@ import androidx.navigation.NavHostController
 import com.capstone.jeconn.component.Font
 
 @Composable
-fun VacanciesScreen(navHostController: NavHostController) {
+fun VacanciesScreen(navHostController: NavHostController, myPaddingValues: PaddingValues) {
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
