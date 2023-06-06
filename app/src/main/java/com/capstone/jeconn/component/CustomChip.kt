@@ -14,10 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color.Companion.DarkGray
-import androidx.compose.ui.graphics.Color.Companion.Unspecified
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun CustomChip(
@@ -53,14 +54,19 @@ fun CustomChip(
         if (isSelected) {
             Icon(
                 imageVector = iconId,
-                tint = DarkGray,
+                tint = MaterialTheme.colorScheme.onBackground,
                 contentDescription = null,
                 modifier = Modifier.padding(end = 4.dp)
             )
         }
         Text(
             text = text,
-            color = Unspecified
+            style = TextStyle(
+                fontFamily = Font.QuickSand,
+                fontWeight = FontWeight.Normal,
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.onBackground
+            )
         )
     }
 }

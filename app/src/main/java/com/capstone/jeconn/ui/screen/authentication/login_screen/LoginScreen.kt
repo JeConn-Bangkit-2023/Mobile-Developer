@@ -1,6 +1,7 @@
 package com.capstone.jeconn.ui.screen.authentication.login_screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -113,6 +114,7 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
                 .padding(horizontal = 16.dp)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
@@ -130,7 +132,8 @@ fun LoginScreen(
                     text = "${context.getString(R.string.login_title)} ", style = TextStyle(
                         fontFamily = Font.QuickSand,
                         fontWeight = FontWeight.Normal,
-                        fontSize = 22.sp
+                        fontSize = 22.sp,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 )
                 Text(
@@ -178,7 +181,8 @@ fun LoginScreen(
                     text = "${context.getString(R.string.not_have_account)} ", style = TextStyle(
                         fontFamily = Font.QuickSand,
                         fontWeight = FontWeight.Normal,
-                        fontSize = 12.sp
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 )
                 //Register ButtonText
@@ -200,13 +204,13 @@ fun LoginScreen(
                 modifier = Modifier.padding(vertical = 24.dp),
             ) {
                 when {
-                (emailState.value == "") -> {
-                    MakeToast.short(context, context.getString(R.string.empty_email))
-                }
+                    (emailState.value == "") -> {
+                        MakeToast.short(context, context.getString(R.string.empty_email))
+                    }
 
-                (passwordState.value == "") -> {
-                    MakeToast.short(context, context.getString(R.string.empty_password))
-                }
+                    (passwordState.value == "") -> {
+                        MakeToast.short(context, context.getString(R.string.empty_password))
+                    }
 
                     else -> {
                         scope.launch {
@@ -232,7 +236,10 @@ fun LoginScreen(
             Text(
                 text = context.getString(R.string.need_support),
                 style = TextStyle(
-                    fontFamily = Font.QuickSand, fontWeight = FontWeight.Normal, fontSize = 12.sp
+                    fontFamily = Font.QuickSand,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.onBackground
                 ),
             )
             // Customer Service Button
@@ -244,6 +251,8 @@ fun LoginScreen(
             ), modifier = Modifier.clickable {
                 intentWhatsApp(context)
             })
+
+            Spacer(modifier = Modifier.padding(vertical = 24.dp))
         }
 
     }
