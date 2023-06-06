@@ -251,6 +251,7 @@ fun RegisterScreen(navHostController: NavHostController) {
             modifier = Modifier
                 .padding(vertical = 24.dp),
         ) {
+            //Filter
             when {
                 (usernameState.value.trim() == "") -> {
                     MakeToast.short(context, context.getString(R.string.empty_username))
