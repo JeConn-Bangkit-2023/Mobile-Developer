@@ -44,6 +44,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavHostController
 import com.capstone.jeconn.R
 import com.capstone.jeconn.component.CustomButton
+import com.capstone.jeconn.component.CustomDialogBoxLoading
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.di.Injection
 import com.capstone.jeconn.navigation.NavRoute
@@ -73,6 +74,14 @@ fun RequiredInfoScreen(
 
     val requireInfoViewModel: RequireInfoViewModel = remember {
         AuthViewModelFactory(Injection.provideAuthRepository(context)).create(RequireInfoViewModel::class.java)
+    }
+
+    var loadingDialogState by remember {
+        mutableStateOf(false)
+    }
+
+    if (loadingDialogState) {
+        CustomDialogBoxLoading()
     }
 
     val isEmailVerifiedState by requireInfoViewModel.isEmailVerifiedState
@@ -106,20 +115,24 @@ fun RequiredInfoScreen(
 
         when (val currentState = sentEmailVerificationState) {
             is UiState.Loading -> {
+                loadingDialogState = true
                 sentEmailButtonState = false
             }
 
             is UiState.Success -> {
+                loadingDialogState = false
                 countdown = 60
                 MakeToast.short(context, currentState.data)
             }
 
             is UiState.Error -> {
-                MakeToast.short(context, currentState.errorMessage)
+                loadingDialogState = false
                 sentEmailButtonState = true
+                MakeToast.short(context, currentState.errorMessage)
             }
 
             else -> {
+                loadingDialogState = false
                 //Nothing
             }
         }
@@ -145,7 +158,6 @@ fun RequiredInfoScreen(
             lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
-
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

@@ -37,6 +37,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.capstone.jeconn.R
 import com.capstone.jeconn.component.CustomButton
+import com.capstone.jeconn.component.CustomDialogBoxLoading
 import com.capstone.jeconn.component.CustomIconTextField
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.data.entities.AuthEntity
@@ -60,7 +61,7 @@ fun LoginScreen(
     val auth = Firebase.auth
     if (auth.currentUser != null) {
         if (auth.currentUser!!.isEmailVerified) {
-            navigateTo(navHostController, NavRoute.BaseScreen)
+            navigateTo(navHostController, NavRoute.RequiredLocationScreen)
         } else {
             navigateTo(navHostController, NavRoute.RequiredInfoScreen)
         }
@@ -83,6 +84,10 @@ fun LoginScreen(
             mutableStateOf(true)
         }
         val loginState = loginViewModel.loginState.collectAsStateWithLifecycle().value
+
+        if (!buttonState) {
+            CustomDialogBoxLoading()
+        }
 
         LaunchedEffect(loginState) {
             when (loginState) {

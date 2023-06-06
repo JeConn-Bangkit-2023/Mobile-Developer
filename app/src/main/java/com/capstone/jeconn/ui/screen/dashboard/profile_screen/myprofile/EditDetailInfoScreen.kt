@@ -33,10 +33,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
@@ -58,6 +60,7 @@ import com.capstone.jeconn.component.CustomNavbar
 import com.capstone.jeconn.component.CustomTextField
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.component.HorizontalDivider
+import com.capstone.jeconn.component.card.CustomSwitchItem
 import com.capstone.jeconn.component.rememberDropDownStateHolder
 import com.capstone.jeconn.data.dummy.DummyData
 import com.capstone.jeconn.utils.CropToSquareImage
@@ -94,6 +97,22 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
     val aboutState = rememberSaveable {
         mutableStateOf("")
     }
+
+    val selectedCategory = remember {
+        mutableStateMapOf(
+            1 to false,
+            2 to false,
+            3 to false,
+            4 to false,
+            5 to false,
+            6 to false,
+            7 to false,
+            8 to false,
+            9 to false,
+            10 to false,
+        )
+    }
+
     val selectedImageUri = remember { mutableStateOf<Uri?>(null) }
 
     val pickImageLauncher =
@@ -115,19 +134,8 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
             }
         }
 
-    val selectedCategory = remember {
-        mutableStateMapOf(
-            1 to false,
-            2 to false,
-            3 to false,
-            4 to false,
-            5 to false,
-            6 to false,
-            7 to false,
-            8 to false,
-            9 to false,
-            10 to false,
-        )
+    var offersState by remember {
+        mutableStateOf(false)
     }
 
 
@@ -321,6 +329,18 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
                     )
                 }
             }
+
+            HorizontalDivider()
+
+            CustomSwitchItem(
+                checked = offersState,
+                onCheckedChange = {
+                    offersState = !offersState
+                },
+                title = context.getString(R.string.open_to_freelancing),
+                titleHighlight = context.getString(R.string.offers),
+                description = context.getString(R.string.open_to_freelancing_description)
+            )
 
             Spacer(modifier = Modifier.padding(vertical = 24.dp))
 

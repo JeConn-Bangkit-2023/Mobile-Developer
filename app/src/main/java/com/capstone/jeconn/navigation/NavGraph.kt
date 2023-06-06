@@ -12,6 +12,7 @@ import androidx.navigation.navArgument
 import com.capstone.jeconn.ui.screen.authentication.login_screen.LoginScreen
 import com.capstone.jeconn.ui.screen.authentication.register_screen.RegisterScreen
 import com.capstone.jeconn.ui.screen.authentication.required_info_screen.RequiredInfoScreen
+import com.capstone.jeconn.ui.screen.authentication.required_location_screen.RequiredLocationScreen
 import com.capstone.jeconn.ui.screen.dashboard.BaseScreen
 import com.capstone.jeconn.ui.screen.dashboard.profile_screen.myprofile.EditDetailInfoScreen
 import com.capstone.jeconn.ui.screen.dashboard.profile_screen.setting.SettingScreen
@@ -55,6 +56,15 @@ fun SetupNavGraph(
             }
             val getA = it.arguments?.getString(A_ARGS_KEY)
             RequiredInfoScreen(navHostController = navHostController, getA)
+        }
+
+        composable(
+            route = NavRoute.RequiredLocationScreen.route,
+        ) {
+            BackHandler {
+                activity.finish()
+            }
+            RequiredLocationScreen(navHostController = navHostController)
         }
 
         composable(
