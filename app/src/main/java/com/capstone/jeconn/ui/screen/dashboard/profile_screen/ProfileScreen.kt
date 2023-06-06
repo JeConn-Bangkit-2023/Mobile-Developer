@@ -1,7 +1,6 @@
 package com.capstone.jeconn.ui.screen.dashboard.profile_screen
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,7 +13,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.capstone.jeconn.R
 import com.capstone.jeconn.component.CustomButton
+import com.capstone.jeconn.component.CustomDialogBoxLoading
 import com.capstone.jeconn.component.CustomNavbar
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.component.card.HorizontalProfileCard
@@ -57,21 +56,12 @@ fun ProfileScreen(navHostController: NavHostController) {
 
     val shortInfoState by rememberUpdatedState(newValue = profileViewModel.shortInfoState.value)
 
-
     when (val shortInfo = shortInfoState) {
         is UiState.Loading -> {
-            Box(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
-
+            CustomDialogBoxLoading()
         }
 
         is UiState.Success -> {
-
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxSize()

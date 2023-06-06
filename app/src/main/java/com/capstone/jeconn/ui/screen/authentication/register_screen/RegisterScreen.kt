@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.capstone.jeconn.R
 import com.capstone.jeconn.component.CustomButton
+import com.capstone.jeconn.component.CustomDialogBoxLoading
 import com.capstone.jeconn.component.CustomIconTextField
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.data.entities.AuthEntity
@@ -83,6 +84,10 @@ fun RegisterScreen(navHostController: NavHostController) {
     }
 
     val registerState = registerViewModel.registerState.collectAsState().value
+
+    if (!buttonState.value) {
+        CustomDialogBoxLoading()
+    }
 
     LaunchedEffect(registerState) {
         when (registerState) {

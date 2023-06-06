@@ -68,4 +68,14 @@
     <string name="category">Category</string>
     <string name="add_image_support">Please add an image that supports your</string>
     <string name="profession_or_skill">profession or skills</string>
+    <string name="open_to_freelancing">Open to freelancing</string>
+    <string name="offers">offers</string>
+    <string name="open_to_freelancing_description">Your profile will appear in the freelancer search, this action requires location and GPS permissions</string>
+    <string name="require_location_screen_title">Aktifkan Lokasi dan GPS</string>
+    <string name="require_location_screen_description">Please allow the app to access your Location and enable GPS settings on your device.</string>
+    <string name="location">Location</string>
+    <string name="allow">Allow</string>
+    <string name="gps">GPS</string>
+    <string name="turn_on_gps_guide">Settings -> Location -> Enable Location Access</string>
+    <string name="please_wait">Please Wait</string>
 </resources>
