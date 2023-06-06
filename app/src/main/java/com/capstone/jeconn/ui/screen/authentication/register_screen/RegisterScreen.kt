@@ -253,11 +253,11 @@ fun RegisterScreen(navHostController: NavHostController) {
         ) {
             when {
                 (usernameState.value.trim() == "") -> {
-                    MakeToast.short(context, context.getString(R.string.invalid_username))
+                    MakeToast.short(context, context.getString(R.string.empty_username))
                 }
 
                 (usernameState.value.contains(" ")) -> {
-
+                    MakeToast.short(context, context.getString(R.string.invalid_username))
                 }
 
                 (fullNameState.value.trim() == "") -> {
