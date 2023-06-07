@@ -63,6 +63,7 @@ fun FreelancerScreen(navHostController: NavHostController, myPaddingValues: Padd
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
+            contentPadding = PaddingValues(horizontal = 12.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
                 .fillMaxSize()
