@@ -60,7 +60,7 @@ import com.capstone.jeconn.component.CustomNavbar
 import com.capstone.jeconn.component.CustomTextField
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.component.HorizontalDivider
-import com.capstone.jeconn.component.card.CustomSwitchItem
+import com.capstone.jeconn.component.CustomSwitchItem
 import com.capstone.jeconn.component.rememberDropDownStateHolder
 import com.capstone.jeconn.data.dummy.DummyData
 import com.capstone.jeconn.utils.CropToSquareImage
