@@ -75,7 +75,7 @@ fun ProfileScreen(navHostController: NavHostController) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         CropToSquareImage(
-                            imageUrl = shortInfo.data.profile_image_url,
+                            imageUrl = shortInfo.data.profile_image_url!!,
                             contentDescription = null,
                             modifier = Modifier
                                 .size(90.dp)
@@ -84,7 +84,7 @@ fun ProfileScreen(navHostController: NavHostController) {
 
                         Column {
                             Text(
-                                text = shortInfo.data.full_name,
+                                text = shortInfo.data.full_name!!,
                                 style = TextStyle(
                                     fontSize = 18.sp,
                                     fontFamily = Font.QuickSand,

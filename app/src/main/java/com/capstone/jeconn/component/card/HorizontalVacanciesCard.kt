@@ -29,7 +29,7 @@ import com.capstone.jeconn.utils.getTimeAgo
 
 @Composable
 fun HorizontalVacanciesCard(
-    imageUrl: String,
+    profileImageUrl: String,
     name: String,
     range: String,
     timestamp: Long,
@@ -44,15 +44,15 @@ fun HorizontalVacanciesCard(
     ) {
         Column(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.background)
-                .padding(24.dp)
+                .background(MaterialTheme.colorScheme.inversePrimary)
+                .padding(12.dp)
 
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 CropToSquareImage(
-                    imageUrl = imageUrl,
+                    imageUrl = profileImageUrl,
                     contentDescription = null,
                     modifier = Modifier
                         .size(40.dp)
@@ -70,7 +70,8 @@ fun HorizontalVacanciesCard(
                             fontFamily = Font.QuickSand,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                     )
                     Text(
@@ -79,7 +80,8 @@ fun HorizontalVacanciesCard(
                             fontFamily = Font.QuickSand,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.SemiBold,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                     )
                 }
@@ -91,7 +93,8 @@ fun HorizontalVacanciesCard(
                     style = TextStyle(
                         fontFamily = Font.QuickSand,
                         fontSize = 14.sp,
-                        fontWeight = FontWeight.Normal
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 )
             }
@@ -103,7 +106,8 @@ fun HorizontalVacanciesCard(
                 style = TextStyle(
                     fontFamily = Font.QuickSand,
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Normal
+                    fontWeight = FontWeight.Normal,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             )
         }

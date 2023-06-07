@@ -82,7 +82,8 @@ fun CustomSwitchItem(
                 onCheckedChange = null,
                 enabled = enabled,
                 colors = SwitchDefaults.colors(
-                    checkedTrackColor = MaterialTheme.colorScheme.secondary
+                    checkedTrackColor = MaterialTheme.colorScheme.secondary,
+                    checkedThumbColor = MaterialTheme.colorScheme.onBackground
                 )
             )
         }

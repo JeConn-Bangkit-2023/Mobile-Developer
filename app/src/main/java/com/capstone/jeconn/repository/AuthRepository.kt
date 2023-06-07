@@ -7,9 +7,12 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.capstone.jeconn.R
 import com.capstone.jeconn.data.entities.AuthEntity
+import com.capstone.jeconn.data.entities.LocationEntity
 import com.capstone.jeconn.data.entities.PrivateDataEntity
 import com.capstone.jeconn.data.entities.PublicDataEntity
 import com.capstone.jeconn.state.UiState
+import com.capstone.jeconn.utils.Location
+import com.capstone.jeconn.utils.LocationManagers
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
@@ -24,6 +27,10 @@ class AuthRepository(
 
     private val ref = Firebase.database.reference
 
+    private val activity = context as Activity
+
+    private val locationManager = LocationManagers(context, 1000, 1F)
+
     val registerState: MutableStateFlow<UiState<String>> = MutableStateFlow(UiState.Empty)
 
     val loginState: MutableStateFlow<UiState<String>> = MutableStateFlow(UiState.Empty)
@@ -31,6 +38,8 @@ class AuthRepository(
     val sendEmailVerificationState: MutableState<UiState<String>> = mutableStateOf(UiState.Empty)
 
     val isEmailVerifiedState: MutableState<UiState<String>> = mutableStateOf(UiState.Empty)
+
+    val updateLocationState: MutableStateFlow<UiState<String>> = MutableStateFlow(UiState.Empty)
 
     fun registerUser(user: AuthEntity) {
         registerState.value = UiState.Loading
@@ -45,7 +54,7 @@ class AuthRepository(
 
                 //Task 2
                 if (!usernameExists) {
-                    auth.createUserWithEmailAndPassword(user.email, user.password)
+                    auth.createUserWithEmailAndPassword(user.email!!, user.password!!)
                         .addOnCompleteListener(context as Activity) { task ->
                             if (task.isSuccessful) {
 
@@ -57,7 +66,7 @@ class AuthRepository(
                                     ?.addOnCompleteListener { profileUpdateTask ->
                                         if (profileUpdateTask.isSuccessful) {
 
-                                            val newPrivateData =  mapOf(
+                                            val newPrivateData = mapOf(
                                                 auth.currentUser!!.uid to PrivateDataEntity(
                                                     email = auth.currentUser!!.email!!,
                                                     username = auth.currentUser!!.displayName!!,
@@ -65,7 +74,7 @@ class AuthRepository(
                                                 )
                                             )
 
-                                            val newPublicData =  mapOf(
+                                            val newPublicData = mapOf(
                                                 auth.currentUser!!.displayName!! to PublicDataEntity(
                                                     username = auth.currentUser!!.displayName!!,
                                                     full_name = user.fullName,
@@ -75,7 +84,8 @@ class AuthRepository(
                                             ref.child("privateData").updateChildren(newPrivateData)
                                                 .addOnSuccessListener {
 
-                                                    ref.child("publicData").updateChildren(newPublicData)
+                                                    ref.child("publicData")
+                                                        .updateChildren(newPublicData)
                                                         .addOnSuccessListener {
                                                             registerState.value =
                                                                 UiState.Success(context.getString(R.string.success_regis))
@@ -83,7 +93,10 @@ class AuthRepository(
                                                         }
                                                         .addOnFailureListener { uploadPublicData ->
                                                             UiState.Error(uploadPublicData.message.toString())
-                                                            Log.e("publicData", uploadPublicData.message.toString())
+                                                            Log.e(
+                                                                "publicData",
+                                                                uploadPublicData.message.toString()
+                                                            )
                                                         }
                                                 }.addOnFailureListener { uploadPrivateData ->
                                                     UiState.Error(uploadPrivateData.message.toString())
@@ -117,7 +130,7 @@ class AuthRepository(
 
     fun loginUser(user: AuthEntity) {
         loginState.value = UiState.Loading
-        auth.signInWithEmailAndPassword(user.email, user.password)
+        auth.signInWithEmailAndPassword(user.email!!, user.password!!)
             .addOnCompleteListener(context as Activity) { task ->
                 if (task.isSuccessful) {
                     loginState.value = UiState.Success(context.getString(R.string.success_login))
@@ -176,5 +189,25 @@ class AuthRepository(
                     UiState.Error(context.getString(R.string.email_has_not_been_verified))
             }
         }
+    }
+
+    fun getLocation() {
+        updateLocationState.value = UiState.Loading
+        locationManager.startLocationTracking(context, activity, object : Location {
+            override fun reloadLocation(location: LocationEntity) {
+                updateLocation(location)
+            }
+        })
+    }
+
+    fun updateLocation(location: LocationEntity) {
+        locationManager.stopLocationTracking()
+        ref.child("publicData").child(auth.currentUser!!.displayName!!).child("jobInformation")
+            .child("location").setValue(location).addOnSuccessListener {
+                updateLocationState.value = UiState.Success(context.getString(R.string.success_update_location))
+            }.addOnFailureListener { exception ->
+                updateLocationState.value = UiState.Error(exception.message.toString())
+                Log.e("pushLocationState", exception.message.toString())
+            }
     }
 }

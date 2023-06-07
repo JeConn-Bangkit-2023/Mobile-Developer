@@ -11,15 +11,15 @@ data class InvoiceEntity(
     4 = Finish
     5 = Canceled
     */
-    val invoice_id: Int,
-    val freelancer_username: String,
-    val tenant_username: String,
-    val status: Int = 0,
-    val service: String,
-    val created_date: String,
-    val start_date: Long,
-    val end_date: Long,
-    val price: Long,
-    val description: String,
+    val invoice_id: Int? = null,
+    val freelancer_username: String? = null,
+    val tenant_username: String? = null,
+    val status: Int? = null,
+    val service: String? = null,
+    val created_date: String? = null,
+    val start_date: Long? = null,
+    val end_date: Long? = null,
+    val price: Long? = null,
+    val description: String? = null,
     val note: String? = null
 )

@@ -48,7 +48,7 @@ fun VerticalFreelancerCard(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
+                .background(MaterialTheme.colorScheme.inversePrimary)
         ) {
             Box(
                 modifier = Modifier
@@ -75,7 +75,8 @@ fun VerticalFreelancerCard(
                     style = TextStyle(
                         fontFamily = Font.QuickSand,
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 )
 
@@ -84,7 +85,8 @@ fun VerticalFreelancerCard(
                     style = TextStyle(
                         fontFamily = Font.QuickSand,
                         fontSize = 14.sp,
-                        fontWeight = FontWeight.Normal
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 )
 

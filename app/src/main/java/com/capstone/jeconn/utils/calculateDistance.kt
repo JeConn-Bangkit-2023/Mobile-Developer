@@ -1,15 +1,16 @@
 package com.capstone.jeconn.utils
 
-import com.google.android.gms.maps.model.LatLng
+import com.capstone.jeconn.data.entities.LocationEntity
 import kotlin.math.pow
 
-fun calculateDistance(point1: LatLng, point2: LatLng): String {
+fun calculateDistance(point1: LocationEntity, point2: LocationEntity): String {
     val earthRadius = 6371 // radius of the earth in kilometers
 
-    val lat1 = Math.toRadians(point1.latitude)
-    val lon1 = Math.toRadians(point1.longitude)
-    val lat2 = Math.toRadians(point2.latitude)
-    val lon2 = Math.toRadians(point2.longitude)
+
+    val lat1 = Math.toRadians(point1.latitude!!)
+    val lon1 = Math.toRadians(point1.longitude!!)
+    val lat2 = Math.toRadians(point2.latitude!!)
+    val lon2 = Math.toRadians(point2.longitude!!)
 
     val dLat = lat2 - lat1
     val dLon = lon2 - lon1

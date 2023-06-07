@@ -105,3 +105,8 @@ fun SetupNavGraph(
         }
     }
 }
+
+object DataProvider {
+
+   
+}

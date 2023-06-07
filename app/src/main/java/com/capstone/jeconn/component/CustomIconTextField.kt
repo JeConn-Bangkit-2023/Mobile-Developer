@@ -1,6 +1,5 @@
 package com.capstone.jeconn.component
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -72,7 +71,6 @@ fun CustomIconTextField(
         shape = RoundedCornerShape(8.dp),
         leadingIcon = {
             if (leadingIcon != null) {
-                Log.e("test","check leading icon")
                 when (leadingIcon) {
                     is Int -> {
                         Icon(
@@ -90,6 +88,7 @@ fun CustomIconTextField(
                             tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
+
                     is ImageVector -> {
                         Icon(
                             imageVector = leadingIcon,

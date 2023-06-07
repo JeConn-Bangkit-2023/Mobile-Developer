@@ -37,7 +37,8 @@ fun CustomLabel(
                     fontFamily = Font.QuickSand,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             )
         }

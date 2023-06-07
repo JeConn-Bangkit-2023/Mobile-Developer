@@ -33,15 +33,15 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 @Composable
-fun DetailNotificationScreen(navHostController: NavHostController, id: String?){
+fun DetailNotificationScreen(navHostController: NavHostController, id: String?) {
     val auth = Firebase.auth
     val context = LocalContext.current
     //val notificationData = DummyData.notificationData.values.toList()
     val getId = id!!.toInt()
     val notificationData = DummyData.notificationData[getId]
     val title = notificationData!!.title
-    val time = notificationData.timestamp
-    val dec = notificationData.description
+    val time = notificationData.timestamp!!
+    val dec = notificationData.description!!
 
 
     Log.e("deskripsi", notificationData.description)
@@ -92,7 +92,7 @@ fun DetailNotificationScreen(navHostController: NavHostController, id: String?){
                             .width(250.dp)
                     ) {
                         Text(
-                            text = title,
+                            text = title!!,
                             style = TextStyle(
                                 fontFamily = Font.QuickSand,
                                 fontSize = 16.sp,
@@ -144,7 +144,6 @@ fun DetailNotificationScreen(navHostController: NavHostController, id: String?){
             Spacer(modifier = Modifier.padding(vertical = 4.dp))
         }
     }
-
 
 
 }
