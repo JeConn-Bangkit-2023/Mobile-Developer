@@ -23,4 +23,14 @@ sealed class NavRoute(val route: String) {
     object BaseScreen : NavRoute(route = "base_screen")
     object SettingScreen : NavRoute(route = "setting_screen")
     object EditDetailInfoScreen : NavRoute("edit_detail_info_screen")
+    object NotificationScreen : NavRoute(route = "notification_screen")
+    object DetailNotificationScreen : NavRoute(route = "detail_notification_screen/{$A_ARGS_KEY}") {
+        fun navigateWithId(
+            getId : String
+        ): String {
+            return "detail_notification_screen/$getId"
+        }
+    }
+
+
 }

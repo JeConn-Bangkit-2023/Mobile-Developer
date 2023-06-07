@@ -6,6 +6,7 @@ import com.capstone.jeconn.data.entities.JobInformation
 import com.capstone.jeconn.data.entities.Message
 import com.capstone.jeconn.data.entities.MessageRoomEntity
 import com.capstone.jeconn.data.entities.Notification
+import com.capstone.jeconn.data.entities.NotificationData
 import com.capstone.jeconn.data.entities.PrivateDataEntity
 import com.capstone.jeconn.data.entities.PublicDataEntity
 import com.capstone.jeconn.data.entities.VacanciesEntity
@@ -211,5 +212,44 @@ object DummyData {
         8 to "TV Presenter",
         9 to "Radio Host",
         10 to "DJ",
+    )
+
+    //Notification dummy data
+    val notificationData : Map<Int, NotificationData> = mapOf(
+        1 to NotificationData(
+            id = 1,
+            title = "Congratulations Successful Payment",
+            timestamp = System.currentTimeMillis(),
+            description = "Congratulations Payment on behalf of Bily Hakim Erlangga has been successful, please check your account",
+            //detailDescription = "Congratulations Payment on behalf of Bily Hakim Erlangga has been successful, please check your account"
+        ),
+        2 to NotificationData(
+            id = 2,
+            title = "Congratulations Successful Payment",
+            timestamp = System.currentTimeMillis(),
+            description = "Congratulations Payment on behalf of Bily Hakim Erlangga has been successful, please check your account",
+            //detailDescription = "Congratulations Payment on behalf of Bily Hakim Erlangga has been successful, please check your account"
+        ),
+        3 to NotificationData(
+            id = 3,
+            title = "Congratulations Successful Payment",
+            timestamp = System.currentTimeMillis(),
+            description = "3 Congratulations Payment on behalf of Bily Hakim Erlangga has been successful, please check your account",
+            //detailDescription = "Congratulations Payment on behalf of Bily Hakim Erlangga has been successful, please check your account"
+        ),
+        4 to NotificationData(
+            id = 4,
+            title = "Congratulations Successful Payment",
+            timestamp = System.currentTimeMillis(),
+            description = "Congratulations Payment on behalf of Bily Hakim Erlangga has been successful, please check your account",
+            //detailDescription = "Congratulations Payment on behalf of Bily Hakim Erlangga has been successful, please check your account"
+        ),
+        5 to NotificationData(
+            id = 5,
+            title = "Congratulations Successful Payment",
+            timestamp = System.currentTimeMillis(),
+            description ="Congratulations Payment on behalf of Bily Hakim Erlangga has been successful, please check your account",
+            //detailDescription = "Congratulations Payment on behalf of Bily Hakim Erlangga has been successful, please check your account"
+        )
     )
 }
