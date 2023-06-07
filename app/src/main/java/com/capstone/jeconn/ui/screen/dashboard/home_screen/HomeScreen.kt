@@ -1,5 +1,6 @@
 package com.capstone.jeconn.ui.screen.dashboard.home_screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -27,7 +28,9 @@ import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.component.card.HorizontalVacanciesCard
 import com.capstone.jeconn.component.card.VerticalFreelancerCard
 import com.capstone.jeconn.data.dummy.DummyData
+import com.capstone.jeconn.navigation.NavRoute
 import com.capstone.jeconn.utils.calculateDistance
+import com.capstone.jeconn.utils.navigateTo
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -58,7 +61,11 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
                 Icon(
                     imageVector = Icons.Default.Notifications,
                     contentDescription = null,
-                    modifier = Modifier.size(28.dp)
+                    modifier = Modifier
+                        .size(28.dp)
+                        .clickable {
+                        navigateTo(navHostController, NavRoute.NotificationScreen)
+                    }
                 )
 
                 Spacer(modifier = Modifier.padding(horizontal = 8.dp))
