@@ -11,3 +11,5 @@ val Green95 = Color(0xFF006F56)
 
 val Grey5 = Color(0xFFCAC4D0)
 val Grey80 = Color(0xFF49454F)
+val DarkGrey= Color (0xFF1E1E1E)
+val LightGrey = Color(0xFFF5F5F5)

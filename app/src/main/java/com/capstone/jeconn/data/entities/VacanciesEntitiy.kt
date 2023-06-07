@@ -1,13 +1,11 @@
 package com.capstone.jeconn.data.entities
 
-import com.google.android.gms.maps.model.LatLng
-
 // Key: Int
 data class VacanciesEntity(
-    val username: String,
-    val timestamp: Long,
-    val salary: Long,
-    val category: List<Int>,
-    val description: String,
-    val location: LatLng
+    val username: String? = null,
+    val timestamp: Long? = null,
+    val salary: Long? = null,
+    val category: List<Int>? = null,
+    val description: String? = null,
+    val location: LocationEntity? = null
 )

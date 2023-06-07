@@ -41,7 +41,7 @@ fun HorizontalNotificationCard(
     ) {
         Column(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.background)
+                .background(MaterialTheme.colorScheme.inversePrimary)
                 .padding(24.dp)
 
         ) {
@@ -58,7 +58,8 @@ fun HorizontalNotificationCard(
                             fontFamily = Font.QuickSand,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.SemiBold,
-                            textAlign = TextAlign.Left
+                            textAlign = TextAlign.Left,
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                     )
                 }
@@ -69,7 +70,8 @@ fun HorizontalNotificationCard(
                     style = TextStyle(
                         fontFamily = Font.QuickSand,
                         fontSize = 14.sp,
-                        fontWeight = FontWeight.Normal
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 )
             }

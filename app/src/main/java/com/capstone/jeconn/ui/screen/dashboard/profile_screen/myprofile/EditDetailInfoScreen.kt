@@ -298,7 +298,7 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 val dummyImage = DummyData.publicData["john_doe66"]!!.jobInformation!!.imagesUrl
-                items(dummyImage) { imageUrl ->
+                items(dummyImage!!) { imageUrl ->
                     CropToSquareImage(
                         imageUrl = imageUrl,
                         contentDescription = null,

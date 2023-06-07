@@ -19,6 +19,5 @@ class MainActivity : ComponentActivity() {
                 SetupNavGraph(navHostController = navHostController)
             }
         }
-
     }
 }

@@ -28,8 +28,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,8 +46,13 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.capstone.jeconn.R
 import com.capstone.jeconn.component.CustomButton
+import com.capstone.jeconn.component.CustomDialogBoxLoading
 import com.capstone.jeconn.component.Font
+import com.capstone.jeconn.di.Injection
 import com.capstone.jeconn.navigation.NavRoute
+import com.capstone.jeconn.state.UiState
+import com.capstone.jeconn.utils.AuthViewModelFactory
+import com.capstone.jeconn.utils.MakeToast
 import com.capstone.jeconn.utils.checkLocationPermission
 import com.capstone.jeconn.utils.navigateTo
 import com.capstone.jeconn.utils.navigateToTop
@@ -62,6 +70,39 @@ fun RequiredLocationScreen(
     val context = LocalContext.current
     val gpsService = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
     val activity = LocalContext.current as Activity
+    val requiredLocationViewModel: RequiredLocationViewModel = remember {
+        AuthViewModelFactory(Injection.provideAuthRepository(context)).create(
+            RequiredLocationViewModel::class.java
+        )
+    }
+
+    var loadingLocationPush by remember {
+        mutableStateOf(false)
+    }
+
+    if (loadingLocationPush) {
+        CustomDialogBoxLoading()
+    }
+
+    val locationState = requiredLocationViewModel.pushLocationState.collectAsState().value
+    LaunchedEffect(locationState) {
+        when (locationState) {
+            is UiState.Loading -> {
+                loadingLocationPush = true
+            }
+            is UiState.Success -> {
+                loadingLocationPush = false
+                navigateTo(navHostController, NavRoute.BaseScreen)
+            }
+            is UiState.Error -> {
+                loadingLocationPush = false
+                MakeToast.short(context, locationState.errorMessage)
+            }
+            else -> {
+                loadingLocationPush = false
+            }
+        }
+    }
 
 
     LaunchedEffect(
@@ -69,8 +110,7 @@ fun RequiredLocationScreen(
         gpsService.isProviderEnabled(LocationManager.GPS_PROVIDER)
     ) {
         if (checkLocationPermission(context) && gpsService.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            //TODO -> Add location to user's database
-            navigateTo(navHostController, NavRoute.BaseScreen)
+            requiredLocationViewModel.getLocation()
         }
     }
 
@@ -154,7 +194,7 @@ fun RequiredLocationScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFE9ECF4)),
+            .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

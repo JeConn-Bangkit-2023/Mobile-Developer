@@ -28,10 +28,10 @@ import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.component.card.HorizontalVacanciesCard
 import com.capstone.jeconn.component.card.VerticalFreelancerCard
 import com.capstone.jeconn.data.dummy.DummyData
+import com.capstone.jeconn.data.entities.LocationEntity
 import com.capstone.jeconn.navigation.NavRoute
 import com.capstone.jeconn.utils.calculateDistance
 import com.capstone.jeconn.utils.navigateTo
-import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -64,8 +64,8 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
                     modifier = Modifier
                         .size(28.dp)
                         .clickable {
-                        navigateTo(navHostController, NavRoute.NotificationScreen)
-                    }
+                            navigateTo(navHostController, NavRoute.NotificationScreen)
+                        }
                 )
 
                 Spacer(modifier = Modifier.padding(horizontal = 8.dp))
@@ -92,15 +92,15 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(publicData) { user ->
-                    if (user.jobInformation != null && user.detail_information != null && user.jobInformation.isOpen) {
+                    if (user.jobInformation != null && user.detail_information != null && user.jobInformation.isOpen!!) {
                         VerticalFreelancerCard(
-                            imageUrl = user.profile_image_url,
-                            name = user.full_name,
+                            imageUrl = user.profile_image_url!!,
+                            name = user.full_name!!,
                             range = calculateDistance(
                                 user.jobInformation.location!!,
-                                LatLng(51.5074, -0.1278)
+                                LocationEntity(51.5074, -0.1278)
                             ),
-                            listSkills = user.jobInformation.skills
+                            listSkills = user.jobInformation.skills!!
                         )
                     }
                 }
@@ -121,11 +121,11 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
         items(vacancies) { vacancies ->
             val tenant = DummyData.publicData[vacancies.username]!!
             HorizontalVacanciesCard(
-                imageUrl = tenant.profile_image_url,
-                name = tenant.full_name,
-                range = calculateDistance(LatLng(51.5074, -0.1278), vacancies.location),
-                timestamp = vacancies.timestamp,
-                description = vacancies.description,
+                profileImageUrl = tenant.profile_image_url!!,
+                name = tenant.full_name!!,
+                range = calculateDistance(LocationEntity(51.5074, -0.1278), vacancies.location!!),
+                timestamp = vacancies.timestamp!!,
+                description = vacancies.description!!,
                 modifier = Modifier
                     .padding(horizontal = 12.dp)
             )

@@ -80,4 +80,6 @@
     <string name="gps">GPS</string>
     <string name="turn_on_gps_guide">Settings -> Location -> Enable Location Access</string>
     <string name="please_wait">Please Wait</string>
+    <string name="success_update_location">Successfully Update Location Data</string>
+    <string name="search_vacancies">Search Vacancies</string>
 </resources>

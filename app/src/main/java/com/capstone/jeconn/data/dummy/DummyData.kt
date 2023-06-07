@@ -3,6 +3,7 @@ package com.capstone.jeconn.data.dummy
 import com.capstone.jeconn.data.entities.DetailInformation
 import com.capstone.jeconn.data.entities.InvoiceEntity
 import com.capstone.jeconn.data.entities.JobInformation
+import com.capstone.jeconn.data.entities.LocationEntity
 import com.capstone.jeconn.data.entities.Message
 import com.capstone.jeconn.data.entities.MessageRoomEntity
 import com.capstone.jeconn.data.entities.Notification
@@ -10,7 +11,6 @@ import com.capstone.jeconn.data.entities.NotificationData
 import com.capstone.jeconn.data.entities.PrivateDataEntity
 import com.capstone.jeconn.data.entities.PublicDataEntity
 import com.capstone.jeconn.data.entities.VacanciesEntity
-import com.google.android.gms.maps.model.LatLng
 
 
 object DummyData {
@@ -35,7 +35,7 @@ object DummyData {
                     "https://images.pexels.com/photos/325688/pexels-photo-325688.jpeg?cs=srgb&dl=pexels-rene-asmussen-325688.jpg&fm=jpg"
                 ),
                 isOpen = true,
-                location = LatLng(37.7749, -122.4194) // San Francisco location
+                location = LocationEntity(37.7749, -122.4194) // San Francisco location
             ),
             vacanciesPostId = listOf(1, 2),
         ),
@@ -181,7 +181,7 @@ object DummyData {
             salary = 5000,
             category = listOf(1, 3),
             description = "We are hiring software developers. Join our team!",
-            location = LatLng(37.7749, -122.4194) // San Francisco location
+            location = LocationEntity(37.7749, -122.4194) // San Francisco location
         ),
         2 to VacanciesEntity(
             username = "jane_smith66",
@@ -189,7 +189,7 @@ object DummyData {
             salary = 7000,
             category = listOf(2, 4),
             description = "Looking for experienced graphic designers. Apply now!",
-            location = LatLng(40.7128, -74.0060) // New York location
+            location = LocationEntity(40.7128, -74.0060) // New York location
         ),
         3 to VacanciesEntity(
             username = "jane_smith66",
@@ -197,7 +197,7 @@ object DummyData {
             salary = 6000,
             category = listOf(5, 6),
             description = "We need skilled photographers for a project. Contact us for details!",
-            location = LatLng(51.5074, -0.1278) // London location
+            location = LocationEntity(51.5074, -0.1278) // London location
         )
     )
 
@@ -215,7 +215,7 @@ object DummyData {
     )
 
     //Notification dummy data
-    val notificationData : Map<Int, NotificationData> = mapOf(
+    val notificationData: Map<Int, NotificationData> = mapOf(
         1 to NotificationData(
             id = 1,
             title = "Congratulations Successful Payment",
@@ -248,7 +248,7 @@ object DummyData {
             id = 5,
             title = "Congratulations Successful Payment",
             timestamp = System.currentTimeMillis(),
-            description ="Congratulations Payment on behalf of Bily Hakim Erlangga has been successful, please check your account",
+            description = "Congratulations Payment on behalf of Bily Hakim Erlangga has been successful, please check your account",
             //detailDescription = "Congratulations Payment on behalf of Bily Hakim Erlangga has been successful, please check your account"
         )
     )

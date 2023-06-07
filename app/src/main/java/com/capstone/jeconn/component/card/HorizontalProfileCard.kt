@@ -42,7 +42,7 @@ fun HorizontalProfileCard(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.background)
+                .background(MaterialTheme.colorScheme.inversePrimary)
                 .padding(8.dp)
                 .fillMaxWidth()
 
@@ -71,6 +71,7 @@ fun HorizontalProfileCard(
                     fontSize = 14.sp,
                     fontFamily = Font.QuickSand,
                     fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
                 ),
                 modifier = Modifier
                     .padding(vertical = 16.dp, horizontal = 8.dp)
@@ -83,7 +84,7 @@ fun HorizontalProfileCard(
                 Icon(
                     imageVector = Icons.Default.ArrowForward,
                     contentDescription = null,
-                    modifier = Modifier.size(28.dp)
+                    modifier = Modifier.size(28.dp),
                 )
             }
         }

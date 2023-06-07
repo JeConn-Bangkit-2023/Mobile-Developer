@@ -6,6 +6,7 @@ import com.capstone.jeconn.repository.ProfileRepository
 import com.capstone.jeconn.ui.screen.authentication.login_screen.LoginViewModel
 import com.capstone.jeconn.ui.screen.authentication.register_screen.RegisterViewModel
 import com.capstone.jeconn.ui.screen.authentication.required_info_screen.RequireInfoViewModel
+import com.capstone.jeconn.ui.screen.authentication.required_location_screen.RequiredLocationViewModel
 import com.capstone.jeconn.ui.screen.dashboard.profile_screen.ProfileViewModel
 
 class AuthViewModelFactory(private val repository: AuthRepository) :
@@ -19,6 +20,8 @@ class AuthViewModelFactory(private val repository: AuthRepository) :
             return RegisterViewModel(repository) as T
         } else if (modelClass.isAssignableFrom(RequireInfoViewModel::class.java)) {
             return RequireInfoViewModel(repository) as T
+        } else if (modelClass.isAssignableFrom(RequiredLocationViewModel::class.java)) {
+            return RequiredLocationViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
