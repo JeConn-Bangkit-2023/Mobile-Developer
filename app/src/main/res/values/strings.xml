@@ -82,4 +82,5 @@
     <string name="please_wait">Please Wait</string>
     <string name="success_update_location">Successfully Update Location Data</string>
     <string name="search_vacancies">Search Vacancies</string>
+    <string name="image_default_url">https://storage.googleapis.com/job-entertainment-connecting.appspot.com/defaultProfile.jpg</string>
 </resources>

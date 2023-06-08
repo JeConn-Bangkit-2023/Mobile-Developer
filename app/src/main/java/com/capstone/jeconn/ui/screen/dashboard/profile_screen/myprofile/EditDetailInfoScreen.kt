@@ -2,7 +2,6 @@ package com.capstone.jeconn.ui.screen.dashboard.profile_screen.myprofile
 
 import android.Manifest
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -57,10 +56,10 @@ import com.capstone.jeconn.component.CustomDatePickerTextField
 import com.capstone.jeconn.component.CustomDropDownMenu
 import com.capstone.jeconn.component.CustomFlatIconButton
 import com.capstone.jeconn.component.CustomNavbar
+import com.capstone.jeconn.component.CustomSwitchItem
 import com.capstone.jeconn.component.CustomTextField
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.component.HorizontalDivider
-import com.capstone.jeconn.component.CustomSwitchItem
 import com.capstone.jeconn.component.rememberDropDownStateHolder
 import com.capstone.jeconn.data.dummy.DummyData
 import com.capstone.jeconn.utils.CropToSquareImage
@@ -69,6 +68,7 @@ import com.capstone.jeconn.utils.PICK_IMAGE_PERMISSION_REQUEST_CODE
 import com.capstone.jeconn.utils.dateToTimeStamp
 import com.capstone.jeconn.utils.patternNoHours
 import com.capstone.jeconn.utils.uriToFile
+import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -113,24 +113,25 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
         )
     }
 
-    val selectedImageUri = remember { mutableStateOf<Uri?>(null) }
+    val selectedImageFile = remember { mutableStateOf<File?>(null) }
 
     val pickImageLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
                 // Gambar berhasil dipilih dari galeri, lanjutkan ke pengiriman ke API
-                val filePath = uri
-                selectedImageUri.let {
-                    val myFile = uriToFile(uri, context)
-                    selectedImageUri.value = filePath
-                    if (myFile.exists()) {
-                        MakeToast.long(
-                            context,
-                            "Successfully take pictures, Wait for the API from the CC division to send this picture"
-                        )
-                    }
+                val myFile = uriToFile(uri, context)
+                if (myFile.exists()) {
+                    selectedImageFile.value = myFile
+//                        val bitmapImage = resizeBitmap(BitmapFactory.decodeFile(selectedImageFile.value!!.path))
+//                        val result = ObjectDetection.detect(context, bitmapImage)
+//
+//                        if (result.isNotEmpty()) {
+//                            result.map { detection ->
+//                                Log.e("categories", detection.categories.toString())
+//                                Log.e("categories", detection.boundingBox.toString())
+//                            }
+//                        }
                 }
-
             }
         }
 
@@ -173,7 +174,6 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
             modifier = Modifier
                 .padding(12.dp)
         ) {
-
             Image(
                 painterResource(id = R.drawable.personal_info_image),
                 contentDescription = null,

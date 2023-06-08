@@ -78,7 +78,7 @@ class AuthRepository(
                                                 auth.currentUser!!.displayName!! to PublicDataEntity(
                                                     username = auth.currentUser!!.displayName!!,
                                                     full_name = user.fullName,
-                                                    profile_image_url = "https://static.vecteezy.com/system/resources/previews/005/544/718/original/profile-icon-design-free-vector.jpg",
+                                                    profile_image_url = context.getString(R.string.image_default_url),
                                                 )
                                             )
                                             ref.child("privateData").updateChildren(newPrivateData)

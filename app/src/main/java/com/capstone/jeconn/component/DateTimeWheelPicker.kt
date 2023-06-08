@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.capstone.jeconn.R
@@ -58,8 +59,10 @@ fun DateTimeWheelPicker(
                 timeFormat = TimeFormat.HOUR_24,
                 size = DpSize(350.dp, 200.dp),
                 rowCount = 3,
-                textStyle = MaterialTheme.typography.labelMedium,
-                textColor = Color.Black,
+                textStyle = TextStyle(
+                    color = MaterialTheme.colorScheme.onBackground
+                ),
+                textColor = MaterialTheme.colorScheme.inversePrimary,
                 selectorProperties = WheelPickerDefaults.selectorProperties(
                     enabled = true,
                     shape = RoundedCornerShape(5.dp),
@@ -80,12 +83,14 @@ fun DateTimeWheelPicker(
                 yearsRange = yearRange,
                 size = DpSize(350.dp, 200.dp),
                 rowCount = 3,
-                textStyle = MaterialTheme.typography.labelMedium,
+                textStyle = TextStyle(
+                    color = MaterialTheme.colorScheme.onBackground
+                ),
                 textColor = Color.Black,
                 selectorProperties = WheelPickerDefaults.selectorProperties(
                     enabled = true,
                     shape = RoundedCornerShape(5.dp),
-                    color = MaterialTheme.colorScheme.background,
+                    color = MaterialTheme.colorScheme.inversePrimary,
                     border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
                 )
             ) { snappedDateTime ->

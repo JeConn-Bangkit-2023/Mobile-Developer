@@ -100,22 +100,22 @@ object DummyData {
         1 to MessageRoomEntity(
             members_username = listOf("user1", "user2"),
             messages = listOf(
-                Message(System.currentTimeMillis(), "user1", "Hello", invoice_id = 1),
-                Message(System.currentTimeMillis(), "user2", "Hi", invoice_id = 1)
+                Message(System.currentTimeMillis(), "jane_smith66","Jane Smith" , "Hello", invoice_id = 1),
+                Message(System.currentTimeMillis(), "john_doe66", "John Doe", invoice_id = 1)
             )
         ),
         2 to MessageRoomEntity(
             members_username = listOf("user1", "user3"),
             messages = listOf(
-                Message(System.currentTimeMillis(), "user1", "Hey", invoice_id = 2),
-                Message(System.currentTimeMillis(), "user3", "Hi there", invoice_id = 2)
+                Message(System.currentTimeMillis(), "jane_smith66", "Jane Smith", "Hey", invoice_id = 2),
+                Message(System.currentTimeMillis(), "john_doe66", "John Doe", "Hi there", invoice_id = 2)
             )
         ),
         3 to MessageRoomEntity(
             members_username = listOf("user2", "user3"),
             messages = listOf(
-                Message(System.currentTimeMillis(), "user2", "Welcome", invoice_id = 3),
-                Message(System.currentTimeMillis(), "user3", "Thank you", invoice_id = 3)
+                Message(System.currentTimeMillis(), "jane_smith66", "Jane Smith", "Welcome", invoice_id = 3),
+                Message(System.currentTimeMillis(), "john_doe66", "John Doe", "Thank you", invoice_id = 3)
             )
         )
     )
