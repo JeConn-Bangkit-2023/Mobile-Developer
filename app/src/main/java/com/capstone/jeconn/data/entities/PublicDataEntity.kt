@@ -18,8 +18,12 @@ data class DetailInformation(
 
 data class JobInformation(
     val categories: List<Int>? = null,
-    val skills: List<String>? = null,
-    val imagesUrl: List<String>? = null,
+    val imagesUrl: List<ImageList>? = null,
     val isOpen: Boolean? = null,
     val location: LocationEntity? = null
+)
+
+data class ImageList(
+    val post_image_uid: Long? = null,
+    val post_image_url:String? = null
 )

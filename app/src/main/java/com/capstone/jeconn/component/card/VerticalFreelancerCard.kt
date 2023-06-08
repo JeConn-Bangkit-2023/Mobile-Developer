@@ -30,6 +30,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.capstone.jeconn.component.CustomLabel
 import com.capstone.jeconn.component.Font
+import com.capstone.jeconn.data.dummy.DummyData
 
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalLayoutApi::class)
 @Composable
@@ -37,7 +38,7 @@ fun VerticalFreelancerCard(
     imageUrl: String,
     name: String,
     range: String,
-    listSkills: List<String>
+    listSkills: List<Int>
 ) {
     Card(
         modifier = Modifier
@@ -96,8 +97,9 @@ fun VerticalFreelancerCard(
                         .verticalScroll(rememberScrollState())
                         .padding(vertical = 4.dp),
                 ) {
-                    listSkills.map { skill ->
-                        CustomLabel(text = skill)
+                    listSkills.map { id ->
+                        val myCategories = DummyData.entertainmentCategories
+                        CustomLabel(text = myCategories[id]!!)
                     }
                 }
             }

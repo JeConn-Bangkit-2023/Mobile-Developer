@@ -100,7 +100,7 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
                                 user.jobInformation.location!!,
                                 LocationEntity(51.5074, -0.1278)
                             ),
-                            listSkills = user.jobInformation.skills!!
+                            listSkills = user.jobInformation.categories!!
                         )
                     }
                 }
