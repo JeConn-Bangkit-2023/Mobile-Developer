@@ -11,10 +11,10 @@ object ObjectDetection {
     fun detect(context: Context, bitmap: Bitmap): List<Detection> {
         val optionsBuilder = ObjectDetector.ObjectDetectorOptions.builder()
             .setScoreThreshold(0.3F)
-            .setMaxResults(8)
+            .setMaxResults(1)
         val objectDetector = ObjectDetector.createFromFileAndOptions(
             context,
-            "nsfwmodel.tflite",
+            "nsfw_model.tflite",
             optionsBuilder.build()
         )
         return objectDetector.detect(TensorImage.fromBitmap(bitmap))
