@@ -1,6 +1,7 @@
 package com.capstone.jeconn.data.dummy
 
 import com.capstone.jeconn.data.entities.DetailInformation
+import com.capstone.jeconn.data.entities.ImageList
 import com.capstone.jeconn.data.entities.InvoiceEntity
 import com.capstone.jeconn.data.entities.JobInformation
 import com.capstone.jeconn.data.entities.LocationEntity
@@ -29,10 +30,15 @@ object DummyData {
             ),
             jobInformation = JobInformation(
                 categories = listOf(1, 3),
-                skills = listOf("Java", "Python"),
                 imagesUrl = listOf(
-                    "https://media.istockphoto.com/id/1208307830/photo/musician-guy-in-hat-and-sunglasses-leaning-on-wall-playing-guitar-laughing-cheerful.jpg?s=612x612&w=0&k=20&c=xhpzZz4uIVaVt24u0G3iP8UOpbt71O1w0s8fIE_Y-YU=",
-                    "https://images.pexels.com/photos/325688/pexels-photo-325688.jpeg?cs=srgb&dl=pexels-rene-asmussen-325688.jpg&fm=jpg"
+                    ImageList(
+                        post_image_uid = 978307200000L,
+                        post_image_url = "https://media.istockphoto.com/id/1208307830/photo/musician-guy-in-hat-and-sunglasses-leaning-on-wall-playing-guitar-laughing-cheerful.jpg?s=612x612&w=0&k=20&c=xhpzZz4uIVaVt24u0G3iP8UOpbt71O1w0s8fIE_Y-YU=",
+                    ),
+                    ImageList(
+                        post_image_uid = 978307200000L,
+                        post_image_url = "https://images.pexels.com/photos/325688/pexels-photo-325688.jpeg?cs=srgb&dl=pexels-rene-asmussen-325688.jpg&fm=jpg",
+                    )
                 ),
                 isOpen = true,
                 location = LocationEntity(37.7749, -122.4194) // San Francisco location
@@ -50,10 +56,15 @@ object DummyData {
             ),
             jobInformation = JobInformation(
                 categories = listOf(2, 4),
-                skills = listOf("Photoshop", "Illustrator"),
                 imagesUrl = listOf(
-                    "https://media.istockphoto.com/id/848528892/photo/rock-band-live-concert.jpg?s=612x612&w=0&k=20&c=njldz48sup9wTQV9dDmx7wbusI13zLZjJhDL_y7vvWo=",
-                    "https://media.gettyimages.com/id/456722336/photo/musician-adam-smith-of-temples-performs-in-concert-at-stubbs-amphitheater-on-october-5-2014-in.jpg?s=612x612&w=gi&k=20&c=jAyjUcihl2rDq8zmg3V-pP_m-h8G7hC3e_H3Y3Y2SNI="
+                    ImageList(
+                        post_image_uid = 978307200000L,
+                        post_image_url = "https://media.istockphoto.com/id/1208307830/photo/musician-guy-in-hat-and-sunglasses-leaning-on-wall-playing-guitar-laughing-cheerful.jpg?s=612x612&w=0&k=20&c=xhpzZz4uIVaVt24u0G3iP8UOpbt71O1w0s8fIE_Y-YU=",
+                    ),
+                    ImageList(
+                        post_image_uid = 978307200000L,
+                        post_image_url = "https://media.gettyimages.com/id/456722336/photo/musician-adam-smith-of-temples-performs-in-concert-at-stubbs-amphitheater-on-october-5-2014-in.jpg?s=612x612&w=gi&k=20&c=jAyjUcihl2rDq8zmg3V-pP_m-h8G7hC3e_H3Y3Y2SNI=",
+                    )
                 ),
                 isOpen = false,
                 location = null
@@ -100,22 +111,52 @@ object DummyData {
         1 to MessageRoomEntity(
             members_username = listOf("user1", "user2"),
             messages = listOf(
-                Message(System.currentTimeMillis(), "jane_smith66","Jane Smith" , "Hello", invoice_id = 1),
+                Message(
+                    System.currentTimeMillis(),
+                    "jane_smith66",
+                    "Jane Smith",
+                    "Hello",
+                    invoice_id = 1
+                ),
                 Message(System.currentTimeMillis(), "john_doe66", "John Doe", invoice_id = 1)
             )
         ),
         2 to MessageRoomEntity(
             members_username = listOf("user1", "user3"),
             messages = listOf(
-                Message(System.currentTimeMillis(), "jane_smith66", "Jane Smith", "Hey", invoice_id = 2),
-                Message(System.currentTimeMillis(), "john_doe66", "John Doe", "Hi there", invoice_id = 2)
+                Message(
+                    System.currentTimeMillis(),
+                    "jane_smith66",
+                    "Jane Smith",
+                    "Hey",
+                    invoice_id = 2
+                ),
+                Message(
+                    System.currentTimeMillis(),
+                    "john_doe66",
+                    "John Doe",
+                    "Hi there",
+                    invoice_id = 2
+                )
             )
         ),
         3 to MessageRoomEntity(
             members_username = listOf("user2", "user3"),
             messages = listOf(
-                Message(System.currentTimeMillis(), "jane_smith66", "Jane Smith", "Welcome", invoice_id = 3),
-                Message(System.currentTimeMillis(), "john_doe66", "John Doe", "Thank you", invoice_id = 3)
+                Message(
+                    System.currentTimeMillis(),
+                    "jane_smith66",
+                    "Jane Smith",
+                    "Welcome",
+                    invoice_id = 3
+                ),
+                Message(
+                    System.currentTimeMillis(),
+                    "john_doe66",
+                    "John Doe",
+                    "Thank you",
+                    invoice_id = 3
+                )
             )
         )
     )

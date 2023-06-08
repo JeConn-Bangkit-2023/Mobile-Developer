@@ -290,9 +290,9 @@ fun RegisterScreen(navHostController: NavHostController) {
                     registerViewModel.registerUser(
                         AuthEntity(
                             username = usernameState.value,
-                            email = emailState.value,
+                            email = emailState.value.trim(),
                             password = passwordState.value,
-                            fullName = fullNameState.value
+                            fullName = fullNameState.value.trim()
                         )
 //                        AuthEntity(
 //                            username = "jane_smith6",

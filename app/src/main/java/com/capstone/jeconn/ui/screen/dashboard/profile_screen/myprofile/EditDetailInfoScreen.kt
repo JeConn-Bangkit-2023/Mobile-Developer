@@ -300,7 +300,7 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
                 val dummyImage = DummyData.publicData["john_doe66"]!!.jobInformation!!.imagesUrl
                 items(dummyImage!!) { imageUrl ->
                     CropToSquareImage(
-                        imageUrl = imageUrl,
+                        imageUrl = imageUrl.post_image_url!!,
                         contentDescription = null,
                         modifier = Modifier
                             .size(148.dp)

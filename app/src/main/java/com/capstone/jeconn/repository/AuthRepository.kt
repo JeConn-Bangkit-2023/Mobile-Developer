@@ -193,6 +193,7 @@ class AuthRepository(
 
     fun getLocation() {
         updateLocationState.value = UiState.Loading
+        //Mulai tracking
         locationManager.startLocationTracking(context, activity, object : Location {
             override fun reloadLocation(location: LocationEntity) {
                 updateLocation(location)
@@ -201,6 +202,7 @@ class AuthRepository(
     }
 
     fun updateLocation(location: LocationEntity) {
+        //Stop
         locationManager.stopLocationTracking()
         ref.child("publicData").child(auth.currentUser!!.displayName!!).child("jobInformation")
             .child("location").setValue(location).addOnSuccessListener {

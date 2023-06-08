@@ -83,4 +83,11 @@
     <string name="success_update_location">Successfully Update Location Data</string>
     <string name="search_vacancies">Search Vacancies</string>
     <string name="image_default_url">https://storage.googleapis.com/job-entertainment-connecting.appspot.com/defaultProfile.jpg</string>
+    <string name="my_profile">My Profile</string>
+    <string name="edit">Edit</string>
+    <string name="profession_supporting_picture">Profession supporting picture</string>
+    <string name="you_are">You are</string>
+    <string name="to_offers">to offers</string>
+    <string name="closed"><b>Closed</b></string>
+    <string name="open"><b>Open</b></string>
 </resources>
