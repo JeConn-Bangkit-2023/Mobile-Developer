@@ -14,6 +14,7 @@ import com.capstone.jeconn.ui.screen.authentication.register_screen.RegisterScre
 import com.capstone.jeconn.ui.screen.authentication.required_info_screen.RequiredInfoScreen
 import com.capstone.jeconn.ui.screen.authentication.required_location_screen.RequiredLocationScreen
 import com.capstone.jeconn.ui.screen.dashboard.BaseScreen
+import com.capstone.jeconn.ui.screen.dashboard.home_screen.message.MessageScreen
 import com.capstone.jeconn.ui.screen.dashboard.home_screen.notification_screen.NotificationScreen
 import com.capstone.jeconn.ui.screen.dashboard.home_screen.notification_screen.detail_notification_screen.DetailNotificationScreen
 import com.capstone.jeconn.ui.screen.dashboard.profile_screen.myprofile.EditDetailInfoScreen
@@ -102,6 +103,12 @@ fun SetupNavGraph(
         ) {
             val getA = it.arguments?.getString(A_ARGS_KEY)
             DetailNotificationScreen(navHostController = navHostController, getA)
+        }
+
+        composable(
+            route = NavRoute.MessageScreen.route,
+        ) {
+            MessageScreen(navHostController = navHostController)
         }
     }
 }

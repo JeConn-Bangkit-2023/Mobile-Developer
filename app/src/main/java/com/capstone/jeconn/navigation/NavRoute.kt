@@ -32,5 +32,7 @@ sealed class NavRoute(val route: String) {
         }
     }
 
+    object MessageScreen :  NavRoute("message_screen")
+
 
 }
