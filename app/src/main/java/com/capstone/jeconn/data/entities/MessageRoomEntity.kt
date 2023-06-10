@@ -9,7 +9,6 @@ data class MessageRoomEntity(
 data class Message(
     val date: Long? = null,
     val username: String? = null,
-    val image_url: String? = null,
     val message: String? = null,
     val invoice_id: Long? = null
 )

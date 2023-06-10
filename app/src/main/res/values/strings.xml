@@ -1,4 +1,5 @@
 <resources>
+    <string name="Message">Message</string>
     <string name="detail_notification">Detail Notification</string>
     <string name="notification">Notification</string>
     <string name="verify_ur_account">Verify your account</string>
