@@ -168,7 +168,6 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
     LaunchedEffect(updateJobImageState) {
         when (val currentState = updateJobImageState) {
             is UiState.Loading -> {
-                imageJobListState.clear()
                 isLoading.value = true
             }
 
@@ -199,11 +198,11 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
     LaunchedEffect(getPublicDataState) {
         when (val currentState = getPublicDataState) {
             is UiState.Loading -> {
-                imageJobListState.clear()
                 isLoading.value = true
             }
 
             is UiState.Success -> {
+                imageJobListState.clear()
                 isLoading.value = false
                 Log.e("all data", currentState.data.toString())
                 currentState.data.detail_information?.date_of_birth?.let {
