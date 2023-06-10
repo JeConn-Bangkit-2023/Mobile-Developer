@@ -22,6 +22,7 @@ import com.capstone.jeconn.component.CustomSearchBar
 import com.capstone.jeconn.component.card.HorizontalVacanciesCard
 import com.capstone.jeconn.data.dummy.DummyData
 import com.capstone.jeconn.data.entities.LocationEntity
+import com.capstone.jeconn.navigation.NavRoute
 import com.capstone.jeconn.utils.calculateDistance
 
 @Composable
@@ -80,7 +81,9 @@ fun VacanciesScreen(navHostController: NavHostController, myPaddingValues: Paddi
                     description = value.second.description!!,
                     modifier = Modifier
                         .padding(horizontal = 12.dp)
-                )
+                ){
+                    navHostController.navigate(NavRoute.DetailVacanciesScreen.navigateWithId(index.toString()))
+                }
             }
         }
     }

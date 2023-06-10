@@ -1,10 +1,12 @@
 package com.capstone.jeconn.ui.screen.dashboard.home_screen.notification_screen.detail_notification_screen
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -36,7 +39,6 @@ import com.google.firebase.ktx.Firebase
 fun DetailNotificationScreen(navHostController: NavHostController, id: String?) {
     val auth = Firebase.auth
     val context = LocalContext.current
-    //val notificationData = DummyData.notificationData.values.toList()
     val getId = id!!.toInt()
     val notificationData = DummyData.notificationData[getId]
     val title = notificationData!!.title
@@ -44,10 +46,13 @@ fun DetailNotificationScreen(navHostController: NavHostController, id: String?) 
     val dec = notificationData.description!!
 
 
-    Log.e("deskripsi", notificationData.description)
+    Log.e("id", notificationData.id.toString())
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.background(MaterialTheme.colorScheme.background)
+            .fillMaxSize()
+
     ) {
         item {
             CustomNavbar {
@@ -97,7 +102,8 @@ fun DetailNotificationScreen(navHostController: NavHostController, id: String?) 
                                 fontFamily = Font.QuickSand,
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.SemiBold,
-                                textAlign = TextAlign.Left
+                                textAlign = TextAlign.Left,
+                                color = MaterialTheme.colorScheme.onBackground
                             )
                         )
                     }
@@ -108,7 +114,8 @@ fun DetailNotificationScreen(navHostController: NavHostController, id: String?) 
                         style = TextStyle(
                             fontFamily = Font.QuickSand,
                             fontSize = 14.sp,
-                            fontWeight = FontWeight.Normal
+                            fontWeight = FontWeight.Normal,
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                     )
                 }
@@ -121,25 +128,13 @@ fun DetailNotificationScreen(navHostController: NavHostController, id: String?) 
                         fontFamily = Font.QuickSand,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Normal,
-                        textAlign = TextAlign.Left
+                        textAlign = TextAlign.Left,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 )
             }
 
         }
-
-        /*
-        items(notificationData){notificationData->
-        HorizontalNotificationCard(
-            title = notificationData.title,
-            timestamp = notificationData.timestamp,
-
-            ){
-            navHostController.navigate(NavRoute.DetailNotificationScreen.navigateWithId(notificationData.id.toString()))
-        }
-    }
-    */
-
         item {
             Spacer(modifier = Modifier.padding(vertical = 4.dp))
         }

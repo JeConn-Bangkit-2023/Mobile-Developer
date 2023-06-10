@@ -1,6 +1,7 @@
 package com.capstone.jeconn.component.card
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,12 +35,14 @@ fun HorizontalVacanciesCard(
     range: String,
     timestamp: Long,
     description: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
 ) {
     val context = LocalContext.current
     Card(
         modifier = modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable {onClick()},
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
         Column(

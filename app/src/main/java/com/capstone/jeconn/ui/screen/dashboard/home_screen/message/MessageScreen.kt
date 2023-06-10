@@ -1,9 +1,11 @@
 package com.capstone.jeconn.ui.screen.dashboard.home_screen.message
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -13,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -32,6 +35,7 @@ import com.google.firebase.ktx.Firebase
 
 @Composable
 fun MessageScreen(navHostController: NavHostController) {
+    val auth = Firebase.auth
     val context = LocalContext.current
     val massageData = DummyData.messageRooms
     val uid = DummyData.UID
@@ -41,6 +45,9 @@ fun MessageScreen(navHostController: NavHostController) {
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.background(
+            MaterialTheme.colorScheme.background)
+            .fillMaxSize()
     ) {
         item {
             CustomNavbar {

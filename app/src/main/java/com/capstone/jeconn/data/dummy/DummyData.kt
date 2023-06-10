@@ -174,6 +174,34 @@ object DummyData {
         )
     )
 
+    // VacanciesEntity dummy data
+    val vacancies: Map<Int, VacanciesEntity> = mapOf(
+        1 to VacanciesEntity(
+            username = "john_doe66",
+            timestamp = System.currentTimeMillis(),
+            salary = 5000,
+            category = listOf(1, 3),
+            description = "We are hiring software developers. Join our team!",
+            location = LocationEntity(37.7749, -122.4194) // San Francisco location
+        ),
+        2 to VacanciesEntity(
+            username = "jane_smith66",
+            timestamp = System.currentTimeMillis(),
+            salary = 7000,
+            category = listOf(2, 4),
+            description = "Looking for experienced graphic designers. Apply now!",
+            location = LocationEntity(40.7128, -74.0060) // New York location
+        ),
+        3 to VacanciesEntity(
+            username = "jane_smith66",
+            timestamp = System.currentTimeMillis(),
+            salary = 6000,
+            category = listOf(5, 6),
+            description = "We need skilled photographers for a project. Contact us for details!",
+            location = LocationEntity(51.5074, -0.1278) // London location
+        )
+    )
+
     // InvoiceEntity dummy data
     val invoices: Map<Int, InvoiceEntity> = mapOf(
         1 to InvoiceEntity(
@@ -227,33 +255,7 @@ object DummyData {
         )
     )
 
-    // VacanciesEntity dummy data
-    val vacancies: Map<Int, VacanciesEntity> = mapOf(
-        1 to VacanciesEntity(
-            username = "john_doe66",
-            timestamp = System.currentTimeMillis(),
-            salary = 5000,
-            category = listOf(1, 3),
-            description = "We are hiring software developers. Join our team!",
-            location = LocationEntity(37.7749, -122.4194) // San Francisco location
-        ),
-        2 to VacanciesEntity(
-            username = "jane_smith66",
-            timestamp = System.currentTimeMillis(),
-            salary = 7000,
-            category = listOf(2, 4),
-            description = "Looking for experienced graphic designers. Apply now!",
-            location = LocationEntity(40.7128, -74.0060) // New York location
-        ),
-        3 to VacanciesEntity(
-            username = "jane_smith66",
-            timestamp = System.currentTimeMillis(),
-            salary = 6000,
-            category = listOf(5, 6),
-            description = "We need skilled photographers for a project. Contact us for details!",
-            location = LocationEntity(51.5074, -0.1278) // London location
-        )
-    )
+
 
     val entertainmentCategories: Map<Int, String> = mapOf(
         1 to "Musician",

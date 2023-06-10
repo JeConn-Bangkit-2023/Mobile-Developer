@@ -1,4 +1,5 @@
 <resources>
+    <string name="deskripsi">Description</string>
     <string name="Message">Message</string>
     <string name="detail_notification">Detail Notification</string>
     <string name="notification">Notification</string>
@@ -20,7 +21,9 @@
     <string name="need_support">Need support?</string>
     <string name="contact_customer_service">Contact Customer Service</string>
     <string name="home">Home</string>
+    <string name="detai_vacancies">Detail Vacancies</string>
     <string name="vacancies">Vacancies</string>
+    <string name="detail_freelance">Detail Freelancer</string>
     <string name="freelance">Freelancer</string>
     <string name="status">Status</string>
     <string name="profile">Profile</string>
