@@ -22,6 +22,7 @@ import com.capstone.jeconn.ui.screen.dashboard.home_screen.notification_screen.d
 import com.capstone.jeconn.ui.screen.dashboard.profile_screen.edit_detail_info.EditDetailInfoScreen
 import com.capstone.jeconn.ui.screen.dashboard.profile_screen.myprofile.MyProfileScreen
 import com.capstone.jeconn.ui.screen.dashboard.profile_screen.setting.SettingScreen
+import com.capstone.jeconn.ui.screen.dashboard.vacancies_screen.detail_vacanies_screen.DetailVacanciesScreen
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -147,5 +148,23 @@ fun SetupNavGraph(
         ) {
             MessageScreen(navHostController = navHostController)
         }
+
+
+        composable(
+            route = NavRoute.DetailVacanciesScreen.route,
+            arguments = listOf(
+                navArgument(A_ARGS_KEY) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val getA = it.arguments?.getString(A_ARGS_KEY)
+            DetailVacanciesScreen(navHostController = navHostController, getA)
+        }
+
+
+
+
+
     }
 }

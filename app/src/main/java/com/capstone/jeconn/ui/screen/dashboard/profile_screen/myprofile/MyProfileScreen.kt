@@ -355,7 +355,8 @@ fun MyProfileScreen(navHostController: NavHostController) {
                 Spacer(modifier = Modifier.padding(vertical = 6.dp))
 
                 Text(
-                    text = context.getString(R.string.category), style = TextStyle(
+                    text = context.getString(R.string.category),
+                    style = TextStyle(
                         fontFamily = Font.QuickSand,
                         fontWeight = FontWeight.Light,
                         fontSize = 12.sp,

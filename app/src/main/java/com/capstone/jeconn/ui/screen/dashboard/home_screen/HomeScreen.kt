@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Icon
@@ -40,7 +41,8 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
     val auth = Firebase.auth
     val context = LocalContext.current
     val publicData = DummyData.publicData.values.toList()
-    val vacancies = DummyData.vacancies.values.toList()
+    val dummyVacanciesList = DummyData.vacancies.toList()
+
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding())
@@ -122,17 +124,19 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
             )
         }
 
-        items(vacancies) { vacancies ->
-            val tenant = DummyData.publicData[vacancies.username]!!
+        itemsIndexed(dummyVacanciesList.toList()) { index, value ->
+            val tenant = DummyData.publicData[value.second.username]!!
             HorizontalVacanciesCard(
                 profileImageUrl = tenant.profile_image_url!!,
                 name = tenant.full_name!!,
-                range = calculateDistance(LocationEntity(51.5074, -0.1278), vacancies.location!!),
-                timestamp = vacancies.timestamp!!,
-                description = vacancies.description!!,
+                range = calculateDistance(LocationEntity(51.5074, -0.1278), value.second.location!!),
+                timestamp = value.second.timestamp!!,
+                description = value.second.description!!,
                 modifier = Modifier
                     .padding(horizontal = 12.dp)
-            )
+            ){
+                navHostController.navigate(NavRoute.DetailVacanciesScreen.navigateWithId(index.toString()))
+            }
         }
         item {
             Spacer(modifier = Modifier.padding(vertical = 4.dp))
