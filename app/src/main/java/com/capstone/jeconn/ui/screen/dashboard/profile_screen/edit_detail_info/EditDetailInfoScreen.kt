@@ -1,4 +1,4 @@
-package com.capstone.jeconn.ui.screen.dashboard.profile_screen.myprofile
+package com.capstone.jeconn.ui.screen.dashboard.profile_screen.edit_detail_info
 
 import android.Manifest
 import android.content.pm.PackageManager.PERMISSION_GRANTED
@@ -68,7 +68,6 @@ import com.capstone.jeconn.component.rememberDropDownStateHolder
 import com.capstone.jeconn.data.dummy.DummyData
 import com.capstone.jeconn.di.Injection
 import com.capstone.jeconn.state.UiState
-import com.capstone.jeconn.ui.screen.dashboard.profile_screen.edit_detail_info.EditDetailInfoViewModel
 import com.capstone.jeconn.utils.CropToSquareImage
 import com.capstone.jeconn.utils.MakeToast
 import com.capstone.jeconn.utils.PICK_IMAGE_PERMISSION_REQUEST_CODE
