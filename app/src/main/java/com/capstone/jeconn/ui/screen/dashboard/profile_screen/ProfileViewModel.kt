@@ -9,13 +9,13 @@ import com.capstone.jeconn.state.UiState
 class ProfileViewModel(
     private val profileRepository: ProfileRepository
 ): ViewModel() {
-    val shortInfoState: State<UiState<PublicDataEntity>> = profileRepository.shortInfoState
+    val getPublicDataState: State<UiState<PublicDataEntity>> = profileRepository.getPublicDataState
 
-    fun getShortData() {
-        profileRepository.getShortData()
+    fun getPublicData() {
+        profileRepository.getPublicData()
     }
 
     init {
-        getShortData()
+        getPublicData()
     }
 }

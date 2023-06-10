@@ -1,50 +1,44 @@
 package com.capstone.jeconn.ui.screen.dashboard.status_screen
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
-import com.google.maps.android.compose.rememberCameraPositionState
+import com.capstone.jeconn.R
+import com.capstone.jeconn.component.pager.Tabs
+import com.capstone.jeconn.component.pager.TabsContent
+import com.capstone.jeconn.ui.screen.dashboard.status_screen.tabs.CancelledTab
+import com.capstone.jeconn.ui.screen.dashboard.status_screen.tabs.DoneTab
+import com.capstone.jeconn.ui.screen.dashboard.status_screen.tabs.ProcessTab
+import com.capstone.jeconn.ui.screen.dashboard.status_screen.tabs.UnpaidTab
+import com.capstone.jeconn.ui.screen.dashboard.status_screen.tabs.WaitingTab
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.rememberPagerState
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun StatusScreen(navHostController: NavHostController, myPaddingValues: PaddingValues) {
-//    Row(
-//        horizontalArrangement = Arrangement.Center,
-//        verticalAlignment = Alignment.CenterVertically,
-//        modifier = Modifier.fillMaxSize()
-//    ) {
-//        Text(
-//            text = "Status Screen",
-//            style = TextStyle(
-//                fontFamily = Font.QuickSand,
-//                fontWeight = FontWeight.Bold,
-//                fontSize = 32.sp
-//            ),
-//        )
-//    }
-
     val context = LocalContext.current
-    val singapore = LatLng(1.35, 103.87)
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(singapore, 10f)
-    }
-    //Testing Google Map
-    GoogleMap(
-        modifier = Modifier.fillMaxSize(),
-        cameraPositionState = cameraPositionState
-    ) {
 
-        Marker(
-            state = MarkerState(position = singapore),
-            title = "Singapore",
-            snippet = "Marker in Singapore"
-        )
+    val tabs = listOf(
+        TabsItem(context.getString(R.string.unpaid)) { UnpaidTab(navHostController = navHostController) },
+        TabsItem(context.getString(R.string.process)) { ProcessTab(navHostController = navHostController) },
+        TabsItem(context.getString(R.string.waiting)) { WaitingTab(navHostController = navHostController) },
+        TabsItem(context.getString(R.string.done)) { DoneTab(navHostController = navHostController) },
+        TabsItem(context.getString(R.string.canceled)) { CancelledTab(navHostController = navHostController) },
+    )
+
+    val pagerState = rememberPagerState()
+
+    Column() {
+        Tabs(tabs = tabs, pagerState = pagerState)
+        TabsContent(tabs = tabs, pagerState = pagerState)
     }
+
 }
+
+data class TabsItem(
+    val tabName: String,
+    val content: @Composable () -> Unit
+)

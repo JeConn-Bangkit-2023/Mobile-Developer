@@ -54,7 +54,7 @@ fun ProfileScreen(navHostController: NavHostController) {
         )
     }
 
-    val shortInfoState by rememberUpdatedState(newValue = profileViewModel.shortInfoState.value)
+    val shortInfoState by rememberUpdatedState(newValue = profileViewModel.getPublicDataState.value)
 
     when (val shortInfo = shortInfoState) {
         is UiState.Loading -> {
@@ -120,7 +120,7 @@ fun ProfileScreen(navHostController: NavHostController) {
                 ) {
 
                     HorizontalProfileCard(
-                        subject = if (shortInfo.data.detail_information != null) {
+                        subject = if (shortInfo.data.detail_information != null && shortInfo.data.jobInformation != null) {
                             context.getString(R.string.profile_ready_text)
                         } else {
                             context.getString(R.string.profile_unready_text)
@@ -128,7 +128,11 @@ fun ProfileScreen(navHostController: NavHostController) {
                         },
                         icon = Icons.Default.Person,
                     ) {
-                        navigateTo(navHostController, NavRoute.EditDetailInfoScreen)
+                        if (shortInfo.data.detail_information != null && shortInfo.data.jobInformation != null) {
+                            navigateTo(navHostController, NavRoute.MyProfileScreen)
+                        } else {
+                            navigateTo(navHostController, NavRoute.EditDetailInfoScreen)
+                        }
                     }
 
                     HorizontalProfileCard(
@@ -164,7 +168,7 @@ fun ProfileScreen(navHostController: NavHostController) {
                     modifier = Modifier
                         .width(120.dp)
                 ) {
-                    profileViewModel.getShortData()
+                    profileViewModel.getPublicData()
                 }
             }
         }

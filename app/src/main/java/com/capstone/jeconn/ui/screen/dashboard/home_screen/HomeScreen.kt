@@ -92,7 +92,7 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(publicData) { user ->
-                    if (user.jobInformation != null && user.detail_information != null && user.jobInformation.isOpen!!) {
+                    if (user.jobInformation != null && user.detail_information != null && user.jobInformation.isOpenToOffer) {
                         VerticalFreelancerCard(
                             imageUrl = user.profile_image_url!!,
                             name = user.full_name!!,

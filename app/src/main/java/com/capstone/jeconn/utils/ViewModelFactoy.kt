@@ -8,6 +8,8 @@ import com.capstone.jeconn.ui.screen.authentication.register_screen.RegisterView
 import com.capstone.jeconn.ui.screen.authentication.required_info_screen.RequireInfoViewModel
 import com.capstone.jeconn.ui.screen.authentication.required_location_screen.RequiredLocationViewModel
 import com.capstone.jeconn.ui.screen.dashboard.profile_screen.ProfileViewModel
+import com.capstone.jeconn.ui.screen.dashboard.profile_screen.edit_detail_info.EditDetailInfoViewModel
+import com.capstone.jeconn.ui.screen.dashboard.profile_screen.myprofile.MyProfileViewModel
 
 class AuthViewModelFactory(private val repository: AuthRepository) :
     ViewModelProvider.NewInstanceFactory() {
@@ -34,6 +36,10 @@ class ProfileViewModelFactory(private val repository: ProfileRepository) :
     override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
             return ProfileViewModel(repository) as T
+        } else if (modelClass.isAssignableFrom(MyProfileViewModel::class.java)) {
+            return MyProfileViewModel(repository) as T
+        } else if (modelClass.isAssignableFrom(EditDetailInfoViewModel::class.java)) {
+            return EditDetailInfoViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

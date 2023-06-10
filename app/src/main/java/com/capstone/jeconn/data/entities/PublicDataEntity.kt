@@ -7,7 +7,10 @@ data class PublicDataEntity(
     val profile_image_url: String? = null,
     val detail_information: DetailInformation? = null,
     val jobInformation: JobInformation? = null,
-    val vacanciesPostId: List<Int>? = null
+    val vacanciesPostId: List<Int>? = null,
+    val notifications: List<Notification>? = null,
+    val messages_room_id: List<Int>? = null,
+    val invoice_id: List<Int>? = null,
 )
 
 data class DetailInformation(
@@ -18,12 +21,17 @@ data class DetailInformation(
 
 data class JobInformation(
     val categories: List<Int>? = null,
-    val imagesUrl: List<ImageList>? = null,
-    val isOpen: Boolean? = null,
+    val imagesUrl: Map<String, Image>? = null,
+    @field:JvmField  val isOpenToOffer: Boolean = false,
     val location: LocationEntity? = null
 )
 
-data class ImageList(
-    val post_image_uid: Long? = null,
+data class Image(
+    val post_image_uid: String? = null,
     val post_image_url:String? = null
+)
+data class Notification(
+    val date: Long? = null,
+    val subject: String? = null,
+    val description: String? = null,
 )

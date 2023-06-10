@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.capstone.jeconn.R
+import com.capstone.jeconn.component.CustomFloatingActionButton
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.navigation.NavRoute
 import com.capstone.jeconn.ui.screen.dashboard.freelancer_screen.FreelancerScreen
@@ -103,6 +104,13 @@ fun BaseScreen(
     val shadowElevation = 1.dp
 
     Scaffold(
+        floatingActionButton = {
+            if (contentRoute == 1) {
+                CustomFloatingActionButton() {
+                    //TODO
+                }
+            }
+        },
         bottomBar = {
             NavigationBar(
                 containerColor = MaterialTheme.colorScheme.background,

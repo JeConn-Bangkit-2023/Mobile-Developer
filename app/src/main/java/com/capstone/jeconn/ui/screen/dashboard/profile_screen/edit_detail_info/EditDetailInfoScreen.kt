@@ -2,6 +2,7 @@ package com.capstone.jeconn.ui.screen.dashboard.profile_screen.myprofile
 
 import android.Manifest
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -32,12 +33,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
@@ -53,6 +56,7 @@ import com.capstone.jeconn.R
 import com.capstone.jeconn.component.CustomButton
 import com.capstone.jeconn.component.CustomChip
 import com.capstone.jeconn.component.CustomDatePickerTextField
+import com.capstone.jeconn.component.CustomDialogBoxLoading
 import com.capstone.jeconn.component.CustomDropDownMenu
 import com.capstone.jeconn.component.CustomFlatIconButton
 import com.capstone.jeconn.component.CustomNavbar
@@ -62,13 +66,16 @@ import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.component.HorizontalDivider
 import com.capstone.jeconn.component.rememberDropDownStateHolder
 import com.capstone.jeconn.data.dummy.DummyData
+import com.capstone.jeconn.di.Injection
+import com.capstone.jeconn.state.UiState
+import com.capstone.jeconn.ui.screen.dashboard.profile_screen.edit_detail_info.EditDetailInfoViewModel
 import com.capstone.jeconn.utils.CropToSquareImage
 import com.capstone.jeconn.utils.MakeToast
 import com.capstone.jeconn.utils.PICK_IMAGE_PERMISSION_REQUEST_CODE
+import com.capstone.jeconn.utils.ProfileViewModelFactory
 import com.capstone.jeconn.utils.dateToTimeStamp
 import com.capstone.jeconn.utils.patternNoHours
 import com.capstone.jeconn.utils.uriToFile
-import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -77,6 +84,12 @@ import java.time.format.DateTimeFormatter
 fun EditDetailInfoScreen(navHostController: NavHostController) {
 
     val context = LocalContext.current
+
+    val editDetailViewModel: EditDetailInfoViewModel = remember {
+        ProfileViewModelFactory(Injection.provideProfileRepository(context)).create(
+            EditDetailInfoViewModel::class.java
+        )
+    }
 
     val dateState = rememberSaveable {
         mutableStateOf(
@@ -113,15 +126,19 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
         )
     }
 
-    val selectedImageFile = remember { mutableStateOf<File?>(null) }
-
     val pickImageLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
                 // Gambar berhasil dipilih dari galeri, lanjutkan ke pengiriman ke API
                 val myFile = uriToFile(uri, context)
                 if (myFile.exists()) {
-                    selectedImageFile.value = myFile
+                    try {
+                        editDetailViewModel.updateJobImage(myFile)
+                    } catch (e: Exception) {
+                        MakeToast.short(context, e.message.toString())
+                    } finally {
+                        editDetailViewModel.getPublicDataState
+                    }
 //                        val bitmapImage = resizeBitmap(BitmapFactory.decodeFile(selectedImageFile.value!!.path))
 //                        val result = ObjectDetection.detect(context, bitmapImage)
 //
@@ -135,8 +152,118 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
             }
         }
 
-    var offersState by remember {
+    val isLoading = remember {
         mutableStateOf(false)
+    }
+    if (isLoading.value) {
+        CustomDialogBoxLoading()
+    }
+
+    val updateJobImageState by rememberUpdatedState(newValue = editDetailViewModel.updateJobImageState.value)
+
+    val imageJobListState = remember {
+        mutableStateListOf("")
+    }
+
+    LaunchedEffect(updateJobImageState) {
+        when (val currentState = updateJobImageState) {
+            is UiState.Loading -> {
+                imageJobListState.clear()
+                isLoading.value = true
+            }
+
+            is UiState.Success -> {
+                isLoading.value = false
+                editDetailViewModel.getPublicData()
+                MakeToast.short(context, currentState.data)
+            }
+
+            is UiState.Error -> {
+                isLoading.value = false
+                MakeToast.short(context, currentState.errorMessage)
+            }
+
+            else -> {
+                isLoading.value = false
+                // Nothing
+            }
+        }
+    }
+
+    val offersState = remember {
+        mutableStateOf(false)
+    }
+
+    val getPublicDataState by rememberUpdatedState(newValue = editDetailViewModel.getPublicDataState.value)
+
+    LaunchedEffect(getPublicDataState) {
+        when (val currentState = getPublicDataState) {
+            is UiState.Loading -> {
+                imageJobListState.clear()
+                isLoading.value = true
+            }
+
+            is UiState.Success -> {
+                isLoading.value = false
+                Log.e("all data", currentState.data.toString())
+                currentState.data.detail_information?.date_of_birth?.let {
+                    dateState.value = it
+                }
+                currentState.data.detail_information?.gender?.let {
+                    genderState.value = it
+                }
+                currentState.data.detail_information?.about_me?.let {
+                    aboutState.value = it
+                }
+                currentState.data.jobInformation?.categories?.let {
+                    it.map { id ->
+                        selectedCategory[id] = true
+                    }
+                }
+
+                currentState.data.jobInformation?.imagesUrl?.values?.forEach {
+                    it.post_image_url?.let { it1 -> imageJobListState.add(it1) }
+                }
+                currentState.data.jobInformation?.isOpenToOffer.let {
+                    offersState.value = it ?: false
+                }
+            }
+
+            is UiState.Error -> {
+                isLoading.value = false
+                MakeToast.short(context, currentState.errorMessage)
+            }
+
+            else -> {
+                isLoading.value = false
+                // Nothing
+            }
+        }
+    }
+
+    val updateDetailInfoState by rememberUpdatedState(newValue = editDetailViewModel.updateDetailInfoState.value)
+
+    LaunchedEffect(updateDetailInfoState) {
+        when (val currentState = updateDetailInfoState) {
+            is UiState.Loading -> {
+                isLoading.value = true
+            }
+
+            is UiState.Success -> {
+                isLoading.value = false
+                MakeToast.short(context, currentState.data)
+            }
+
+            is UiState.Error -> {
+                isLoading.value = false
+                MakeToast.short(context, currentState.errorMessage)
+            }
+
+            else -> {
+                isLoading.value = false
+                // Nothing
+            }
+        }
     }
 
 
@@ -208,7 +335,10 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
 
             CustomDatePickerTextField(
                 state = dateState,
-                withHours = false, IntRange(1800, LocalDate.now().year)
+                withHours = false,
+                range = IntRange(1800, LocalDate.now().year),
+                label = context.getString(R.string.dob),
+                navHostController = navHostController
             )
 
             Spacer(modifier = Modifier.padding(vertical = 8.dp))
@@ -297,10 +427,9 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                val dummyImage = DummyData.publicData["john_doe66"]!!.jobInformation!!.imagesUrl
-                items(dummyImage!!) { imageUrl ->
+                items(imageJobListState) { imageUrl ->
                     CropToSquareImage(
-                        imageUrl = imageUrl.post_image_url!!,
+                        imageUrl = imageUrl,
                         contentDescription = null,
                         modifier = Modifier
                             .size(148.dp)
@@ -333,9 +462,9 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
             HorizontalDivider()
 
             CustomSwitchItem(
-                checked = offersState,
+                checked = offersState.value,
                 onCheckedChange = {
-                    offersState = !offersState
+                    offersState.value = !offersState.value
                 },
                 title = context.getString(R.string.open_to_freelancing),
                 titleHighlight = context.getString(R.string.offers),
@@ -345,7 +474,33 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
             Spacer(modifier = Modifier.padding(vertical = 24.dp))
 
             CustomButton(text = context.getString(R.string.save)) {
-                MakeToast.short(context, "Tunggu API dari anak CC jadi dulu")
+                when {
+                    (genderState.value == "") -> {
+                        MakeToast.short(context, context.getString(R.string.empty_gender))
+                    }
+
+                    (aboutState.value == "") -> {
+                        MakeToast.short(context, context.getString(R.string.empty_about_me))
+                    }
+
+                    (selectedCategory.none { it.value }) -> {
+                        MakeToast.short(context, context.getString(R.string.empty_category))
+                    }
+
+                    (imageJobListState.size == 0) -> {
+                        MakeToast.short(context, context.getString(R.string.empty_image))
+                    }
+
+                    else -> {
+                        editDetailViewModel.updateDetailInfo(
+                            dateState.value,
+                            genderState.value,
+                            aboutState.value,
+                            selectedCategory.filterValues { it }.keys.toList(),
+                            offersState.value
+                        )
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.padding(vertical = 12.dp))
