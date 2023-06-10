@@ -1,7 +1,7 @@
 package com.capstone.jeconn.data.dummy
 
 import com.capstone.jeconn.data.entities.DetailInformation
-import com.capstone.jeconn.data.entities.ImageList
+import com.capstone.jeconn.data.entities.Image
 import com.capstone.jeconn.data.entities.InvoiceEntity
 import com.capstone.jeconn.data.entities.JobInformation
 import com.capstone.jeconn.data.entities.LocationEntity
@@ -30,20 +30,30 @@ object DummyData {
             ),
             jobInformation = JobInformation(
                 categories = listOf(1, 3),
-                imagesUrl = listOf(
-                    ImageList(
-                        post_image_uid = 978307200000L,
+                imagesUrl = mapOf(
+                    "978307200000" to Image(
+                        post_image_uid = "978307200000",
                         post_image_url = "https://media.istockphoto.com/id/1208307830/photo/musician-guy-in-hat-and-sunglasses-leaning-on-wall-playing-guitar-laughing-cheerful.jpg?s=612x612&w=0&k=20&c=xhpzZz4uIVaVt24u0G3iP8UOpbt71O1w0s8fIE_Y-YU=",
                     ),
-                    ImageList(
-                        post_image_uid = 978307200000L,
+                    "78307200000" to Image(
+                        post_image_uid = "978307200000",
                         post_image_url = "https://images.pexels.com/photos/325688/pexels-photo-325688.jpeg?cs=srgb&dl=pexels-rene-asmussen-325688.jpg&fm=jpg",
                     )
                 ),
-                isOpen = true,
+                isOpenToOffer = true,
                 location = LocationEntity(37.7749, -122.4194) // San Francisco location
             ),
             vacanciesPostId = listOf(1, 2),
+            notifications = listOf(
+                Notification(System.currentTimeMillis(), "New Message", "You have a new message"),
+                Notification(
+                    System.currentTimeMillis(),
+                    "Payment Reminder",
+                    "Please make the payment"
+                )
+            ),
+            messages_room_id = listOf(1, 2),
+            invoice_id = listOf(1, 2)
         ),
         "jane_smith66" to PublicDataEntity(
             username = "jane_smith66",
@@ -56,44 +66,20 @@ object DummyData {
             ),
             jobInformation = JobInformation(
                 categories = listOf(2, 4),
-                imagesUrl = listOf(
-                    ImageList(
-                        post_image_uid = 978307200000L,
+                imagesUrl = mapOf(
+                    "978307200000" to Image(
+                        post_image_uid = "978307200000",
                         post_image_url = "https://media.istockphoto.com/id/1208307830/photo/musician-guy-in-hat-and-sunglasses-leaning-on-wall-playing-guitar-laughing-cheerful.jpg?s=612x612&w=0&k=20&c=xhpzZz4uIVaVt24u0G3iP8UOpbt71O1w0s8fIE_Y-YU=",
                     ),
-                    ImageList(
-                        post_image_uid = 978307200000L,
+                    "978307200000" to Image(
+                        post_image_uid = "978307200000",
                         post_image_url = "https://media.gettyimages.com/id/456722336/photo/musician-adam-smith-of-temples-performs-in-concert-at-stubbs-amphitheater-on-october-5-2014-in.jpg?s=612x612&w=gi&k=20&c=jAyjUcihl2rDq8zmg3V-pP_m-h8G7hC3e_H3Y3Y2SNI=",
                     )
                 ),
-                isOpen = false,
+                isOpenToOffer = false,
                 location = null
             ),
             vacanciesPostId = listOf(3),
-        )
-    )
-
-    // PrivateDataEntity dummy data
-    val privateData: Map<String, PrivateDataEntity> = mapOf(
-        "UID_USER_001" to PrivateDataEntity(
-            email = "john@example.com",
-            username = "john_doe66",
-            created_date = System.currentTimeMillis(),
-            notifications = listOf(
-                Notification(System.currentTimeMillis(), "New Message", "You have a new message"),
-                Notification(
-                    System.currentTimeMillis(),
-                    "Payment Reminder",
-                    "Please make the payment"
-                )
-            ),
-            messages_room_id = listOf(1, 2),
-            invoice_id = listOf(1, 2)
-        ),
-        "UID_USER_002" to PrivateDataEntity(
-            email = "jane@example.com",
-            username = "jane_smith66",
-            created_date = System.currentTimeMillis(),
             notifications = listOf(
                 Notification(
                     System.currentTimeMillis(),
@@ -106,27 +92,84 @@ object DummyData {
         )
     )
 
+    // PrivateDataEntity dummy data
+    val privateData: Map<String, PrivateDataEntity> = mapOf(
+        "UID_USER_001" to PrivateDataEntity(
+            email = "john@example.com",
+            username = "john_doe66",
+            created_date = System.currentTimeMillis(),
+
+            ),
+        "UID_USER_002" to PrivateDataEntity(
+            email = "jane@example.com",
+            username = "jane_smith66",
+            created_date = System.currentTimeMillis(),
+        )
+    )
+
     // MessageRoomEntity dummy data
     val messageRooms: Map<Int, MessageRoomEntity> = mapOf(
         1 to MessageRoomEntity(
             members_username = listOf("jane_smith66", "john_doe66"),
             messages = listOf(
-                Message(System.currentTimeMillis(), "jane_smith66", "Hello", invoice_id = 1),
-                Message(System.currentTimeMillis(), "john_doe66", "yah hello", invoice_id = 1)
+                Message(
+                    System.currentTimeMillis(),
+                    username = "jane_smith66",
+                    message = "Hello",
+                    invoice_id = 1
+                ),
+                Message(
+                    System.currentTimeMillis(),
+                    username = "john_doe66",
+                    message = "John Doe",
+                    invoice_id = 1
+                ),
             )
         ),
         2 to MessageRoomEntity(
             members_username = listOf("jane_smith66", "john_doe66"),
             messages = listOf(
-                Message(System.currentTimeMillis(), "jane_smith66", "Hey", invoice_id = 2),
-                Message(System.currentTimeMillis(), "john_doe66",  "Hi there", invoice_id = 2)
+                Message(
+                    date = System.currentTimeMillis(),
+                    username = "jane_smith66",
+                    message = "Can i make an invoice? I will make exactly like before we deal, ok? but if i got wrong you can told me, and i will make a new one, by the way, because this is my first time use this app, how to make an invoice? i don't know how to make it",
+                ),
+                Message(
+                    date = System.currentTimeMillis(),
+                    username = "john_doe66",
+                    message = "yes"
+                ),
+                Message(
+                    date = System.currentTimeMillis(),
+                    username = "jane_smith66",
+                    invoice_id = 1
+                ),
+                Message(
+                    date = System.currentTimeMillis(),
+                    username = "jane_smith66",
+                    image_url = "https://media.gettyimages.com/id/456722336/photo/musician-adam-smith-of-temples-performs-in-concert-at-stubbs-amphitheater-on-october-5-2014-in.jpg?s=612x612&w=gi&k=20&c=jAyjUcihl2rDq8zmg3V-pP_m-h8G7hC3e_H3Y3Y2SNI="
+                ),
+                Message(
+                    date = System.currentTimeMillis(),
+                    username = "john_doe66",
+                    message = "Ok, i will pay later when back from office"
+                )
+
             )
         ),
         3 to MessageRoomEntity(
             members_username = listOf("jane_smith66", "john_doe66"),
             messages = listOf(
-                Message(System.currentTimeMillis(), "jane_smith66",  "Welcome", invoice_id = 3),
-                Message(System.currentTimeMillis(), "john_doe66",  "Thank you", invoice_id = 3)
+                Message(
+                    date = System.currentTimeMillis(),
+                    username = "jane_smith66",
+                    invoice_id = 3
+                ),
+                Message(
+                    date = System.currentTimeMillis(),
+                    username = "john_doe66",
+                    message = "Thank you",
+                )
             )
         )
     )
@@ -135,8 +178,8 @@ object DummyData {
     val invoices: Map<Int, InvoiceEntity> = mapOf(
         1 to InvoiceEntity(
             invoice_id = 1,
-            freelancer_username = "user1",
-            tenant_username = "user2",
+            freelancer_username = "jane_smith66",
+            tenant_username = "john_doe66",
             status = 0,
             service = "Web Development",
             created_date = "2023-05-01",

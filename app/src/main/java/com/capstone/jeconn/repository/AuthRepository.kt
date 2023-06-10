@@ -206,7 +206,8 @@ class AuthRepository(
         locationManager.stopLocationTracking()
         ref.child("publicData").child(auth.currentUser!!.displayName!!).child("jobInformation")
             .child("location").setValue(location).addOnSuccessListener {
-                updateLocationState.value = UiState.Success(context.getString(R.string.success_update_location))
+                updateLocationState.value =
+                    UiState.Success(context.getString(R.string.success_update_location))
             }.addOnFailureListener { exception ->
                 updateLocationState.value = UiState.Error(exception.message.toString())
                 Log.e("pushLocationState", exception.message.toString())

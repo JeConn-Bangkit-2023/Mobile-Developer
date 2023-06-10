@@ -1,5 +1,6 @@
 package com.capstone.jeconn.component
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,11 +15,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
+import androidx.navigation.NavHostController
 import com.capstone.jeconn.R
 import com.capstone.jeconn.utils.patternNoHours
 import com.capstone.jeconn.utils.patternWithHours
@@ -29,13 +30,23 @@ import com.capstone.jeconn.utils.timeStampToDate
 fun CustomDatePickerTextField(
     state: MutableState<Long>,
     withHours: Boolean,
-    range: IntRange
+    range: IntRange,
+    label: String,
+    navHostController: NavHostController
 ) {
-    val context = LocalContext.current
     val pattern = if (withHours) patternWithHours else patternNoHours
     val pickerState = rememberSaveable {
         mutableStateOf(false)
     }
+
+    BackHandler {
+        if (pickerState.value) {
+            pickerState.value = false
+        } else {
+            navHostController.navigateUp()
+        }
+    }
+
     val focusManager = LocalFocusManager.current
 
     Row(
@@ -55,7 +66,7 @@ fun CustomDatePickerTextField(
             readOnly = true,
             value = timeStampToDate(pattern, state.value),
             onValueChange = { pickerState.value = true },
-            label = { Text(text = context.getString(R.string.dob)) },
+            label = { Text(text = label) },
             trailingIcon = {
                 Icon(
                     painterResource(id = R.drawable.ic_calendar),

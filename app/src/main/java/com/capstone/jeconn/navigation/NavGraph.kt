@@ -14,10 +14,13 @@ import com.capstone.jeconn.ui.screen.authentication.register_screen.RegisterScre
 import com.capstone.jeconn.ui.screen.authentication.required_info_screen.RequiredInfoScreen
 import com.capstone.jeconn.ui.screen.authentication.required_location_screen.RequiredLocationScreen
 import com.capstone.jeconn.ui.screen.dashboard.BaseScreen
+import com.capstone.jeconn.ui.screen.dashboard.home_screen.CreateInvoiceScreen
+import com.capstone.jeconn.ui.screen.dashboard.home_screen.DetailMessageScreen
 import com.capstone.jeconn.ui.screen.dashboard.home_screen.message.MessageScreen
 import com.capstone.jeconn.ui.screen.dashboard.home_screen.notification_screen.NotificationScreen
 import com.capstone.jeconn.ui.screen.dashboard.home_screen.notification_screen.detail_notification_screen.DetailNotificationScreen
-import com.capstone.jeconn.ui.screen.dashboard.profile_screen.myprofile.EditDetailInfoScreen
+import com.capstone.jeconn.ui.screen.dashboard.profile_screen.edit_detail_info.EditDetailInfoScreen
+import com.capstone.jeconn.ui.screen.dashboard.profile_screen.myprofile.MyProfileScreen
 import com.capstone.jeconn.ui.screen.dashboard.profile_screen.setting.SettingScreen
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -88,6 +91,40 @@ fun SetupNavGraph(
         }
 
         composable(
+            route = NavRoute.MyProfileScreen.route,
+        ) {
+            MyProfileScreen(navHostController = navHostController)
+        }
+
+        composable(
+            route = NavRoute.DetailMessageScreen.route,
+            arguments = listOf(
+                navArgument(A_ARGS_KEY) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val getA = it.arguments?.getString(A_ARGS_KEY)
+            DetailMessageScreen(navHostController = navHostController, getA)
+        }
+
+        composable(
+            route = NavRoute.CreateInvoiceScreen.route,
+            arguments = listOf(
+                navArgument(A_ARGS_KEY) {
+                    type = NavType.StringType
+                },
+                navArgument(B_ARGS_KEY) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val getA = it.arguments?.getString(A_ARGS_KEY)
+            val getB = it.arguments?.getString(B_ARGS_KEY)
+            CreateInvoiceScreen(navHostController = navHostController, getA, getB)
+        }
+
+        composable(
             route = NavRoute.NotificationScreen.route,
         ) {
             NotificationScreen(navHostController = navHostController)
@@ -111,9 +148,4 @@ fun SetupNavGraph(
             MessageScreen(navHostController = navHostController)
         }
     }
-}
-
-object DataProvider {
-
-   
 }

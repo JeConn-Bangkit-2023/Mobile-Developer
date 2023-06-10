@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -17,10 +16,10 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.capstone.jeconn.R
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTextField(
     modifier: Modifier = Modifier,
@@ -29,6 +28,7 @@ fun CustomTextField(
     type: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done,
     state: MutableState<String>,
+    rounded: Dp = 8.dp
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -41,7 +41,7 @@ fun CustomTextField(
             Text(text = label)
         },
         modifier = modifier,
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(rounded),
         trailingIcon =
         {
             if (state.value != "") {

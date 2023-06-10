@@ -62,12 +62,12 @@ fun DateTimeWheelPicker(
                 textStyle = TextStyle(
                     color = MaterialTheme.colorScheme.onBackground
                 ),
-                textColor = MaterialTheme.colorScheme.inversePrimary,
+                textColor = MaterialTheme.colorScheme.onBackground,
                 selectorProperties = WheelPickerDefaults.selectorProperties(
                     enabled = true,
                     shape = RoundedCornerShape(5.dp),
                     color = Color.White.copy(alpha = 0.2f),
-                    border = BorderStroke(2.dp, Color.Black),
+                    border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
                 )
             ) { snappedDateTime ->
                 val formatter = DateTimeFormatter.ofPattern(pattern)
@@ -86,11 +86,11 @@ fun DateTimeWheelPicker(
                 textStyle = TextStyle(
                     color = MaterialTheme.colorScheme.onBackground
                 ),
-                textColor = Color.Black,
+                textColor = MaterialTheme.colorScheme.onBackground,
                 selectorProperties = WheelPickerDefaults.selectorProperties(
                     enabled = true,
                     shape = RoundedCornerShape(5.dp),
-                    color = MaterialTheme.colorScheme.inversePrimary,
+                    color = Color.White.copy(alpha = 0.2f),
                     border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary),
                 )
             ) { snappedDateTime ->

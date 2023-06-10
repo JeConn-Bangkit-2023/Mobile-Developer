@@ -76,7 +76,7 @@ fun FreelancerScreen(navHostController: NavHostController, myPaddingValues: Padd
                 val user = value.second
                 if (user.jobInformation != null && user.detail_information != null
                 ) {
-                    if (user.jobInformation.isOpen == true) {
+                    if (user.jobInformation.isOpenToOffer) {
                         VerticalFreelancerCard(
                             imageUrl = user.profile_image_url!!,
                             name = user.full_name!!,

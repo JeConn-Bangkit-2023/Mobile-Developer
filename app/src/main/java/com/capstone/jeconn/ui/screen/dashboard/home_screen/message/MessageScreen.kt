@@ -31,15 +31,13 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 @Composable
-fun MessageScreen(navHostController: NavHostController){
-    val auth = Firebase.auth
+fun MessageScreen(navHostController: NavHostController) {
     val context = LocalContext.current
-    //val notificationData = DummyData.notificationData.values.toList()
     val massageData = DummyData.messageRooms
     val uid = DummyData.UID
     val myData = DummyData.privateData[uid]
-    val myRoomChatId = myData!!.messages_room_id
-    val publicData  = DummyData.publicData
+    val myRoomChatId = DummyData.publicData[myData!!.username]!!.messages_room_id
+    val publicData = DummyData.publicData
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -78,20 +76,19 @@ fun MessageScreen(navHostController: NavHostController){
 
         items(
             myRoomChatId!!
-        ){id->
-            val enemyUsername = massageData[id]!!.members_username!!.filter{it != myData.username}.joinToString{it}
+        ) { id ->
+            val enemyUsername =
+                massageData[id]!!.members_username!!.filter { it != myData.username }
+                    .joinToString { it }
             HorizontalMessageCard(
                 profileImageUrl = publicData[enemyUsername]!!.profile_image_url!!,
                 name = publicData[enemyUsername]!!.full_name!!,
                 message = massageData[id]!!.messages!!.last().message!!,
                 timestamp = massageData[id]!!.messages!!.last().date!!,
             ) {
-
+                //TODO
             }
-
-
         }
-
 
         item {
             Spacer(modifier = Modifier.padding(vertical = 4.dp))
