@@ -2,7 +2,6 @@ package com.capstone.jeconn.ui.screen.dashboard.profile_screen.edit_detail_info
 
 import android.Manifest
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -203,7 +202,6 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
             is UiState.Success -> {
                 imageJobListState.clear()
                 isLoading.value = false
-                Log.e("all data", currentState.data.toString())
                 currentState.data.detail_information?.date_of_birth?.let {
                     dateState.value = it
                 }
@@ -471,7 +469,10 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
 
             Spacer(modifier = Modifier.padding(vertical = 24.dp))
 
-            CustomButton(text = context.getString(R.string.save)) {
+            CustomButton(
+                text = context.getString(R.string.save),
+                enabled = !isLoading.value
+            ) {
                 when {
                     (genderState.value == "") -> {
                         MakeToast.short(context, context.getString(R.string.empty_gender))
