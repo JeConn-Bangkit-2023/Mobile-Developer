@@ -73,7 +73,11 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
                 Icon(
                     painter = painterResource(id = R.drawable.ic_message),
                     contentDescription = null,
-                    modifier = Modifier.size(38.dp)
+                    modifier = Modifier
+                        .size(38.dp)
+                        .clickable {
+                            navigateTo(navHostController, NavRoute.MessageScreen)
+                        }
                 )
             }
             Text(

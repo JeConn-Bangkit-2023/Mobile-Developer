@@ -90,7 +90,7 @@ object DummyData {
             messages_room_id = listOf(1, 2),
             invoice_id = listOf(1, 2)
         ),
-        "UID_USER_001" to PrivateDataEntity(
+        "UID_USER_002" to PrivateDataEntity(
             email = "jane@example.com",
             username = "jane_smith66",
             created_date = System.currentTimeMillis(),
@@ -109,54 +109,24 @@ object DummyData {
     // MessageRoomEntity dummy data
     val messageRooms: Map<Int, MessageRoomEntity> = mapOf(
         1 to MessageRoomEntity(
-            members_username = listOf("user1", "user2"),
+            members_username = listOf("jane_smith66", "john_doe66"),
             messages = listOf(
-                Message(
-                    System.currentTimeMillis(),
-                    "jane_smith66",
-                    "Jane Smith",
-                    "Hello",
-                    invoice_id = 1
-                ),
-                Message(System.currentTimeMillis(), "john_doe66", "John Doe", invoice_id = 1)
+                Message(System.currentTimeMillis(), "jane_smith66", "Hello", invoice_id = 1),
+                Message(System.currentTimeMillis(), "john_doe66", "yah hello", invoice_id = 1)
             )
         ),
         2 to MessageRoomEntity(
-            members_username = listOf("user1", "user3"),
+            members_username = listOf("jane_smith66", "john_doe66"),
             messages = listOf(
-                Message(
-                    System.currentTimeMillis(),
-                    "jane_smith66",
-                    "Jane Smith",
-                    "Hey",
-                    invoice_id = 2
-                ),
-                Message(
-                    System.currentTimeMillis(),
-                    "john_doe66",
-                    "John Doe",
-                    "Hi there",
-                    invoice_id = 2
-                )
+                Message(System.currentTimeMillis(), "jane_smith66", "Hey", invoice_id = 2),
+                Message(System.currentTimeMillis(), "john_doe66",  "Hi there", invoice_id = 2)
             )
         ),
         3 to MessageRoomEntity(
-            members_username = listOf("user2", "user3"),
+            members_username = listOf("jane_smith66", "john_doe66"),
             messages = listOf(
-                Message(
-                    System.currentTimeMillis(),
-                    "jane_smith66",
-                    "Jane Smith",
-                    "Welcome",
-                    invoice_id = 3
-                ),
-                Message(
-                    System.currentTimeMillis(),
-                    "john_doe66",
-                    "John Doe",
-                    "Thank you",
-                    invoice_id = 3
-                )
+                Message(System.currentTimeMillis(), "jane_smith66",  "Welcome", invoice_id = 3),
+                Message(System.currentTimeMillis(), "john_doe66",  "Thank you", invoice_id = 3)
             )
         )
     )
