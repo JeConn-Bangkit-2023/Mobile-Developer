@@ -2,6 +2,7 @@ package com.capstone.jeconn.ui.screen.dashboard.profile_screen.myprofile
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -67,14 +68,15 @@ import com.capstone.jeconn.utils.PICK_IMAGE_PERMISSION_REQUEST_CODE
 import com.capstone.jeconn.utils.ProfileViewModelFactory
 import com.capstone.jeconn.utils.navigateTo
 import com.capstone.jeconn.utils.uriToFile
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MyProfileScreen(navHostController: NavHostController) {
     val context = LocalContext.current
-    val dummyProfilePrivate = DummyData.privateData[DummyData.UID]!!
-    val dummyProfilePublic = DummyData.publicData[dummyProfilePrivate.username]!!
+    val currentUser = Firebase.auth.currentUser
 
     val scope = rememberCoroutineScope()
     val myProfileViewModel: MyProfileViewModel = remember {
@@ -88,6 +90,31 @@ fun MyProfileScreen(navHostController: NavHostController) {
 
     if (loadingState) {
         CustomDialogBoxLoading()
+    }
+
+    val imageProfileState = remember {
+        mutableStateOf("")
+    }
+    val emailState = remember {
+        mutableStateOf("")
+    }
+
+    val fullNameState = remember {
+        mutableStateOf("")
+    }
+
+    val aboutState = remember {
+        mutableStateOf("")
+    }
+
+    val categoryState = remember {
+        mutableStateListOf<Int>()
+    }
+    val jobImageState = remember {
+        mutableStateListOf<String>()
+    }
+    val offersStatus = remember {
+        mutableStateOf(false)
     }
 
     val updateProfileImageState by rememberUpdatedState(newValue = myProfileViewModel.updateProfileImageState.value)
@@ -106,6 +133,55 @@ fun MyProfileScreen(navHostController: NavHostController) {
             is UiState.Error -> {
                 loadingState = false
                 MakeToast.short(context, currentState.errorMessage)
+            }
+
+            else -> {
+                loadingState = false
+                //Nothing
+            }
+        }
+    }
+
+    val getPublicDataState by rememberUpdatedState(newValue = myProfileViewModel.getPublicDataState.value)
+
+    LaunchedEffect(getPublicDataState) {
+        when (val currentState = getPublicDataState) {
+
+            is UiState.Loading -> {
+                loadingState = true
+            }
+
+            is UiState.Success -> {
+                Log.e("getAll Data", currentState.data.toString())
+                loadingState = false
+                currentState.data.profile_image_url?.let {
+                    imageProfileState.value = it
+                }
+                emailState.value = currentUser!!.email!!
+                currentState.data.full_name?.let {
+                    fullNameState.value = it
+                }
+                currentState.data.detail_information?.about_me?.let {
+                    aboutState.value = it
+                }
+                currentState.data.jobInformation?.categories?.let { categoryList ->
+                    categoryList.map { categoryState.add(it) }
+                }
+                currentState.data.jobInformation?.imagesUrl?.let { imagesUrl ->
+                    imagesUrl.values.map { image ->
+                        image.post_image_url?.let {
+                            jobImageState.add(it)
+                        }
+                    }
+                }
+                currentState.data.jobInformation?.isOpenToOffer?.let {
+                    offersStatus.value = it
+                }
+            }
+
+            is UiState.Error -> {
+                loadingState = false
+
             }
 
             else -> {
@@ -166,7 +242,7 @@ fun MyProfileScreen(navHostController: NavHostController) {
 
             Box() {
                 CropToSquareImage(
-                    imageUrl = dummyProfilePublic.profile_image_url!!,
+                    imageUrl = imageProfileState.value,
                     contentDescription = null,
                     modifier = Modifier
                         .size(110.dp)
@@ -216,7 +292,7 @@ fun MyProfileScreen(navHostController: NavHostController) {
             )
 
             Text(
-                text = dummyProfilePrivate.email!!, style = TextStyle(
+                text = emailState.value, style = TextStyle(
                     fontFamily = Font.QuickSand,
                     fontWeight = FontWeight.Normal,
                     fontSize = 16.sp,
@@ -236,7 +312,7 @@ fun MyProfileScreen(navHostController: NavHostController) {
             )
 
             Text(
-                text = dummyProfilePublic.full_name.toString(), style = TextStyle(
+                text = fullNameState.value, style = TextStyle(
                     fontFamily = Font.QuickSand,
                     fontWeight = FontWeight.Normal,
                     fontSize = 16.sp,
@@ -267,7 +343,7 @@ fun MyProfileScreen(navHostController: NavHostController) {
             )
 
             Text(
-                text = dummyProfilePublic.detail_information!!.about_me!!, style = TextStyle(
+                text = aboutState.value, style = TextStyle(
                     fontFamily = Font.QuickSand,
                     fontWeight = FontWeight.Normal,
                     fontSize = 16.sp,
@@ -275,8 +351,7 @@ fun MyProfileScreen(navHostController: NavHostController) {
                 )
             )
 
-            val myCategories = dummyProfilePublic.jobInformation!!.categories
-            if (!myCategories.isNullOrEmpty()) {
+            if (!categoryState.isEmpty()) {
                 Spacer(modifier = Modifier.padding(vertical = 6.dp))
 
                 Text(
@@ -293,7 +368,7 @@ fun MyProfileScreen(navHostController: NavHostController) {
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
-                    myCategories.map { id ->
+                    categoryState.map { id ->
                         val getCategoryById = DummyData.entertainmentCategories
                         CustomLabel(text = getCategoryById[id]!!)
                     }
@@ -303,13 +378,8 @@ fun MyProfileScreen(navHostController: NavHostController) {
             val imageJobListState = remember {
                 mutableStateListOf("")
             }
-            val myJobImages = dummyProfilePublic.jobInformation.imagesUrl
 
-            myJobImages?.forEach { map ->
-                map.value.post_image_url?.let { imageJobListState.add(it) }
-            }
-
-            if (!myJobImages.isNullOrEmpty()) {
+            if (imageJobListState.isNotEmpty()) {
                 Spacer(modifier = Modifier.padding(vertical = 6.dp))
 
                 Text(
@@ -353,7 +423,7 @@ fun MyProfileScreen(navHostController: NavHostController) {
 
 
 
-            if (dummyProfilePublic.jobInformation.isOpenToOffer) {
+            if (offersStatus.value) {
                 Row {
                     Text(
                         text = "${context.getString(R.string.you_are)} ",
