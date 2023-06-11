@@ -52,7 +52,6 @@ import com.capstone.jeconn.state.UiState
 import com.capstone.jeconn.utils.AuthViewModelFactory
 import com.capstone.jeconn.utils.MakeToast
 import com.capstone.jeconn.utils.intentWhatsApp
-import com.capstone.jeconn.utils.navigateTo
 import com.capstone.jeconn.utils.navigateToTop
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -241,7 +240,7 @@ fun RequiredInfoScreen(
                     is UiState.Success -> {
                         MakeToast.short(context, currentState.data)
                         refreshButtonState = true
-                        navigateTo(navHostController, NavRoute.BaseScreen)
+                        navigateToTop(navHostController, NavRoute.RequiredLocationScreen)
                     }
 
                     is UiState.Error -> {

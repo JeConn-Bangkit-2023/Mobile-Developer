@@ -1,6 +1,5 @@
 package com.capstone.jeconn.ui.screen.dashboard.home_screen.notification_screen.detail_notification_screen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -45,12 +44,10 @@ fun DetailNotificationScreen(navHostController: NavHostController, id: String?) 
     val time = notificationData.timestamp!!
     val dec = notificationData.description!!
 
-
-    Log.e("id", notificationData.id.toString())
-
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.background(MaterialTheme.colorScheme.background)
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
             .fillMaxSize()
 
     ) {

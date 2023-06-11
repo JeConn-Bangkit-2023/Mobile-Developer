@@ -24,11 +24,13 @@ sealed class NavRoute(val route: String) {
     object SettingScreen : NavRoute(route = "setting_screen")
     object EditDetailInfoScreen : NavRoute("edit_detail_info_screen")
     object MyProfileScreen : NavRoute("my_profile_screen")
-    object DetailMessageScreen : NavRoute(route = "detail_message_screen/{$A_ARGS_KEY}") {
+    object DetailMessageScreen : NavRoute(route = "detail_message_screen/{$A_ARGS_KEY}/{$B_ARGS_KEY}/{$C_ARGS_KEY}") {
         fun navigateWithId(
-            getId: String
+            getId: String,
+            getName: String,
+            getProfileImage: String,
         ): String {
-            return "detail_message_screen/$getId"
+            return "detail_message_screen/$getId/$getName/$getProfileImage"
         }
     }
 
@@ -36,7 +38,7 @@ sealed class NavRoute(val route: String) {
         NavRoute(route = "create_invoice_screen/{$A_ARGS_KEY}/{$B_ARGS_KEY}") {
         fun navigateWithData(
             tenant: String,
-            freelancer: String
+            freelancer: String,
         ): String {
             return "create_invoice_screen/$tenant/$freelancer"
         }

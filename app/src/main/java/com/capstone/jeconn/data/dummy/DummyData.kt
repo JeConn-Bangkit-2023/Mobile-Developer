@@ -55,8 +55,14 @@ object DummyData {
                     "Please make the payment"
                 )
             ),
-            messages_room_id = listOf(1, 2),
-            invoice_id = listOf(1, 2)
+            messages_room_id = mapOf(
+                "1" to 1,
+                "2" to 2
+            ),
+            invoice_id = mapOf(
+                "1" to 1,
+                "2" to 2
+            )
         ),
         "jane_smith66" to PublicDataEntity(
             username = "jane_smith66",
@@ -92,8 +98,14 @@ object DummyData {
                     "New job opening available"
                 )
             ),
-            messages_room_id = listOf(3),
-            invoice_id = listOf(3, 4)
+            messages_room_id = mapOf(
+                "3" to 3,
+                "4" to 4
+            ),
+            invoice_id = mapOf(
+                "3" to 3,
+                "4" to 4
+            )
         )
     )
 
@@ -115,68 +127,25 @@ object DummyData {
     // MessageRoomEntity dummy data
     val messageRooms: Map<Int, MessageRoomEntity> = mapOf(
         1 to MessageRoomEntity(
-            members_username = listOf("jane_smith66", "john_doe66"),
-            messages = listOf(
-                Message(
+            members_username = mapOf(
+                "jane_smith66" to "jane_smith66",
+                "john_doe66" to "john_doe66"
+            ),
+            messages = mapOf(
+                System.currentTimeMillis().toString() to Message(
                     System.currentTimeMillis(),
                     username = "jane_smith66",
                     message = "Hello",
                     invoice_id = 1
                 ),
-                Message(
+                System.currentTimeMillis().toString() to Message(
                     System.currentTimeMillis(),
                     username = "john_doe66",
                     message = "John Doe",
                     invoice_id = 1
-                ),
-            )
-        ),
-        2 to MessageRoomEntity(
-            members_username = listOf("jane_smith66", "john_doe66"),
-            messages = listOf(
-                Message(
-                    date = System.currentTimeMillis(),
-                    username = "jane_smith66",
-                    message = "Can i make an invoice? I will make exactly like before we deal, ok? but if i got wrong you can told me, and i will make a new one, by the way, because this is my first time use this app, how to make an invoice? i don't know how to make it",
-                ),
-                Message(
-                    date = System.currentTimeMillis(),
-                    username = "john_doe66",
-                    message = "yes"
-                ),
-                Message(
-                    date = System.currentTimeMillis(),
-                    username = "jane_smith66",
-                    invoice_id = 1
-                ),
-                Message(
-                    date = System.currentTimeMillis(),
-                    username = "jane_smith66",
-                    image_url = "https://media.gettyimages.com/id/456722336/photo/musician-adam-smith-of-temples-performs-in-concert-at-stubbs-amphitheater-on-october-5-2014-in.jpg?s=612x612&w=gi&k=20&c=jAyjUcihl2rDq8zmg3V-pP_m-h8G7hC3e_H3Y3Y2SNI="
-                ),
-                Message(
-                    date = System.currentTimeMillis(),
-                    username = "john_doe66",
-                    message = "Ok, i will pay later when back from office"
-                )
-
-            )
-        ),
-        3 to MessageRoomEntity(
-            members_username = listOf("jane_smith66", "john_doe66"),
-            messages = listOf(
-                Message(
-                    date = System.currentTimeMillis(),
-                    username = "jane_smith66",
-                    invoice_id = 3
-                ),
-                Message(
-                    date = System.currentTimeMillis(),
-                    username = "john_doe66",
-                    message = "Thank you",
                 )
             )
-        )
+        ),
     )
 
     // VacanciesEntity dummy data

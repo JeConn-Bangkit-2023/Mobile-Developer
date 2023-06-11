@@ -78,7 +78,10 @@ fun VacanciesScreen(navHostController: NavHostController, myPaddingValues: Paddi
     }
 
     val vacanciesViewModel: VacanciesViewModel = remember {
-        VacanciesViewModelFactory(Injection.provideVacanciesRepository(context = context)).create(
+        VacanciesViewModelFactory(
+            vacanciesRepository = Injection.provideVacanciesRepository(context = context),
+            chatRepository = Injection.provideChatRepository(context)
+        ).create(
             VacanciesViewModel::class.java
         )
     }

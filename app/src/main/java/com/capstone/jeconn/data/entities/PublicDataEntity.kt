@@ -9,8 +9,8 @@ data class PublicDataEntity(
     val jobInformation: JobInformation? = null,
     val vacanciesPostId: Map<String, Int>? = null,
     val notifications: List<Notification>? = null,
-    val messages_room_id: List<Int>? = null,
-    val invoice_id: List<Int>? = null,
+    val messages_room_id: Map<String, Int>? = null,
+    val invoice_id: Map<String, Int>? = null,
 )
 
 data class DetailInformation(

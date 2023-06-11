@@ -44,12 +44,12 @@ fun HorizontalVacanciesCard(
     val context = LocalContext.current
     Card(
         modifier = modifier
-            .fillMaxWidth()
-            .clickable {onClick()},
+            .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
         Column(
             modifier = Modifier
+                .clickable {onClick()}
                 .background(MaterialTheme.colorScheme.inversePrimary)
                 .padding(12.dp)
 

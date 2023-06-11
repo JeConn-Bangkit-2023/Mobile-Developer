@@ -35,13 +35,11 @@ fun HorizontalProfileCard(
 ) {
     Card(
         elevation = CardDefaults.cardElevation(10.dp),
-        modifier = Modifier.clickable {
-            onClick()
-        }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
+                .clickable { onClick() }
                 .background(MaterialTheme.colorScheme.inversePrimary)
                 .padding(8.dp)
                 .fillMaxWidth()

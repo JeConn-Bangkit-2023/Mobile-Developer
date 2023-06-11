@@ -1,4 +1,4 @@
-package com.capstone.jeconn.ui.screen.dashboard.home_screen
+package com.capstone.jeconn.ui.screen.dashboard.home_screen.message_screen.create_invoice_screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

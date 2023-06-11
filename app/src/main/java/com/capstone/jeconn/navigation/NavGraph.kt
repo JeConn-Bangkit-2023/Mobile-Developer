@@ -15,7 +15,7 @@ import com.capstone.jeconn.ui.screen.authentication.required_info_screen.Require
 import com.capstone.jeconn.ui.screen.authentication.required_location_screen.RequiredLocationScreen
 import com.capstone.jeconn.ui.screen.dashboard.BaseScreen
 import com.capstone.jeconn.ui.screen.dashboard.home_screen.message_screen.create_invoice_screen.CreateInvoiceScreen
-import com.capstone.jeconn.ui.screen.dashboard.home_screen.DetailMessageScreen
+import com.capstone.jeconn.ui.screen.dashboard.home_screen.message_screen.detail_message_screen.DetailMessageScreen
 import com.capstone.jeconn.ui.screen.dashboard.home_screen.message_screen.MessageScreen
 import com.capstone.jeconn.ui.screen.dashboard.home_screen.notification_screen.NotificationScreen
 import com.capstone.jeconn.ui.screen.dashboard.home_screen.notification_screen.detail_notification_screen.DetailNotificationScreen
@@ -103,11 +103,19 @@ fun SetupNavGraph(
             arguments = listOf(
                 navArgument(A_ARGS_KEY) {
                     type = NavType.StringType
+                },
+                navArgument(B_ARGS_KEY) {
+                    type = NavType.StringType
+                },
+                navArgument(C_ARGS_KEY) {
+                    type = NavType.StringType
                 }
             )
         ) {
             val getA = it.arguments?.getString(A_ARGS_KEY)
-            DetailMessageScreen(navHostController = navHostController, getA)
+            val getB = it.arguments?.getString(B_ARGS_KEY)
+            val getC = it.arguments?.getString(C_ARGS_KEY)
+            DetailMessageScreen(navHostController = navHostController, getA, getB, getC)
         }
 
         composable(

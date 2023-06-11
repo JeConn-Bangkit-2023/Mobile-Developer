@@ -136,5 +136,7 @@
     <string name="empty_end_range">Please fill end salary range</string>
     <string name="end_less_than_start">Final salary cannot be less than the starting salary</string>
     <string name="contact_tenant">Contact tenant</string>
+    <string name="empty">Empty</string>
+    <string name="empty_message_list">Your message is empty</string>
 
 </resources>
