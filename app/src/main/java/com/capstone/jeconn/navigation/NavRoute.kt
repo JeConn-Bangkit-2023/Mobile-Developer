@@ -18,7 +18,7 @@ sealed class NavRoute(val route: String) {
         }
     }
 
-    object RequiredLocationScreen: NavRoute(route = "required_location_screen")
+    object RequiredLocationScreen : NavRoute(route = "required_location_screen")
 
     object BaseScreen : NavRoute(route = "base_screen")
     object SettingScreen : NavRoute(route = "setting_screen")
@@ -26,42 +26,45 @@ sealed class NavRoute(val route: String) {
     object MyProfileScreen : NavRoute("my_profile_screen")
     object DetailMessageScreen : NavRoute(route = "detail_message_screen/{$A_ARGS_KEY}") {
         fun navigateWithId(
-            getId : String
+            getId: String
         ): String {
             return "detail_message_screen/$getId"
         }
     }
-    object CreateInvoiceScreen : NavRoute(route = "create_invoice_screen/{$A_ARGS_KEY}/{$B_ARGS_KEY}") {
+
+    object CreateInvoiceScreen :
+        NavRoute(route = "create_invoice_screen/{$A_ARGS_KEY}/{$B_ARGS_KEY}") {
         fun navigateWithData(
-            tenant : String,
+            tenant: String,
             freelancer: String
         ): String {
             return "create_invoice_screen/$tenant/$freelancer"
         }
     }
+
     object NotificationScreen : NavRoute(route = "notification_screen")
     object DetailNotificationScreen : NavRoute(route = "detail_notification_screen/{$A_ARGS_KEY}") {
         fun navigateWithId(
-            getId : String
+            getId: String
         ): String {
             return "detail_notification_screen/$getId"
         }
     }
 
-    object MessageScreen :  NavRoute("message_screen")
-
-    //object DetailVacanciesScreen :  NavRoute("DetailVacanciesScreen")
-
-
-    object DetailVacanciesScreen : NavRoute("detail_vacancies_screen/{$A_ARGS_KEY}"){
+    object MessageScreen : NavRoute("message_screen")
+    object DetailVacanciesScreen :
+        NavRoute("detail_vacancies_screen/{$A_ARGS_KEY}/{$B_ARGS_KEY}/{$C_ARGS_KEY}/{$D_ARGS_KEY}") {
         fun navigateWithId(
-            getId : String
+            getId: String,
+            getName: String,
+            getProfileImage: String,
+            distance: String,
         ): String {
-            return "detail_vacancies_screen/$getId"
+            return "detail_vacancies_screen/$getId/$getName/$getProfileImage/$distance"
         }
     }
 
-
+    object CreateVacanciesScreen : NavRoute("create_vacancies_screen")
 
 
 }

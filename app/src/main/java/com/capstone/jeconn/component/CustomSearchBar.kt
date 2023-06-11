@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
@@ -16,10 +17,8 @@ import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -32,7 +31,7 @@ fun CustomSearchBar(
     modifier: Modifier = Modifier,
     text: MutableState<String>,
     enabled: MutableState<Boolean>,
-    history: SnapshotStateList<String>,
+    history: MutableState<List<String>>,
 
     ) {
     val context = LocalContext.current
@@ -74,7 +73,7 @@ fun CustomSearchBar(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            items(history) { textHistory ->
+            items(history.value) { textHistory ->
                 ListItem(
                     headlineContent = {
                         Text(
@@ -89,7 +88,7 @@ fun CustomSearchBar(
                     },
                     leadingContent = {
                         Icon(
-                            painterResource(id = R.drawable.ic_history),
+                            Icons.Default.Star,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onBackground
                         )

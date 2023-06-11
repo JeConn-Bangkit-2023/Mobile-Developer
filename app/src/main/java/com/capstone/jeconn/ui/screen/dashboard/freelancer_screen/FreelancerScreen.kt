@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -34,8 +33,8 @@ fun FreelancerScreen(navHostController: NavHostController, myPaddingValues: Padd
     val searchEnabledState = rememberSaveable() {
         mutableStateOf(false)
     }
-    val searchEnabledHistory = remember {
-        mutableStateListOf<String>()
+    val searchCategory = remember {
+        mutableStateOf(DummyData.entertainmentCategories.values.toList())
     }
 
     val dummyPublicData = DummyData.publicData.toList()
@@ -58,7 +57,7 @@ fun FreelancerScreen(navHostController: NavHostController, myPaddingValues: Padd
                 .padding(top = 12.dp),
             text = searchTextState,
             enabled = searchEnabledState,
-            history = searchEnabledHistory
+            history = searchCategory
         )
 
         LazyVerticalGrid(

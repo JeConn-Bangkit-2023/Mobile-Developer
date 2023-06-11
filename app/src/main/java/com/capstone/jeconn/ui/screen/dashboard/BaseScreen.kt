@@ -41,6 +41,7 @@ import com.capstone.jeconn.ui.screen.dashboard.home_screen.HomeScreen
 import com.capstone.jeconn.ui.screen.dashboard.profile_screen.ProfileScreen
 import com.capstone.jeconn.ui.screen.dashboard.status_screen.StatusScreen
 import com.capstone.jeconn.ui.screen.dashboard.vacancies_screen.VacanciesScreen
+import com.capstone.jeconn.utils.navigateTo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -107,7 +108,7 @@ fun BaseScreen(
         floatingActionButton = {
             if (contentRoute == 1) {
                 CustomFloatingActionButton() {
-                    //TODO
+                    navigateTo(navHostController, NavRoute.CreateVacanciesScreen)
                 }
             }
         },
@@ -187,6 +188,7 @@ private fun getIndexFromDestination(route: String?): Int {
     return when (route) {
         // Set the index position based on Back Stack Entry
         NavRoute.SettingScreen.route -> 4
+        NavRoute.CreateVacanciesScreen.route -> 1
         else -> 0
     }
 }

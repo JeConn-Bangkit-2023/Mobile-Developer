@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,7 +49,7 @@ fun Tabs(
                         .padding(horizontal = 12.dp)
                         .height(5.dp)
                         .background(
-                            color = MaterialTheme.colorScheme.onBackground,
+                            color = Color.White,
                             shape = RoundedCornerShape(8.dp)
                         )
                 )
@@ -61,7 +62,7 @@ fun Tabs(
                             fontSize = 13.sp,
                             fontFamily = Font.QuickSand,
                             fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onBackground
+                            color = Color.White
                         )
                     },
                     selected = pagerState.currentPage == index,

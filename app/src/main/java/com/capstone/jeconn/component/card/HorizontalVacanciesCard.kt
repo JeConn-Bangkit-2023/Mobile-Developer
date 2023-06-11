@@ -25,14 +25,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.capstone.jeconn.component.Font
+import com.capstone.jeconn.data.entities.LocationEntity
 import com.capstone.jeconn.utils.CropToSquareImage
+import com.capstone.jeconn.utils.calculateDistance
 import com.capstone.jeconn.utils.getTimeAgo
 
 @Composable
 fun HorizontalVacanciesCard(
     profileImageUrl: String,
     name: String,
-    range: String,
+    myLocation: LocationEntity,
+    targetLocation: LocationEntity,
     timestamp: Long,
     description: String,
     modifier: Modifier = Modifier,
@@ -78,7 +81,7 @@ fun HorizontalVacanciesCard(
                         )
                     )
                     Text(
-                        text = range,
+                        text = calculateDistance(myLocation, targetLocation),
                         style = TextStyle(
                             fontFamily = Font.QuickSand,
                             fontSize = 14.sp,
@@ -92,7 +95,7 @@ fun HorizontalVacanciesCard(
                 Spacer(modifier = Modifier.weight(1f))
 
                 Text(
-                    text = getTimeAgo(context, timestamp * 1000),
+                    text = getTimeAgo(context, timestamp),
                     style = TextStyle(
                         fontFamily = Font.QuickSand,
                         fontSize = 14.sp,

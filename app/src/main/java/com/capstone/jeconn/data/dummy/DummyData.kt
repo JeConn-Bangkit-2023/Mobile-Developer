@@ -43,7 +43,10 @@ object DummyData {
                 isOpenToOffer = true,
                 location = LocationEntity(37.7749, -122.4194) // San Francisco location
             ),
-            vacanciesPostId = listOf(1, 2),
+            vacanciesPostId = mapOf(
+                "1" to 1,
+                "2" to 2
+            ),
             notifications = listOf(
                 Notification(System.currentTimeMillis(), "New Message", "You have a new message"),
                 Notification(
@@ -79,7 +82,9 @@ object DummyData {
                 isOpenToOffer = false,
                 location = null
             ),
-            vacanciesPostId = listOf(3),
+            vacanciesPostId = mapOf(
+                "1" to 1,
+            ),
             notifications = listOf(
                 Notification(
                     System.currentTimeMillis(),
@@ -179,24 +184,36 @@ object DummyData {
         1 to VacanciesEntity(
             username = "john_doe66",
             timestamp = System.currentTimeMillis(),
-            salary = 5000,
-            category = listOf(1, 3),
+            start_salary = 5000,
+            end_salary = 10000,
+            category = mapOf(
+                "1" to 1,
+                "2" to 2
+            ),
             description = "We are hiring software developers. Join our team!",
             location = LocationEntity(37.7749, -122.4194) // San Francisco location
         ),
         2 to VacanciesEntity(
             username = "jane_smith66",
             timestamp = System.currentTimeMillis(),
-            salary = 7000,
-            category = listOf(2, 4),
+            start_salary = 10000,
+            end_salary = 100000,
+            category = mapOf(
+                "1" to 1,
+                "8" to 8
+            ),
             description = "Looking for experienced graphic designers. Apply now!",
             location = LocationEntity(40.7128, -74.0060) // New York location
         ),
         3 to VacanciesEntity(
             username = "jane_smith66",
             timestamp = System.currentTimeMillis(),
-            salary = 6000,
-            category = listOf(5, 6),
+            start_salary = 20000,
+            end_salary = 25000,
+            category = mapOf(
+                "2" to 2,
+                "5" to 5
+            ),
             description = "We need skilled photographers for a project. Contact us for details!",
             location = LocationEntity(51.5074, -0.1278) // London location
         )

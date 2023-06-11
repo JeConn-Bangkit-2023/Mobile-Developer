@@ -1,4 +1,4 @@
-package com.capstone.jeconn.ui.screen.dashboard.home_screen.message
+package com.capstone.jeconn.ui.screen.dashboard.home_screen.message_screen
 
 
 import androidx.compose.foundation.background
