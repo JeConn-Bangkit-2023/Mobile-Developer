@@ -121,6 +121,20 @@
     <string name="successfully_update_information">Successfully update Information</string>
     <string name="empty_gender">>Please fill in your gender</string>
     <string name="empty_about_me">Please fill your about</string>
-    <string name="empty_category">Please fill your category</string>
+    <string name="empty_category">Please select category</string>
     <string name="empty_image">Please upload at least one images that support your job</string>
+    <string name="create_vacancies">Create Vacancies</string>
+    <string name="select_a_job">Select a job</string>
+    <string name="fill_job">Fill job</string>
+    <string name="description">Description</string>
+    <string name="salary_range">Salary range</string>
+    <string name="start">Start</string>
+    <string name="up_to">Up to</string>
+    <string name="successfully_create_a_vacancy_post">Successfully create a vacancy post</string>
+    <string name="empty_description">Please fill job description</string>
+    <string name="empty_start_range">Please fill starting salary range</string>
+    <string name="empty_end_range">Please fill end salary range</string>
+    <string name="end_less_than_start">Final salary cannot be less than the starting salary</string>
+    <string name="contact_tenant">Contact tenant</string>
+
 </resources>

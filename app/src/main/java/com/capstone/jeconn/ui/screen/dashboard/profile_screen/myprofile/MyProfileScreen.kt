@@ -2,7 +2,6 @@ package com.capstone.jeconn.ui.screen.dashboard.profile_screen.myprofile
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -152,7 +151,6 @@ fun MyProfileScreen(navHostController: NavHostController) {
             }
 
             is UiState.Success -> {
-                Log.e("getAll Data", currentState.data.toString())
                 loadingState = false
                 currentState.data.profile_image_url?.let {
                     imageProfileState.value = it
@@ -165,9 +163,11 @@ fun MyProfileScreen(navHostController: NavHostController) {
                     aboutState.value = it
                 }
                 currentState.data.jobInformation?.categories?.let { categoryList ->
+                    categoryState.clear()
                     categoryList.map { categoryState.add(it) }
                 }
                 currentState.data.jobInformation?.imagesUrl?.let { imagesUrl ->
+                    jobImageState.clear()
                     imagesUrl.values.map { image ->
                         image.post_image_url?.let {
                             jobImageState.add(it)
@@ -376,11 +376,7 @@ fun MyProfileScreen(navHostController: NavHostController) {
                 }
             }
 
-            val imageJobListState = remember {
-                mutableStateListOf("")
-            }
-
-            if (imageJobListState.isNotEmpty()) {
+            if (jobImageState.isNotEmpty()) {
                 Spacer(modifier = Modifier.padding(vertical = 6.dp))
 
                 Text(
@@ -398,7 +394,7 @@ fun MyProfileScreen(navHostController: NavHostController) {
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    items(imageJobListState) { url ->
+                    items(jobImageState) { url ->
                         CropToSquareImage(
                             imageUrl = url,
                             contentDescription = null,

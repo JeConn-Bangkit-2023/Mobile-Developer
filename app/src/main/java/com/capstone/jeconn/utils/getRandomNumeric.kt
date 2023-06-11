@@ -2,8 +2,7 @@ package com.capstone.jeconn.utils
 
 import kotlin.random.Random
 
-fun getRandomNumeric(): String {
+fun getRandomNumeric(): Long {
     val randomGenerator = Random(System.currentTimeMillis())
-    val result = randomGenerator.nextInt(100000000, 999999999)
-    return result.toString()
+    return randomGenerator.nextInt(100000000, 999999999).toLong()
 }

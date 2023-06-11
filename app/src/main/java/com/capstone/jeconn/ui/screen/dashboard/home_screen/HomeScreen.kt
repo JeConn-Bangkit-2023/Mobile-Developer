@@ -129,13 +129,21 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
             HorizontalVacanciesCard(
                 profileImageUrl = tenant.profile_image_url!!,
                 name = tenant.full_name!!,
-                range = calculateDistance(LocationEntity(51.5074, -0.1278), value.second.location!!),
+                myLocation = LocationEntity(51.5074, -0.1278),
+                targetLocation = value.second.location!!,
                 timestamp = value.second.timestamp!!,
                 description = value.second.description!!,
                 modifier = Modifier
                     .padding(horizontal = 12.dp)
-            ){
-                navHostController.navigate(NavRoute.DetailVacanciesScreen.navigateWithId(index.toString()))
+            ) {
+                navHostController.navigate(
+                    NavRoute.DetailVacanciesScreen.navigateWithId(
+                        index.toString(),
+                        "fa",
+                        "apahayo",
+                        "1 kilo"
+                    )
+                )
             }
         }
         item {

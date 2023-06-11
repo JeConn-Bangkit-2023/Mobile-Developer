@@ -3,6 +3,7 @@ package com.capstone.jeconn.utils
 import androidx.lifecycle.ViewModelProvider
 import com.capstone.jeconn.repository.AuthRepository
 import com.capstone.jeconn.repository.ProfileRepository
+import com.capstone.jeconn.repository.VacanciesRepository
 import com.capstone.jeconn.ui.screen.authentication.login_screen.LoginViewModel
 import com.capstone.jeconn.ui.screen.authentication.register_screen.RegisterViewModel
 import com.capstone.jeconn.ui.screen.authentication.required_info_screen.RequireInfoViewModel
@@ -10,6 +11,9 @@ import com.capstone.jeconn.ui.screen.authentication.required_location_screen.Req
 import com.capstone.jeconn.ui.screen.dashboard.profile_screen.ProfileViewModel
 import com.capstone.jeconn.ui.screen.dashboard.profile_screen.edit_detail_info.EditDetailInfoViewModel
 import com.capstone.jeconn.ui.screen.dashboard.profile_screen.myprofile.MyProfileViewModel
+import com.capstone.jeconn.ui.screen.dashboard.vacancies_screen.VacanciesViewModel
+import com.capstone.jeconn.ui.screen.dashboard.vacancies_screen.create_vacancies_screen.CreateVacanciesViewModel
+import com.capstone.jeconn.ui.screen.dashboard.vacancies_screen.detail_vacancies_screen.DetailVacanciesViewModel
 
 class AuthViewModelFactory(private val repository: AuthRepository) :
     ViewModelProvider.NewInstanceFactory() {
@@ -40,6 +44,22 @@ class ProfileViewModelFactory(private val repository: ProfileRepository) :
             return MyProfileViewModel(repository) as T
         } else if (modelClass.isAssignableFrom(EditDetailInfoViewModel::class.java)) {
             return EditDetailInfoViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
+    }
+}
+
+class VacanciesViewModelFactory(private val repository: VacanciesRepository, private val vacanciesId: Int = 0) :
+    ViewModelProvider.NewInstanceFactory() {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(CreateVacanciesViewModel::class.java)) {
+            return CreateVacanciesViewModel(repository) as T
+        } else if (modelClass.isAssignableFrom(VacanciesViewModel::class.java)) {
+            return VacanciesViewModel(repository) as T
+        } else if (modelClass.isAssignableFrom(DetailVacanciesViewModel::class.java)) {
+            return DetailVacanciesViewModel(repository, vacanciesId) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

@@ -7,7 +7,7 @@ data class PublicDataEntity(
     val profile_image_url: String? = null,
     val detail_information: DetailInformation? = null,
     val jobInformation: JobInformation? = null,
-    val vacanciesPostId: List<Int>? = null,
+    val vacanciesPostId: Map<String, Int>? = null,
     val notifications: List<Notification>? = null,
     val messages_room_id: List<Int>? = null,
     val invoice_id: List<Int>? = null,
