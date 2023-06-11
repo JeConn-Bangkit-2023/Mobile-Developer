@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -31,19 +30,18 @@ import com.capstone.jeconn.utils.getTimeAgo
 
 @Composable
 fun HorizontalMessageCard(
-    profileImageUrl : String,
-    name : String,
-    message : String,
-    timestamp : Long,
-    onClick : () -> Unit,
+    profileImageUrl: String,
+    name: String,
+    message: String,
+    timestamp: Long,
+    onClick: () -> Unit,
 
     ) {
     val context = LocalContext.current
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-            .clickable {onClick()},
+            .clickable { onClick() }
+            .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
         Column(
@@ -67,7 +65,6 @@ fun HorizontalMessageCard(
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier
                         .padding(horizontal = 8.dp)
-                        .width(250.dp)
                 ) {
                     Text(
                         text = name,
@@ -93,7 +90,7 @@ fun HorizontalMessageCard(
                 Spacer(modifier = Modifier.weight(1f))
 
                 Text(
-                    text = getTimeAgo(context, timestamp * 1000),
+                    text = getTimeAgo(context, timestamp),
                     style = TextStyle(
                         fontFamily = Font.QuickSand,
                         fontSize = 14.sp,
@@ -102,8 +99,6 @@ fun HorizontalMessageCard(
                     )
                 )
             }
-
-
 
 
         }

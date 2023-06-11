@@ -21,7 +21,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
@@ -44,6 +46,7 @@ import com.capstone.jeconn.component.CustomNavbar
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.data.dummy.DummyData
 import com.capstone.jeconn.di.Injection
+import com.capstone.jeconn.navigation.NavRoute
 import com.capstone.jeconn.state.UiState
 import com.capstone.jeconn.utils.CropToSquareImage
 import com.capstone.jeconn.utils.MakeToast
@@ -62,16 +65,61 @@ fun DetailVacanciesScreen(
 ) {
     val auth = Firebase.auth.currentUser!!
     val context = LocalContext.current
+    val isLoading = remember {
+        mutableStateOf(false)
+    }
+    if (isLoading.value) {
+        CustomDialogBoxLoading()
+    }
 
     val detailVacanciesViewModel: DetailVacanciesViewModel = remember {
         VacanciesViewModelFactory(
             Injection.provideVacanciesRepository(
                 context = context,
             ),
-            vacanciesId = id!!.toInt()
+            vacanciesId = id!!.toInt(),
+            Injection.provideChatRepository(context)
         ).create(
             DetailVacanciesViewModel::class.java
         )
+    }
+
+    val isSuccess = remember {
+        mutableStateOf(false)
+    }
+
+    val openChatState by rememberUpdatedState(newValue = detailVacanciesViewModel.openChatState.value)
+
+    when (val currentState = openChatState) {
+        is UiState.Loading -> {
+            isLoading.value = true
+        }
+
+
+        is UiState.Success -> {
+            isLoading.value = false
+            isSuccess.value = true
+            LaunchedEffect(isSuccess) {
+                if (isSuccess.value) {
+                    navHostController.navigate(
+                        NavRoute.DetailMessageScreen.navigateWithId(
+                            currentState.data.toString(),
+                            name!!,
+                            Uri.encode(profileImage)
+                        )
+                    )
+                }
+            }
+        }
+
+        is UiState.Error -> {
+            isLoading.value = false
+        }
+
+        else -> {
+            //Nothing
+            isLoading.value = false
+        }
     }
 
     val vacanciesDetailState by rememberUpdatedState(newValue = detailVacanciesViewModel.vacanciesDetailState.value)
@@ -139,8 +187,7 @@ fun DetailVacanciesScreen(
 
                             Spacer(modifier = Modifier.padding(8.dp))
 
-                            Column(
-                            ) {
+                            Column {
                                 Text(
                                     text = name!!,
                                     style = TextStyle(
@@ -205,7 +252,7 @@ fun DetailVacanciesScreen(
                             Spacer(modifier = Modifier.padding(8.dp))
 
                             Text(
-                                text = currentState.data.start_salary.toString(),
+                                text = "${currentState.data.start_salary.toString()} - ${currentState.data.end_salary.toString()}",
                                 style = TextStyle(
                                     fontFamily = Font.QuickSand,
                                     fontSize = 14.sp,
@@ -275,7 +322,10 @@ fun DetailVacanciesScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                             ) {
-                                //TODO
+                                detailVacanciesViewModel.openChat(
+                                    auth.displayName!!,
+                                    currentState.data.username!!
+                                )
                             }
                         }
 

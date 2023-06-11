@@ -90,7 +90,10 @@ fun CreateVacanciesScreen(navHostController: NavHostController) {
     }
 
     val createVacanciesViewModel: CreateVacanciesViewModel = remember {
-        VacanciesViewModelFactory(Injection.provideVacanciesRepository(context)).create(
+        VacanciesViewModelFactory(
+            vacanciesRepository = Injection.provideVacanciesRepository(context),
+            chatRepository = Injection.provideChatRepository(context)
+        ).create(
             CreateVacanciesViewModel::class.java
         )
     }
@@ -299,7 +302,7 @@ fun CreateVacanciesScreen(navHostController: NavHostController) {
                         MakeToast.short(context, context.getString(R.string.empty_end_range))
                     }
 
-                    (endRange.value < startRange.value) -> {
+                    ((startRange.value.trim().toLong()) > (endRange.value.trim().toLong())) -> {
                         MakeToast.long(context, context.getString(R.string.end_less_than_start))
                     }
 

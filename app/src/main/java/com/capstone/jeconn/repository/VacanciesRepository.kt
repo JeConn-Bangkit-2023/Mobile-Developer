@@ -34,43 +34,48 @@ class VacanciesRepository(
         vacanciesListState.value = UiState.Loading
         ref.child("vacanciesList").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                snapshot.children.forEach { vacancies ->
-                    vacancies.getValue(VacanciesEntity::class.java)?.let { item ->
-                        item.username?.let { username ->
-                            ref.child("publicData").child(username).get()
-                                .addOnSuccessListener { userData ->
-                                    val fullName =
-                                        userData.child("full_name").getValue(String::class.java)
-                                    val profileImageUrl = userData.child("profile_image_url")
-                                        .getValue(String::class.java)
-                                    ref.child("publicData").child(currentUser.displayName!!)
-                                        .child("jobInformation").child("location").get()
-                                        .addOnSuccessListener { myLocationSnapshot ->
-                                            val myLocation =
-                                                myLocationSnapshot.getValue(LocationEntity::class.java)
-                                            val newData = VacanciesEntity(
-                                                id = item.id,
-                                                username = item.username,
-                                                full_name = fullName,
-                                                imageUrl = profileImageUrl,
-                                                timestamp = item.timestamp,
-                                                start_salary = item.start_salary,
-                                                end_salary = item.end_salary,
-                                                category = item.category,
-                                                description = item.description,
-                                                location = item.location,
-                                                myLocation = myLocation
-                                            )
-                                            vacanciesList.add(newData)
-                                            if (vacanciesList.size == snapshot.childrenCount.toInt()) {
-                                                vacanciesListState.value =
-                                                    UiState.Success(vacanciesList)
+                if (snapshot.childrenCount > 0) {
+                    snapshot.children.forEach { vacancies ->
+                        vacancies.getValue(VacanciesEntity::class.java)?.let { item ->
+                            item.username?.let { username ->
+                                ref.child("publicData").child(username).get()
+                                    .addOnSuccessListener { userData ->
+                                        val fullName =
+                                            userData.child("full_name").getValue(String::class.java)
+                                        val profileImageUrl = userData.child("profile_image_url")
+                                            .getValue(String::class.java)
+                                        ref.child("publicData").child(currentUser.displayName!!)
+                                            .child("jobInformation").child("location").get()
+                                            .addOnSuccessListener { myLocationSnapshot ->
+                                                val myLocation =
+                                                    myLocationSnapshot.getValue(LocationEntity::class.java)
+                                                val newData = VacanciesEntity(
+                                                    id = item.id,
+                                                    username = item.username,
+                                                    full_name = fullName,
+                                                    imageUrl = profileImageUrl,
+                                                    timestamp = item.timestamp,
+                                                    start_salary = item.start_salary,
+                                                    end_salary = item.end_salary,
+                                                    category = item.category,
+                                                    description = item.description,
+                                                    location = item.location,
+                                                    myLocation = myLocation
+                                                )
+                                                vacanciesList.add(newData)
+                                                if (vacanciesList.size == snapshot.childrenCount.toInt()) {
+                                                    vacanciesListState.value =
+                                                        UiState.Success(vacanciesList)
+                                                }
                                             }
-                                        }
-                                }
+                                    }
+                            }
                         }
                     }
+                } else {
+                    vacanciesListState.value = UiState.Error(context.getString(R.string.empty))
                 }
+
             }
 
             override fun onCancelled(error: DatabaseError) {

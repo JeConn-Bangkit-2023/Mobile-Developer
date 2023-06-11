@@ -1,8 +1,11 @@
 package com.capstone.jeconn.ui.screen.dashboard.home_screen.message_screen
 
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,11 +16,18 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
@@ -26,10 +36,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.capstone.jeconn.R
+import com.capstone.jeconn.component.CustomDialogBoxLoading
+import com.capstone.jeconn.component.CustomEmptyScreen
 import com.capstone.jeconn.component.CustomNavbar
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.component.card.HorizontalMessageCard
-import com.capstone.jeconn.data.dummy.DummyData
+import com.capstone.jeconn.data.entities.MessageRoomEntity
+import com.capstone.jeconn.di.Injection
+import com.capstone.jeconn.navigation.NavRoute
+import com.capstone.jeconn.state.UiState
+import com.capstone.jeconn.utils.MessageViewModelFactory
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -37,68 +53,128 @@ import com.google.firebase.ktx.Firebase
 fun MessageScreen(navHostController: NavHostController) {
     val auth = Firebase.auth
     val context = LocalContext.current
-    val massageData = DummyData.messageRooms
-    val uid = DummyData.UID
-    val myData = DummyData.privateData[uid]
-    val myRoomChatId = DummyData.publicData[myData!!.username]!!.messages_room_id
-    val publicData = DummyData.publicData
 
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.background(
-            MaterialTheme.colorScheme.background)
+    val isLoading = remember {
+        mutableStateOf(false)
+    }
+    if (isLoading.value) {
+        CustomDialogBoxLoading()
+    }
+
+    val messageList = remember {
+        mutableStateListOf<MessageRoomEntity>()
+    }
+
+    val messageViewModel: MessageViewModel = remember {
+        MessageViewModelFactory(
+            Injection.provideChatRepository(
+                context = context,
+            ),
+            roomChatId = "",
+        ).create(
+            MessageViewModel::class.java
+        )
+    }
+
+    val loadMessageListState by rememberUpdatedState(newValue = messageViewModel.loadMessageListState.value)
+
+    LaunchedEffect(loadMessageListState) {
+        when (val currentState = loadMessageListState) {
+            is UiState.Loading -> {
+                isLoading.value = true
+            }
+
+            is UiState.Success -> {
+                isLoading.value = false
+                messageList.addAll(currentState.data)
+            }
+
+            is UiState.Error -> {
+                isLoading.value = false
+            }
+
+            else -> {
+                //Nothing
+                isLoading.value = false
+            }
+        }
+    }
+
+    Column(
+        modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+
     ) {
-        item {
-            CustomNavbar {
+        CustomNavbar {
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                IconButton(
+
+                    onClick = { navHostController.popBackStack() }
                 ) {
-                    IconButton(
-
-                        onClick = { navHostController.popBackStack() }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(28.dp)
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.padding(horizontal = 4.dp))
-
-                    Text(
-                        text = context.getString(R.string.Message),
-                        style = TextStyle(
-                            fontSize = 24.sp,
-                            fontFamily = Font.QuickSand,
-                            fontWeight = FontWeight.Bold,
-                        ),
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(28.dp)
                     )
                 }
+
+                Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+
+                Text(
+                    text = context.getString(R.string.Message),
+                    style = TextStyle(
+                        fontSize = 24.sp,
+                        fontFamily = Font.QuickSand,
+                        fontWeight = FontWeight.Bold,
+                    ),
+                )
             }
         }
 
-        items(
-            myRoomChatId!!
-        ) { id ->
-            val enemyUsername =
-                massageData[id]!!.members_username!!.filter { it != myData.username }
-                    .joinToString { it }
-            HorizontalMessageCard(
-                profileImageUrl = publicData[enemyUsername]!!.profile_image_url!!,
-                name = publicData[enemyUsername]!!.full_name!!,
-                message = massageData[id]!!.messages!!.last().message!!,
-                timestamp = massageData[id]!!.messages!!.last().date!!,
-            ) {
-                //TODO
-            }
-        }
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(12.dp),
+        ) {
+            if (messageList.isNotEmpty()) {
+                items(
+                    messageList
+                ) { message ->
+                    HorizontalMessageCard(
+                        profileImageUrl = message.currentTargetImageUrl ?: "",
+                        name = message.currentTargetName ?: "",
+                        message = message.messages?.values?.last()?.message ?: "",
+                        timestamp = message.messages?.values?.last()?.date ?: 0,
+                    ) {
+                        navHostController.navigate(
+                            NavRoute.DetailMessageScreen.navigateWithId(
+                                getId = message.messages_room_id.toString(),
+                                getName = message.currentTargetName ?: "",
+                                getProfileImage = Uri.encode(message.currentTargetName).toString()
+                            )
+                        )
+                    }
+                }
+            } else {
+                item {
 
-        item {
-            Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                    Spacer(modifier = Modifier.padding(vertical = 12.dp))
+
+                    CustomEmptyScreen(
+                        subject = context.getString(R.string.empty_message_list),
+                        buttonLabel = context.getString(R.string.refresh),
+                        buttonIcon = Icons.Default.Refresh,
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        messageViewModel.loadMessage()
+                    }
+                }
+            }
         }
     }
 }
