@@ -187,7 +187,9 @@ fun VacanciesScreen(navHostController: NavHostController, myPaddingValues: Paddi
                             Uri.encode(vacancies.imageUrl),
                             calculateDistance(vacancies.location, vacancies.myLocation)
                         )
-                    )
+                    ){
+                        launchSingleTop = true
+                    }
                 }
             }
         }

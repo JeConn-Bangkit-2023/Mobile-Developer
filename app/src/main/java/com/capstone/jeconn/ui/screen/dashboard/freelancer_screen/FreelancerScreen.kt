@@ -208,7 +208,9 @@ fun FreelancerScreen(navHostController: NavHostController, myPaddingValues: Padd
                         NavRoute.DetailFreelancerScreen.navigateWithUsername(
                             value.username ?: "fauzanramadhani06"
                         )
-                    )
+                    ) {
+                        launchSingleTop = true
+                    }
                 }
             }
         }
