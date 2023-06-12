@@ -68,5 +68,14 @@ sealed class NavRoute(val route: String) {
 
     object CreateVacanciesScreen : NavRoute("create_vacancies_screen")
 
+    object DetailFreelancerScreen :
+        NavRoute("freelancer_vacancies_screen/{$A_ARGS_KEY}") {
+        fun navigateWithUid(
+            getId: String
+        ): String {
+            return "freelancer_vacancies_screen/$getId"
+        }
+    }
+
 
 }

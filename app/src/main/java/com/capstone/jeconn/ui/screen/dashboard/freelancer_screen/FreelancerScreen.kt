@@ -1,5 +1,6 @@
 package com.capstone.jeconn.ui.screen.dashboard.freelancer_screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,6 +23,7 @@ import com.capstone.jeconn.component.CustomSearchBar
 import com.capstone.jeconn.component.card.VerticalFreelancerCard
 import com.capstone.jeconn.data.dummy.DummyData
 import com.capstone.jeconn.data.entities.LocationEntity
+import com.capstone.jeconn.navigation.NavRoute
 import com.capstone.jeconn.utils.calculateDistance
 
 @Composable
@@ -73,6 +75,7 @@ fun FreelancerScreen(navHostController: NavHostController, myPaddingValues: Padd
         ) {
             itemsIndexed(dummyPublicData.toList()) { index, value ->
                 val user = value.second
+                val indexx = value.first
                 if (user.jobInformation != null && user.detail_information != null
                 ) {
                     if (user.jobInformation.isOpenToOffer) {
@@ -84,7 +87,13 @@ fun FreelancerScreen(navHostController: NavHostController, myPaddingValues: Padd
                                 LocationEntity(51.5074, -0.1278)
                             ),
                             listSkills = user.jobInformation.categories!!
-                        )
+                        ){
+                            navHostController.navigate(
+                                NavRoute.DetailFreelancerScreen.navigateWithUid(
+                                    indexx
+                                )
+                            )
+                        }
                     }
                 }
             }
