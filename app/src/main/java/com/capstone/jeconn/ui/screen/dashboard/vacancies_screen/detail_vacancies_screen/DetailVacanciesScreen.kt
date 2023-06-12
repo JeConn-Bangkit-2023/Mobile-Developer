@@ -279,7 +279,7 @@ fun DetailVacanciesScreen(
 
                         for (categoryText in currentState.data.category!!) {
                             CustomLabel(
-                                text = DummyData.entertainmentCategories[categoryText.value]!!
+                                text = DummyData.entertainmentCategories[categoryText]!!
                             )
                         }
 

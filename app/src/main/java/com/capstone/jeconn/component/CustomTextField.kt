@@ -34,8 +34,16 @@ fun CustomTextField(
 
     OutlinedTextField(
         value = state.value,
-        onValueChange = {
-            if (it.length <= length) state.value = it
+        onValueChange = { text ->
+            if (text.length <= length) {
+                state.value = text
+            }
+            if (type == KeyboardType.Number ||
+                type == KeyboardType.NumberPassword || type == KeyboardType.Decimal
+            ) {
+                val filteredValue = text.filter { it.isDigit() }
+                state.value = filteredValue
+            }
         },
         label = {
             Text(text = label)

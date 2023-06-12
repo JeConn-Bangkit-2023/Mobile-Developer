@@ -98,7 +98,7 @@ class VacanciesRepository(
     }
 
     fun createVacancies(
-        category: Map<String, Int>,
+        category: List<Int>,
         description: String,
         salaryStart: Long,
         salaryEnd: Long

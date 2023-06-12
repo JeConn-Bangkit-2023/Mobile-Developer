@@ -66,7 +66,7 @@ fun VacanciesScreen(navHostController: NavHostController, myPaddingValues: Paddi
                     val descriptionMatch = vacancies.description?.contains(query, true) == true
                     val fullNameMatch = vacancies.full_name?.contains(query, true) == true
                     val category = vacancies.category?.map {
-                        DummyData.entertainmentCategories[it.value]
+                        DummyData.entertainmentCategories[it]
                     }
                     val categoryMatch = category?.any {
                         it!!.contains(query, true)

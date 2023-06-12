@@ -269,7 +269,7 @@ fun CreateVacanciesScreen(navHostController: NavHostController) {
                     label = context.getString(R.string.up_to),
                     state = endRange,
                     imeAction = ImeAction.Done,
-                    type = KeyboardType.Decimal,
+                    type = KeyboardType.NumberPassword,
                     modifier = Modifier
                         .weight(1f)
                 )
@@ -284,6 +284,8 @@ fun CreateVacanciesScreen(navHostController: NavHostController) {
                 selectedCategory.filter { it.value }.keys.map { id ->
                     newCategory[id.toString()] = id
                 }
+                val newStartRange = startRange.value.replace(" ","").toLong()
+                val newEndRange = endRange.value.replace(" ","").toLong()
 
                 when {
                     (selectedCategory.none { it.value }) -> {
@@ -302,16 +304,16 @@ fun CreateVacanciesScreen(navHostController: NavHostController) {
                         MakeToast.short(context, context.getString(R.string.empty_end_range))
                     }
 
-                    ((startRange.value.trim().toLong()) > (endRange.value.trim().toLong())) -> {
+                    (newStartRange > newEndRange) -> {
                         MakeToast.long(context, context.getString(R.string.end_less_than_start))
                     }
 
                     else -> {
                         createVacanciesViewModel.createVacancies(
-                            category = newCategory,
+                            category = newCategory.values.toList(),
                             description = descriptionState.value,
-                            salaryStart = startRange.value.toLong(),
-                            salaryEnd = endRange.value.toLong()
+                            salaryStart = newStartRange,
+                            salaryEnd = newEndRange
                         )
                     }
                 }

@@ -112,57 +112,112 @@ class ChatRepository(private val context: Context) {
     fun loadMessageList() {
         loadMessageListState.value = UiState.Loading
         val messageList = mutableStateListOf<MessageRoomEntity>()
+
         ref.child("publicData").child(auth.displayName!!).child("messages_room_id").get()
             .addOnSuccessListener { myMessageList ->
                 val myMessageListCount = myMessageList.childrenCount
 
-                ref.child("messageRoomList").addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        if (snapshot.hasChildren()) {
-                            snapshot.children.forEach { message ->
-                                val eachMessage = message.getValue(MessageRoomEntity::class.java)!!
-
-                                val targetUsername =
-                                    eachMessage.members_username!!.keys.find { it != auth.displayName }
-
-                                if (targetUsername != null) {
-                                    ref.child("publicData").child(targetUsername).get()
-                                        .addOnSuccessListener { targetSnapshot ->
-                                            val newMessageRoomEntity = MessageRoomEntity(
-                                                currentTargetName = targetSnapshot.child("full_name")
-                                                    .getValue(String::class.java),
-                                                currentTargetImageUrl = targetSnapshot.child("profile_image_url")
-                                                    .getValue(String::class.java),
-                                                messages_room_id = eachMessage.messages_room_id,
-                                                members_username = eachMessage.members_username,
-                                                messages = eachMessage.messages
-                                            )
-                                            messageList.add(newMessageRoomEntity)
-                                            if (messageList.size.toLong() == myMessageListCount) {
-                                                loadMessageListState.value =
-                                                    UiState.Success(messageList)
-
+                if (myMessageListCount != 0L) {
+                    myMessageList.children.forEach { myMessageId ->
+                        val getMyMessageId = myMessageId.getValue(Long::class.java)
+                        ref.child("messageRoomList").child(getMyMessageId.toString())
+                            .addValueEventListener(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    val messageData =
+                                        snapshot.getValue(MessageRoomEntity::class.java)!!
+                                    val targetUsername =
+                                        messageData.members_username!!.values.find { it != auth.displayName }
+                                    if (targetUsername != null) {
+                                        ref.child("publicData").child(targetUsername).get()
+                                            .addOnSuccessListener { targetSnapshot ->
+                                                val newMessageRoomEntity =
+                                                    MessageRoomEntity(
+                                                        currentTargetName = targetSnapshot.child(
+                                                            "full_name"
+                                                        )
+                                                            .getValue(String::class.java),
+                                                        currentTargetImageUrl = targetSnapshot.child(
+                                                            "profile_image_url"
+                                                        )
+                                                            .getValue(String::class.java),
+                                                        messages_room_id = messageData.messages_room_id,
+                                                        members_username = messageData.members_username,
+                                                        messages = messageData.messages?.toSortedMap()
+                                                    )
+                                                messageList.add(newMessageRoomEntity)
+                                                if (messageList.size.toLong() == myMessageListCount) {
+                                                    loadMessageListState.value =
+                                                        UiState.Success(messageList)
+                                                }
                                             }
-                                        }
-                                } else {
-                                    Log.e(
-                                        "targetUsername",
-                                        "Target username is null, cannot get name and image!"
-                                    )
+                                    } else {
+                                        Log.e(
+                                            "targetUsername",
+                                            "Target username is null, cannot get name and image!"
+                                        )
+                                    }
                                 }
-                            }
-                        } else {
-                            loadMessageListState.value = UiState.Success(messageList)
-                        }
-                    }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        loadMessageListState.value =
-                            UiState.Error(context.getString(R.string.server_fail))
-                        Log.e("loadMessageList", error.message)
-                    }
+                                override fun onCancelled(error: DatabaseError) {
+                                    loadMessageListState.value =
+                                        UiState.Error(context.getString(R.string.server_fail))
+                                    Log.e("loadMessageList", error.message)
+                                }
 
-                })
+                            })
+                    }
+                } else {
+                    loadMessageListState.value = UiState.Success(messageList)
+                }
+
+
+//                ref.child("messageRoomList").addValueEventListener(object : ValueEventListener {
+//                    override fun onDataChange(snapshot: DataSnapshot) {
+//                        if (snapshot.hasChildren()) {
+//                            snapshot.children.forEach { message ->
+//                                val eachMessage = message.getValue(MessageRoomEntity::class.java)!!
+//
+//                                val targetUsername =
+//                                    eachMessage.members_username!!.keys.find { it != auth.displayName }
+//
+//                                if (targetUsername != null) {
+//                                    ref.child("publicData").child(targetUsername).get()
+//                                        .addOnSuccessListener { targetSnapshot ->
+//                                            val newMessageRoomEntity = MessageRoomEntity(
+//                                                currentTargetName = targetSnapshot.child("full_name")
+//                                                    .getValue(String::class.java),
+//                                                currentTargetImageUrl = targetSnapshot.child("profile_image_url")
+//                                                    .getValue(String::class.java),
+//                                                messages_room_id = eachMessage.messages_room_id,
+//                                                members_username = eachMessage.members_username,
+//                                                messages = eachMessage.messages
+//                                            )
+//                                            messageList.add(newMessageRoomEntity)
+//                                            if (messageList.size.toLong() == myMessageListCount) {
+//                                                loadMessageListState.value =
+//                                                    UiState.Success(messageList)
+//
+//                                            }
+//                                        }
+//                                } else {
+//                                    Log.e(
+//                                        "targetUsername",
+//                                        "Target username is null, cannot get name and image!"
+//                                    )
+//                                }
+//                            }
+//                        } else {
+//                            loadMessageListState.value = UiState.Success(messageList)
+//                        }
+//                    }
+//
+//                    override fun onCancelled(error: DatabaseError) {
+//                        loadMessageListState.value =
+//                            UiState.Error(context.getString(R.string.server_fail))
+//                        Log.e("loadMessageList", error.message)
+//                    }
+//
+//                })
             }
 
     }

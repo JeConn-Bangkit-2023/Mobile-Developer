@@ -142,7 +142,7 @@ fun MessageScreen(navHostController: NavHostController) {
         ) {
             if (messageList.isNotEmpty()) {
                 items(
-                    messageList
+                    messageList.sortedByDescending { it.messages?.values?.last()?.date }
                 ) { message ->
                     HorizontalMessageCard(
                         profileImageUrl = message.currentTargetImageUrl ?: "",
@@ -154,7 +154,7 @@ fun MessageScreen(navHostController: NavHostController) {
                             NavRoute.DetailMessageScreen.navigateWithId(
                                 getId = message.messages_room_id.toString(),
                                 getName = message.currentTargetName ?: "",
-                                getProfileImage = Uri.encode(message.currentTargetName).toString()
+                                getProfileImage = Uri.encode(message.currentTargetImageUrl).toString()
                             )
                         )
                     }
