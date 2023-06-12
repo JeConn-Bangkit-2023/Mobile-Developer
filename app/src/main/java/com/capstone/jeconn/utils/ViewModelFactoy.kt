@@ -3,12 +3,16 @@ package com.capstone.jeconn.utils
 import androidx.lifecycle.ViewModelProvider
 import com.capstone.jeconn.repository.AuthRepository
 import com.capstone.jeconn.repository.ChatRepository
+import com.capstone.jeconn.repository.FreelancerRepository
 import com.capstone.jeconn.repository.ProfileRepository
 import com.capstone.jeconn.repository.VacanciesRepository
 import com.capstone.jeconn.ui.screen.authentication.login_screen.LoginViewModel
 import com.capstone.jeconn.ui.screen.authentication.register_screen.RegisterViewModel
 import com.capstone.jeconn.ui.screen.authentication.required_info_screen.RequireInfoViewModel
 import com.capstone.jeconn.ui.screen.authentication.required_location_screen.RequiredLocationViewModel
+import com.capstone.jeconn.ui.screen.dashboard.freelancer_screen.FreelancerViewModel
+import com.capstone.jeconn.ui.screen.dashboard.freelancer_screen.detail_freelancer_screen.DetailFreelancerViewModel
+import com.capstone.jeconn.ui.screen.dashboard.home_screen.HomeViewModel
 import com.capstone.jeconn.ui.screen.dashboard.home_screen.message_screen.MessageViewModel
 import com.capstone.jeconn.ui.screen.dashboard.home_screen.message_screen.detail_message_screen.DetailMessageViewModel
 import com.capstone.jeconn.ui.screen.dashboard.profile_screen.ProfileViewModel
@@ -20,7 +24,6 @@ import com.capstone.jeconn.ui.screen.dashboard.vacancies_screen.detail_vacancies
 
 class AuthViewModelFactory(private val repository: AuthRepository) :
     ViewModelProvider.NewInstanceFactory() {
-
     @Suppress("UNCHECKED_CAST")
     override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
@@ -38,7 +41,6 @@ class AuthViewModelFactory(private val repository: AuthRepository) :
 
 class ProfileViewModelFactory(private val repository: ProfileRepository) :
     ViewModelProvider.NewInstanceFactory() {
-
     @Suppress("UNCHECKED_CAST")
     override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
@@ -58,7 +60,6 @@ class VacanciesViewModelFactory(
     private val chatRepository: ChatRepository
 ) :
     ViewModelProvider.NewInstanceFactory() {
-
     @Suppress("UNCHECKED_CAST")
     override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CreateVacanciesViewModel::class.java)) {
@@ -81,13 +82,50 @@ class MessageViewModelFactory(
     private val roomChatId: String = "",
 ) :
     ViewModelProvider.NewInstanceFactory() {
-
     @Suppress("UNCHECKED_CAST")
     override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(DetailMessageViewModel::class.java)) {
-            return DetailMessageViewModel(chatRepository = chatRepository, roomChatId = roomChatId) as T
-        }else if (modelClass.isAssignableFrom(MessageViewModel::class.java)) {
+            return DetailMessageViewModel(
+                chatRepository = chatRepository,
+                roomChatId = roomChatId
+            ) as T
+        } else if (modelClass.isAssignableFrom(MessageViewModel::class.java)) {
             return MessageViewModel(chatRepository = chatRepository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
+    }
+}
+
+class FreelancerViewModelFactory(
+    private val freelancerRepository: FreelancerRepository,
+    private val chatRepository: ChatRepository,
+    private val username: String = "",
+) :
+    ViewModelProvider.NewInstanceFactory() {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(FreelancerViewModel::class.java)) {
+            return FreelancerViewModel(freelancerRepository = freelancerRepository) as T
+        } else if (modelClass.isAssignableFrom(DetailFreelancerViewModel::class.java)) {
+            return DetailFreelancerViewModel(
+                freelancerRepository = freelancerRepository,
+                chatRepository = chatRepository,
+                username = username,
+            ) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
+    }
+}
+
+class HomeViewModelFactory(
+    private val freelancerRepository: FreelancerRepository,
+    private val vacanciesRepository: VacanciesRepository,
+) :
+    ViewModelProvider.NewInstanceFactory() {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
+            return HomeViewModel(freelancerRepository = freelancerRepository, vacanciesRepository = vacanciesRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

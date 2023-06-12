@@ -4,6 +4,8 @@ import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -55,6 +57,7 @@ import com.capstone.jeconn.utils.getTimeAgo
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun DetailVacanciesScreen(
     navHostController: NavHostController,
@@ -63,7 +66,7 @@ fun DetailVacanciesScreen(
     profileImage: String?,
     distance: String?
 ) {
-    val auth = Firebase.auth.currentUser!!
+    val auth = Firebase.auth.currentUser
     val context = LocalContext.current
     val isLoading = remember {
         mutableStateOf(false)
@@ -277,10 +280,14 @@ fun DetailVacanciesScreen(
 
                         Spacer(modifier = Modifier.padding(vertical = 4.dp))
 
-                        for (categoryText in currentState.data.category!!) {
-                            CustomLabel(
-                                text = DummyData.entertainmentCategories[categoryText]!!
-                            )
+                        FlowRow(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            for (categoryText in currentState.data.category!!) {
+                                CustomLabel(
+                                    text = DummyData.entertainmentCategories[categoryText]!!
+                                )
+                            }
                         }
 
                         Spacer(modifier = Modifier.padding(vertical = 8.dp))
@@ -316,16 +323,18 @@ fun DetailVacanciesScreen(
                         ) {
                             Spacer(modifier = Modifier.weight(1f))
 
-                            CustomButton(
-                                text = context.getString(R.string.contact_tenant),
-                                enabled = auth.displayName!! != currentState.data.username,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                            ) {
-                                detailVacanciesViewModel.openChat(
-                                    auth.displayName!!,
-                                    currentState.data.username!!
-                                )
+                            if ((auth?.displayName ?: "") != currentState.data.username) {
+                                CustomButton(
+                                    text = context.getString(R.string.contact_tenant),
+                                    enabled = (auth?.displayName ?: "") != currentState.data.username,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                ) {
+                                    detailVacanciesViewModel.openChat(
+                                        auth?.displayName ?: "",
+                                        currentState.data.username?: "fauzanramadhani06"
+                                    )
+                                }
                             }
                         }
 

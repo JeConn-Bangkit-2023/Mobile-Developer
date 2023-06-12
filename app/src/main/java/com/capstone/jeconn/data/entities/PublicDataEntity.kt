@@ -11,6 +11,7 @@ data class PublicDataEntity(
     val notifications: List<Notification>? = null,
     val messages_room_id: Map<String, Int>? = null,
     val invoice_id: Map<String, Int>? = null,
+    val myLocation: LocationEntity? = null
 )
 
 data class DetailInformation(

@@ -1,5 +1,6 @@
 package com.capstone.jeconn.ui.screen.dashboard.home_screen
 
+import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,12 +9,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -23,25 +30,114 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.capstone.jeconn.R
+import com.capstone.jeconn.component.CustomDialogBoxLoading
 import com.capstone.jeconn.component.CustomNavbar
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.component.card.HorizontalVacanciesCard
 import com.capstone.jeconn.component.card.VerticalFreelancerCard
-import com.capstone.jeconn.data.dummy.DummyData
 import com.capstone.jeconn.data.entities.LocationEntity
+import com.capstone.jeconn.data.entities.PublicDataEntity
+import com.capstone.jeconn.data.entities.VacanciesEntity
+import com.capstone.jeconn.di.Injection
 import com.capstone.jeconn.navigation.NavRoute
+import com.capstone.jeconn.state.UiState
+import com.capstone.jeconn.utils.HomeViewModelFactory
+import com.capstone.jeconn.utils.MakeToast
 import com.capstone.jeconn.utils.calculateDistance
+import com.capstone.jeconn.utils.calculateDistanceToDecimal
 import com.capstone.jeconn.utils.navigateTo
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 @Composable
 fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValues) {
-    val auth = Firebase.auth
     val context = LocalContext.current
-    val publicData = DummyData.publicData.values.toList()
-    val dummyVacanciesList = DummyData.vacancies.toList()
-    val dummyPublicData = DummyData.publicData.toList()
+
+    val isLoading = remember {
+        mutableStateOf(false)
+    }
+    if (isLoading.value) {
+        CustomDialogBoxLoading()
+    }
+
+    val freelancerList = remember {
+        mutableStateListOf<PublicDataEntity>()
+    }
+
+    val vacanciesList = remember {
+        mutableStateListOf<VacanciesEntity>()
+    }
+
+    val homeViewModel: HomeViewModel = remember {
+        HomeViewModelFactory(
+            freelancerRepository = Injection.provideFreelancerRepository(context),
+            vacanciesRepository = Injection.provideVacanciesRepository(context)
+        ).create(
+            HomeViewModel::class.java
+        )
+    }
+
+    val loadFreelancerList by rememberUpdatedState(newValue = homeViewModel.loadFreelancerList.value)
+
+    LaunchedEffect(loadFreelancerList) {
+        when (val currentState = loadFreelancerList) {
+            is UiState.Loading -> {
+                isLoading.value = true
+            }
+
+
+            is UiState.Success -> {
+                isLoading.value = false
+                freelancerList.addAll(currentState.data.filter {
+                    it.jobInformation?.isOpenToOffer
+                        ?: false
+                }.sortedBy {
+                    it.jobInformation?.location?.let { it1 ->
+                        it.myLocation?.let { it2 ->
+                            calculateDistanceToDecimal(
+                                it1,
+                                it2
+                            )
+                        }
+                    }
+                })
+            }
+
+            is UiState.Error -> {
+                MakeToast.short(context, currentState.errorMessage)
+                isLoading.value = false
+            }
+
+            else -> {
+                //Nothing
+                isLoading.value = false
+            }
+        }
+    }
+
+    val vacanciesListState by rememberUpdatedState(newValue = homeViewModel.vacanciesListState.value)
+
+    LaunchedEffect(vacanciesListState) {
+        when (val currentState = vacanciesListState) {
+            is UiState.Loading -> {
+                isLoading.value = true
+            }
+
+
+            is UiState.Success -> {
+                isLoading.value = false
+                vacanciesList.addAll(currentState.data.sortedByDescending { it.timestamp!! })
+            }
+
+            is UiState.Error -> {
+                MakeToast.short(context, currentState.errorMessage)
+                isLoading.value = false
+            }
+
+            else -> {
+                //Nothing
+                isLoading.value = false
+            }
+        }
+    }
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -97,32 +193,27 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
                 contentPadding = PaddingValues(horizontal = 12.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                itemsIndexed(dummyPublicData.toList()) { index, value ->
-                    val user = value.second
-                    val uid = value.first
-                    if (user.jobInformation != null && user.detail_information != null
+                items(freelancerList) { value ->
+                    VerticalFreelancerCard(
+                        imageUrl = value.profile_image_url ?: "",
+                        name = value.full_name ?: "",
+                        range = calculateDistance(
+                            value.jobInformation?.location ?: LocationEntity(51.5074, -0.1278),
+                            value.myLocation ?: LocationEntity(51.5074, -0.1278)
+                        ),
+                        listSkills = value.jobInformation?.categories ?: listOf(),
                     ) {
-                        if (user.jobInformation.isOpenToOffer) {
-                            VerticalFreelancerCard(
-                                imageUrl = user.profile_image_url!!,
-                                name = user.full_name!!,
-                                range = calculateDistance(
-                                    user.jobInformation.location!!,
-                                    LocationEntity(51.5074, -0.1278)
-                                ),
-                                listSkills = user.jobInformation.categories!!
-                            ){
-                                navHostController.navigate(
-                                    NavRoute.DetailFreelancerScreen.navigateWithUid(uid)
-                                )
-                            }
-                        }
+                        navHostController.navigate(
+                            NavRoute.DetailFreelancerScreen.navigateWithUsername(
+                                value.username ?: "fauzanramadhani06"
+                            )
+                        )
                     }
                 }
             }
 
             Text(
-                text = context.getString(R.string.nearby_vacancies),
+                text = context.getString(R.string.current_vacancies),
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontFamily = Font.QuickSand,
@@ -133,26 +224,25 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
             )
         }
 
-        itemsIndexed(dummyVacanciesList.toList()) { index, value ->
-            val tenant = DummyData.publicData[value.second.username]!!
+        items(vacanciesList) { vacancies ->
             HorizontalVacanciesCard(
-                profileImageUrl = tenant.profile_image_url!!,
-                name = tenant.full_name!!,
-                myLocation = LocationEntity(51.5074, -0.1278),
-                targetLocation = value.second.location!!,
-                timestamp = value.second.timestamp!!,
-                description = value.second.description!!,
+                profileImageUrl = vacancies.imageUrl!!,
+                name = vacancies.full_name!!,
+                myLocation = vacancies.location!!,
+                targetLocation = vacancies.myLocation!!,
+                timestamp = vacancies.timestamp!!,
+                description = vacancies.description!!,
                 modifier = Modifier
                     .padding(horizontal = 12.dp)
             ) {
-//                navHostController.navigate(
-//                    NavRoute.DetailVacanciesScreen.navigateWithId(
-//                        index.toString(),
-//                        "fa",
-//                        "apahayo",
-//                        "1 kilo"
-//                    )
-//                )
+                navHostController.navigate(
+                    NavRoute.DetailVacanciesScreen.navigateWithId(
+                        vacancies.id.toString(),
+                        vacancies.full_name,
+                        Uri.encode(vacancies.imageUrl),
+                        calculateDistance(vacancies.location, vacancies.myLocation)
+                    )
+                )
             }
         }
         item {

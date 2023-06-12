@@ -8,25 +8,36 @@ import androidx.compose.runtime.mutableStateOf
 import com.capstone.jeconn.R
 import com.capstone.jeconn.data.entities.Message
 import com.capstone.jeconn.data.entities.MessageRoomEntity
+import com.capstone.jeconn.retrofit.ApiConfig
 import com.capstone.jeconn.state.UiState
 import com.capstone.jeconn.utils.asMap
 import com.capstone.jeconn.utils.getRandomNumeric
+import com.capstone.jeconn.utils.reduceFileImage
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.File
 
 class ChatRepository(private val context: Context) {
 
     private val auth = Firebase.auth.currentUser!!
     private val ref = Firebase.database.reference
+    private val apiService = ApiConfig.apiService
 
     val openChatChatState: MutableState<UiState<Long>> = mutableStateOf(UiState.Empty)
     val loadMessageState: MutableState<UiState<MessageRoomEntity>> = mutableStateOf(UiState.Empty)
     val loadMessageListState: MutableState<UiState<MutableList<MessageRoomEntity>>> =
         mutableStateOf(UiState.Empty)
+    val sendImageMessageState: MutableState<UiState<String>> = mutableStateOf(UiState.Empty)
 
     fun openChat(myUsername: String, targetUsername: String) {
 
@@ -109,6 +120,43 @@ class ChatRepository(private val context: Context) {
         ref.child("messageRoomList").child(roomChatId).child("messages").updateChildren(newMessage)
     }
 
+    fun sendImageMessage(file: File, roomChatId: String, username: String) {
+        sendImageMessageState.value = UiState.Loading
+        val myFile = reduceFileImage(file)
+        val fileRequestBody = myFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
+        val profileImage: MultipartBody.Part =
+            MultipartBody.Part.createFormData("image", file.name, fileRequestBody)
+        val response =
+            apiService.postImageMessage(file = profileImage, roomId = roomChatId, username = username)
+
+        response.enqueue(object : Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                when (response.code()) {
+                    201 -> {
+                        sendImageMessageState.value =
+                            UiState.Success(context.getString(R.string.successfully_sent_image))
+                    }
+
+                    400 -> {
+                        sendImageMessageState.value =
+                            UiState.Error(context.getString(R.string.image_type_wrong))
+                    }
+
+                    else -> {
+                        sendImageMessageState.value =
+                            UiState.Error(context.getString(R.string.server_fail))
+                        Log.e("error", response.toString())
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                sendImageMessageState.value = UiState.Error(t.message.toString())
+            }
+
+        })
+    }
+
     fun loadMessageList() {
         loadMessageListState.value = UiState.Loading
         val messageList = mutableStateListOf<MessageRoomEntity>()
@@ -169,55 +217,6 @@ class ChatRepository(private val context: Context) {
                 } else {
                     loadMessageListState.value = UiState.Success(messageList)
                 }
-
-
-//                ref.child("messageRoomList").addValueEventListener(object : ValueEventListener {
-//                    override fun onDataChange(snapshot: DataSnapshot) {
-//                        if (snapshot.hasChildren()) {
-//                            snapshot.children.forEach { message ->
-//                                val eachMessage = message.getValue(MessageRoomEntity::class.java)!!
-//
-//                                val targetUsername =
-//                                    eachMessage.members_username!!.keys.find { it != auth.displayName }
-//
-//                                if (targetUsername != null) {
-//                                    ref.child("publicData").child(targetUsername).get()
-//                                        .addOnSuccessListener { targetSnapshot ->
-//                                            val newMessageRoomEntity = MessageRoomEntity(
-//                                                currentTargetName = targetSnapshot.child("full_name")
-//                                                    .getValue(String::class.java),
-//                                                currentTargetImageUrl = targetSnapshot.child("profile_image_url")
-//                                                    .getValue(String::class.java),
-//                                                messages_room_id = eachMessage.messages_room_id,
-//                                                members_username = eachMessage.members_username,
-//                                                messages = eachMessage.messages
-//                                            )
-//                                            messageList.add(newMessageRoomEntity)
-//                                            if (messageList.size.toLong() == myMessageListCount) {
-//                                                loadMessageListState.value =
-//                                                    UiState.Success(messageList)
-//
-//                                            }
-//                                        }
-//                                } else {
-//                                    Log.e(
-//                                        "targetUsername",
-//                                        "Target username is null, cannot get name and image!"
-//                                    )
-//                                }
-//                            }
-//                        } else {
-//                            loadMessageListState.value = UiState.Success(messageList)
-//                        }
-//                    }
-//
-//                    override fun onCancelled(error: DatabaseError) {
-//                        loadMessageListState.value =
-//                            UiState.Error(context.getString(R.string.server_fail))
-//                        Log.e("loadMessageList", error.message)
-//                    }
-//
-//                })
             }
 
     }

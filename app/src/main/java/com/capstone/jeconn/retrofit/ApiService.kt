@@ -23,4 +23,12 @@ interface ApiService {
         @Path("username") username: String,
         @Part file: MultipartBody.Part
     ): Call<Unit>
+
+    @POST("messageRooms/{roomId}/messages/{username}")
+    @Multipart
+    fun postImageMessage(
+        @Path("roomId") roomId: String,
+        @Path("username") username: String,
+        @Part file: MultipartBody.Part
+    ): Call<Unit>
 }

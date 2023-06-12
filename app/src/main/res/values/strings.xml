@@ -97,6 +97,10 @@
     <string name="image_type_wrong">Image types are not supported, please use PNG or JPG format.</string>
     <string name="successfully_update_profile_image">Successfully update profile image</string>
     <string name="successfully_update_job_image">Successfully update job image</string>
+    <string name="successfully_sent_image">Successfully sent image</string>
+    <string name="send_picture">Send a picture</string>
+    <string name="made_an_invoice">Made an invoice</string>
+    <string name="You">You</string>
     <string name="server_fail">Failed to connect with the server, try again later</string>
     <string name="canceled">Cancelled</string>
     <string name="done">Done</string>
@@ -139,5 +143,7 @@
     <string name="contact_talent">Contact Talent</string>
     <string name="empty">Empty</string>
     <string name="empty_message_list">Your message is empty</string>
+    <string name="empty_data">Data is Empty</string>
+    <string name="current_vacancies">Current vacancies</string>
 
 </resources>
