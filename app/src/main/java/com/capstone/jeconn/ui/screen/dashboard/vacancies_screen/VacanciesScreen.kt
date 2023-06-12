@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -22,11 +23,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.capstone.jeconn.R
 import com.capstone.jeconn.component.CustomDialogBoxLoading
 import com.capstone.jeconn.component.CustomNavbar
 import com.capstone.jeconn.component.CustomSearchBar
+import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.component.card.HorizontalVacanciesCard
 import com.capstone.jeconn.data.dummy.DummyData
 import com.capstone.jeconn.data.entities.VacanciesEntity
@@ -144,10 +150,25 @@ fun VacanciesScreen(navHostController: NavHostController, myPaddingValues: Paddi
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    top = 112.dp,
+                    top = 90.dp,
                     bottom = myPaddingValues.calculateBottomPadding()
-                )
+                ),
+            contentPadding = PaddingValues(top = 12.dp , bottom = 12.dp)
         ) {
+
+            item {
+                Text(
+                    text = context.getString(R.string.current_vacancies),
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontFamily = Font.QuickSand,
+                        fontWeight = FontWeight.Bold,
+                    ),
+                    modifier = Modifier
+                        .padding(start = 12.dp, bottom = 16.dp)
+                )
+            }
+
             items(filteredVacanciesList.value) { vacancies ->
                 HorizontalVacanciesCard(
                     profileImageUrl = vacancies.imageUrl!!,

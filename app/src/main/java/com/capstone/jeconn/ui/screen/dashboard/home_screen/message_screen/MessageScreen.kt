@@ -46,6 +46,7 @@ import com.capstone.jeconn.di.Injection
 import com.capstone.jeconn.navigation.NavRoute
 import com.capstone.jeconn.state.UiState
 import com.capstone.jeconn.utils.MessageViewModelFactory
+import com.capstone.jeconn.utils.cutTextLength
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -78,6 +79,7 @@ fun MessageScreen(navHostController: NavHostController) {
 
     val loadMessageListState by rememberUpdatedState(newValue = messageViewModel.loadMessageListState.value)
 
+
     LaunchedEffect(loadMessageListState) {
         when (val currentState = loadMessageListState) {
             is UiState.Loading -> {
@@ -86,7 +88,7 @@ fun MessageScreen(navHostController: NavHostController) {
 
             is UiState.Success -> {
                 isLoading.value = false
-                messageList.addAll(currentState.data)
+                messageList.addAll(currentState.data.sortedByDescending { it.messages?.values?.last()?.date })
             }
 
             is UiState.Error -> {
@@ -141,20 +143,56 @@ fun MessageScreen(navHostController: NavHostController) {
             contentPadding = PaddingValues(12.dp),
         ) {
             if (messageList.isNotEmpty()) {
-                items(
-                    messageList.sortedByDescending { it.messages?.values?.last()?.date }
-                ) { message ->
+                items(messageList) { message ->
+
+                    val isMessage = !message.messages?.values?.last()?.message.isNullOrEmpty()
+                    val isImage = !message.messages?.values?.last()?.image_url.isNullOrEmpty()
+                    val isInvoice = message.messages?.values?.last()?.invoice_id != null
+                    val senderUsername = message.messages?.values?.last()?.username ?: ""
+                    val targetName = message.currentTargetName ?: ""
+
                     HorizontalMessageCard(
                         profileImageUrl = message.currentTargetImageUrl ?: "",
                         name = message.currentTargetName ?: "",
-                        message = message.messages?.values?.last()?.message ?: "",
+                        message = if (isMessage) {
+                            if (auth.currentUser!!.displayName!! == senderUsername) {
+                                "${context.getString(R.string.You)}: ${
+                                    cutTextLength(
+                                        message.messages?.values?.last()?.message ?: "",
+                                        22
+                                    )
+                                }"
+                            } else {
+                                "$targetName: ${
+                                    cutTextLength(
+                                        message.messages?.values?.last()?.message ?: "",
+                                        22
+                                    )
+                                }"
+                            }
+                        } else if (isImage) {
+                            if (auth.currentUser!!.displayName!! == senderUsername) {
+                                "${context.getString(R.string.You)}: ${context.getString(R.string.send_picture)}"
+                            } else {
+                                "$targetName: ${context.getString(R.string.send_picture)}"
+                            }
+                        } else if (isInvoice) {
+                            if (auth.currentUser!!.displayName!! == senderUsername) {
+                                "${context.getString(R.string.You)}: ${context.getString(R.string.made_an_invoice)}"
+                            } else {
+                                "$targetName: ${context.getString(R.string.made_an_invoice)}"
+                            }
+                        } else {
+                            ""
+                        },
                         timestamp = message.messages?.values?.last()?.date ?: 0,
                     ) {
                         navHostController.navigate(
                             NavRoute.DetailMessageScreen.navigateWithId(
                                 getId = message.messages_room_id.toString(),
-                                getName = message.currentTargetName ?: "",
-                                getProfileImage = Uri.encode(message.currentTargetImageUrl).toString()
+                                getName = targetName,
+                                getProfileImage = Uri.encode(message.currentTargetImageUrl)
+                                    .toString()
                             )
                         )
                     }

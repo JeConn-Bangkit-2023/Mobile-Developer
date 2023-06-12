@@ -194,7 +194,7 @@ fun MyProfileScreen(navHostController: NavHostController) {
     val pickImageLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
-                // Gambar berhasil dipilih dari galeri, lanjutkan ke pengiriman ke API
+                // Image selected successfully from gallery, proceed to sending to API
                 val myFile = uriToFile(uri, context)
                 if (myFile.exists()) {
                     scope.launch {

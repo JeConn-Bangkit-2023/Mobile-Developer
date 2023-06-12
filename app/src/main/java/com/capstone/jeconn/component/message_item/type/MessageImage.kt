@@ -113,7 +113,23 @@ fun MessageImage(
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .clip(RoundedCornerShape(4.dp))
+                        .clip(
+                            if (isMine) {
+                                RoundedCornerShape(
+                                    topStart = 12.dp,
+                                    topEnd = 12.dp,
+                                    bottomStart = 12.dp,
+                                    bottomEnd = 0.dp
+                                )
+                            } else {
+                                RoundedCornerShape(
+                                    topStart = 12.dp,
+                                    topEnd = 12.dp,
+                                    bottomStart = 0.dp,
+                                    bottomEnd = 12.dp
+                                )
+                            }
+                        )
                         .align(Alignment.Center)
                 ) {
                     it
@@ -146,7 +162,7 @@ fun MessageImage(
                 GlideImage(
                     model = imageUrl,
                     contentDescription = null,
-                    contentScale = ContentScale.FillBounds,
+                    contentScale = ContentScale.None,
                     modifier = Modifier
                         .heightIn(max = 500.dp)
                         .widthIn(max = 500.dp)

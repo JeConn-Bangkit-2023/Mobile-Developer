@@ -1,6 +1,8 @@
 package com.capstone.jeconn.ui.screen.dashboard.home_screen.message_screen.detail_message_screen
 
 import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -11,11 +13,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -27,9 +30,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -52,9 +56,12 @@ import com.capstone.jeconn.data.dummy.DummyData
 import com.capstone.jeconn.data.entities.Message
 import com.capstone.jeconn.di.Injection
 import com.capstone.jeconn.state.UiState
+import com.capstone.jeconn.utils.MakeToast
 import com.capstone.jeconn.utils.MessageViewModelFactory
+import com.capstone.jeconn.utils.uriToFile
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
 
 @Composable
 fun DetailMessageScreen(
@@ -67,7 +74,7 @@ fun DetailMessageScreen(
     val context = LocalContext.current
     val auth = Firebase.auth.currentUser!!
     val messageRoom = remember {
-        mutableStateMapOf<String, Message>()
+        mutableStateListOf<Message>()
     }
 
     val targetUsernameState = remember {
@@ -90,6 +97,11 @@ fun DetailMessageScreen(
         mutableStateOf(false)
     }
 
+    val scope = rememberCoroutineScope()
+
+    val lazyListState = rememberLazyListState()
+
+
     val detailMessageViewModel: DetailMessageViewModel = remember {
         MessageViewModelFactory(
             Injection.provideChatRepository(
@@ -101,6 +113,48 @@ fun DetailMessageScreen(
         )
     }
 
+    val pickImageLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                // Image selected successfully from gallery, proceed to sending to API
+                val myFile = uriToFile(uri, context)
+                if (myFile.exists()) {
+                    scope.launch {
+                        detailMessageViewModel.sendImageMessage(
+                            file = myFile,
+                            roomChatId = id!!,
+                            username = auth.displayName!!
+                        )
+                    }
+                }
+            }
+        }
+
+    val sendImageMessageState by rememberUpdatedState(newValue = detailMessageViewModel.sendImageMessageState.value)
+
+    LaunchedEffect(sendImageMessageState) {
+        when (val currentState = sendImageMessageState) {
+            is UiState.Loading -> {
+                isLoading.value = true
+            }
+
+            is UiState.Success -> {
+                isLoading.value = false
+                MakeToast.short(context, currentState.data)
+            }
+
+            is UiState.Error -> {
+                isLoading.value = false
+                MakeToast.short(context, currentState.errorMessage)
+            }
+
+            else -> {
+                //Nothing
+                isLoading.value = false
+            }
+        }
+    }
+
     val loadMessageState by rememberUpdatedState(newValue = detailMessageViewModel.loadMessageState.value)
 
     LaunchedEffect(loadMessageState) {
@@ -110,17 +164,19 @@ fun DetailMessageScreen(
             }
 
             is UiState.Success -> {
+                messageRoom.clear()
                 isLoading.value = false
-                currentState.data.messages?.map { eachMessage ->
-                    messageRoom[eachMessage.key] = eachMessage.value
-                }
+                currentState.data.messages?.values?.toList()?.sortedBy { it.date }
+                    ?.let { messageRoom.addAll(it.toList()) }
                 currentState.data.members_username!!.keys.find { it != auth.displayName }?.let {
                     targetUsernameState.value = it
                 }
+                lazyListState.scrollToItem(messageRoom.lastIndex)
             }
 
             is UiState.Error -> {
                 isLoading.value = false
+                MakeToast.short(context, currentState.errorMessage)
             }
 
             else -> {
@@ -166,16 +222,17 @@ fun DetailMessageScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
-                contentPadding = PaddingValues(12.dp)
+                contentPadding = PaddingValues(12.dp),
+                state = lazyListState
             ) {
-                items(messageRoom.toList().sortedBy { it.second.date }) { itemChat ->
+                items(messageRoom) { itemChat ->
                     CustomMessageItem(
-                        text = itemChat.second.message,
-                        imageUrl = itemChat.second.image_url,
-                        invoice = invoiceList[itemChat.second.invoice_id?.toInt()],
+                        text = itemChat.message,
+                        imageUrl = itemChat.image_url,
+                        invoice = invoiceList[itemChat.invoice_id?.toInt()],
                         senderProfileImageUrl = Uri.decode(targetImageUrl!!),
-                        isMine = itemChat.second.username == auth.displayName,
-                        dateTime = itemChat.second.date!!
+                        isMine = itemChat.username == auth.displayName,
+                        dateTime = itemChat.date!!
                     )
                 }
             }
@@ -211,7 +268,7 @@ fun DetailMessageScreen(
                         .size(50.dp)
 
                 ) {
-                    //TODO
+                    pickImageLauncher.launch("image/*")
                 }
             }
         }
@@ -239,7 +296,7 @@ fun DetailMessageScreen(
                 rounded = 50.dp,
                 modifier = Modifier
                     .weight(1f)
-                    .height(65.dp)
+                    .heightIn(min = 65.dp)
 
             )
 

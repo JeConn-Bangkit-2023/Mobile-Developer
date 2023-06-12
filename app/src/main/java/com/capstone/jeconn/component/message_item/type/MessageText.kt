@@ -1,6 +1,7 @@
 package com.capstone.jeconn.component.message_item.type
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -98,10 +99,18 @@ fun MessageText(
                         fontFamily = Font.QuickSand,
                         fontWeight = FontWeight.Normal,
                         fontSize = 14.sp,
-                        color = if (isMine) {
-                            MaterialTheme.colorScheme.onBackground
+                        color = if (isSystemInDarkTheme()) {
+                            if (isMine) {
+                                MaterialTheme.colorScheme.inversePrimary
+                            } else {
+                                MaterialTheme.colorScheme.onBackground
+                            }
                         } else {
-                            MaterialTheme.colorScheme.inversePrimary
+                            if (isMine) {
+                                MaterialTheme.colorScheme.onBackground
+                            } else {
+                                MaterialTheme.colorScheme.inversePrimary
+                            }
                         }
                     ),
                 )

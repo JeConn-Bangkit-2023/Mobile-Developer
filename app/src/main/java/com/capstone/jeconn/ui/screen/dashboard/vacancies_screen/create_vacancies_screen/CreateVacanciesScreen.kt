@@ -281,11 +281,6 @@ fun CreateVacanciesScreen(navHostController: NavHostController) {
                     .padding(vertical = 24.dp)
             ) {
                 val newCategory = mutableMapOf<String, Int>()
-                selectedCategory.filter { it.value }.keys.map { id ->
-                    newCategory[id.toString()] = id
-                }
-                val newStartRange = startRange.value.replace(" ","").toLong()
-                val newEndRange = endRange.value.replace(" ","").toLong()
 
                 when {
                     (selectedCategory.none { it.value }) -> {
@@ -304,17 +299,22 @@ fun CreateVacanciesScreen(navHostController: NavHostController) {
                         MakeToast.short(context, context.getString(R.string.empty_end_range))
                     }
 
-                    (newStartRange > newEndRange) -> {
-                        MakeToast.long(context, context.getString(R.string.end_less_than_start))
-                    }
-
                     else -> {
-                        createVacanciesViewModel.createVacancies(
-                            category = newCategory.values.toList(),
-                            description = descriptionState.value,
-                            salaryStart = newStartRange,
-                            salaryEnd = newEndRange
-                        )
+                        selectedCategory.filter { it.value }.keys.map { id ->
+                            newCategory[id.toString()] = id
+                        }
+                        val newStartRange = startRange.value.replace(" ","").toLong()
+                        val newEndRange = endRange.value.replace(" ","").toLong()
+                        if (newStartRange > newEndRange) {
+                            MakeToast.long(context, context.getString(R.string.end_less_than_start))
+                        } else {
+                            createVacanciesViewModel.createVacancies(
+                                category = newCategory.values.toList(),
+                                description = descriptionState.value,
+                                salaryStart = newStartRange,
+                                salaryEnd = newEndRange
+                            )
+                        }
                     }
                 }
             }
