@@ -227,7 +227,7 @@ fun DetailFreelancerScreen(
                     Spacer(modifier = Modifier.weight(1f))
 
                     CustomButton(
-                        text = context.getString(R.string.contact_tenant),
+                        text = context.getString(R.string.contact_talent),
                         modifier = Modifier
                             .fillMaxWidth()
                     ) {
