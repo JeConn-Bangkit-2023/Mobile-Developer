@@ -207,7 +207,9 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
                             NavRoute.DetailFreelancerScreen.navigateWithUsername(
                                 value.username ?: "fauzanramadhani06"
                             )
-                        )
+                        ){
+                            launchSingleTop = true
+                        }
                     }
                 }
             }
@@ -242,7 +244,9 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
                         Uri.encode(vacancies.imageUrl),
                         calculateDistance(vacancies.location, vacancies.myLocation)
                     )
-                )
+                ){
+                    launchSingleTop = true
+                }
             }
         }
         item {

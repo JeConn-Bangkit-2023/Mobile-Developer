@@ -165,7 +165,9 @@ fun DetailFreelancerScreen(
                             freelancerState.value.full_name ?: "p",
                             Uri.encode(freelancerState.value.profile_image_url ?: "p")
                         )
-                    )
+                    ){
+                        launchSingleTop = true
+                    }
                 }
             }
         }
@@ -372,7 +374,7 @@ fun DetailFreelancerScreen(
                         Spacer(modifier = Modifier.weight(1f))
 
                         CustomButton(
-                            text = context.getString(R.string.contact_talent),
+                            text = context.getString(R.string.contact_freelancer),
                             modifier = Modifier
                                 .fillMaxWidth()
                         ) {

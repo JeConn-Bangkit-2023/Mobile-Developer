@@ -194,7 +194,9 @@ fun MessageScreen(navHostController: NavHostController) {
                                 getProfileImage = Uri.encode(message.currentTargetImageUrl)
                                     .toString()
                             )
-                        )
+                        ){
+                            launchSingleTop = true
+                        }
                     }
                 }
             } else {

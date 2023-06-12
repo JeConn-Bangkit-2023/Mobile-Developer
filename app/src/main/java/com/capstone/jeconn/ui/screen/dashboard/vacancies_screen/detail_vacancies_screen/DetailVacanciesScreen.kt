@@ -110,7 +110,9 @@ fun DetailVacanciesScreen(
                             name!!,
                             Uri.encode(profileImage)
                         )
-                    )
+                    ){
+                        launchSingleTop = true
+                    }
                 }
             }
         }
