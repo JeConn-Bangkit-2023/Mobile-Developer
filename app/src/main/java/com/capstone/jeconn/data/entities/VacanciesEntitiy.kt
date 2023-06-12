@@ -9,7 +9,7 @@ data class VacanciesEntity(
     val timestamp: Long? = null,
     val start_salary: Long? = null,
     val end_salary: Long? = null,
-    val category: Map<String, Int>? = null,
+    val category: List<Int>? = null,
     val description: String? = null,
     val location: LocationEntity? = null,
     val myLocation: LocationEntity? = null

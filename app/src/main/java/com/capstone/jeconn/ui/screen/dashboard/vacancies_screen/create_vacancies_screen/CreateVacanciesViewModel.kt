@@ -11,7 +11,7 @@ class CreateVacanciesViewModel(
     val createVacanciesState: State<UiState<String>> = repository.createVacanciesState
 
     fun createVacancies(
-        category: Map<String, Int>,
+        category: List<Int>,
         description: String,
         salaryStart: Long,
         salaryEnd: Long

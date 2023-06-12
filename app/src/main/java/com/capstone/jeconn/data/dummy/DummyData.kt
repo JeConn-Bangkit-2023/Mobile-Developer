@@ -155,10 +155,7 @@ object DummyData {
             timestamp = System.currentTimeMillis(),
             start_salary = 5000,
             end_salary = 10000,
-            category = mapOf(
-                "1" to 1,
-                "2" to 2
-            ),
+            category = listOf(1,2),
             description = "We are hiring software developers. Join our team!",
             location = LocationEntity(37.7749, -122.4194) // San Francisco location
         ),
@@ -167,10 +164,7 @@ object DummyData {
             timestamp = System.currentTimeMillis(),
             start_salary = 10000,
             end_salary = 100000,
-            category = mapOf(
-                "1" to 1,
-                "8" to 8
-            ),
+            category = listOf(1,8),
             description = "Looking for experienced graphic designers. Apply now!",
             location = LocationEntity(40.7128, -74.0060) // New York location
         ),
@@ -179,10 +173,7 @@ object DummyData {
             timestamp = System.currentTimeMillis(),
             start_salary = 20000,
             end_salary = 25000,
-            category = mapOf(
-                "2" to 2,
-                "5" to 5
-            ),
+            category = listOf(2,5),
             description = "We need skilled photographers for a project. Contact us for details!",
             location = LocationEntity(51.5074, -0.1278) // London location
         )

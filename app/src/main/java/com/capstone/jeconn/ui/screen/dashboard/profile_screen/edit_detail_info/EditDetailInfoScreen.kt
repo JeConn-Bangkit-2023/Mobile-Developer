@@ -217,7 +217,7 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
                     }
                 }
 
-                currentState.data.jobInformation?.imagesUrl?.values?.forEach {
+                currentState.data.jobInformation?.imagesUrl?.values?.sortedByDescending { it.post_image_uid }?.forEach {
                     it.post_image_url?.let { it1 -> imageJobListState.add(it1) }
                 }
                 currentState.data.jobInformation?.isOpenToOffer.let {

@@ -168,7 +168,7 @@ fun MyProfileScreen(navHostController: NavHostController) {
                 }
                 currentState.data.jobInformation?.imagesUrl?.let { imagesUrl ->
                     jobImageState.clear()
-                    imagesUrl.values.map { image ->
+                    imagesUrl.values.sortedByDescending { it.post_image_uid }.map { image ->
                         image.post_image_url?.let {
                             jobImageState.add(it)
                         }
