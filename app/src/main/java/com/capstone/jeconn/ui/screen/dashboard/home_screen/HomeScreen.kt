@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
@@ -42,6 +41,7 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
     val context = LocalContext.current
     val publicData = DummyData.publicData.values.toList()
     val dummyVacanciesList = DummyData.vacancies.toList()
+    val dummyPublicData = DummyData.publicData.toList()
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -97,18 +97,25 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
                 contentPadding = PaddingValues(horizontal = 12.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(publicData) { user ->
-                    if (user.jobInformation != null && user.detail_information != null && user.jobInformation.isOpenToOffer) {
-                        VerticalFreelancerCard(
-                            imageUrl = user.profile_image_url!!,
-                            name = user.full_name!!,
-                            range = calculateDistance(
-                                user.jobInformation.location!!,
-                                LocationEntity(51.5074, -0.1278)
-                            ),
-                            listSkills = user.jobInformation.categories!!
-                        ) {
-                            //TODO
+                itemsIndexed(dummyPublicData.toList()) { index, value ->
+                    val user = value.second
+                    val uid = value.first
+                    if (user.jobInformation != null && user.detail_information != null
+                    ) {
+                        if (user.jobInformation.isOpenToOffer) {
+                            VerticalFreelancerCard(
+                                imageUrl = user.profile_image_url!!,
+                                name = user.full_name!!,
+                                range = calculateDistance(
+                                    user.jobInformation.location!!,
+                                    LocationEntity(51.5074, -0.1278)
+                                ),
+                                listSkills = user.jobInformation.categories!!
+                            ){
+                                navHostController.navigate(
+                                    NavRoute.DetailFreelancerScreen.navigateWithUid(uid)
+                                )
+                            }
                         }
                     }
                 }

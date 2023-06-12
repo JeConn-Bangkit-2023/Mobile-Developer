@@ -14,6 +14,7 @@ import com.capstone.jeconn.ui.screen.authentication.register_screen.RegisterScre
 import com.capstone.jeconn.ui.screen.authentication.required_info_screen.RequiredInfoScreen
 import com.capstone.jeconn.ui.screen.authentication.required_location_screen.RequiredLocationScreen
 import com.capstone.jeconn.ui.screen.dashboard.BaseScreen
+import com.capstone.jeconn.ui.screen.dashboard.freelancer_screen.detail_freelancer_screen.DetailFreelancerScreen
 import com.capstone.jeconn.ui.screen.dashboard.home_screen.message_screen.create_invoice_screen.CreateInvoiceScreen
 import com.capstone.jeconn.ui.screen.dashboard.home_screen.message_screen.detail_message_screen.DetailMessageScreen
 import com.capstone.jeconn.ui.screen.dashboard.home_screen.message_screen.MessageScreen
@@ -186,6 +187,19 @@ fun SetupNavGraph(
             route = NavRoute.CreateVacanciesScreen.route
         ) {
             CreateVacanciesScreen(navHostController = navHostController)
+        }
+
+        composable(
+            route = NavRoute.DetailFreelancerScreen.route,
+            arguments = listOf(
+                navArgument(A_ARGS_KEY) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val getA = it.arguments?.getString(A_ARGS_KEY)
+
+            DetailFreelancerScreen(navHostController = navHostController, getA)
         }
     }
 }
