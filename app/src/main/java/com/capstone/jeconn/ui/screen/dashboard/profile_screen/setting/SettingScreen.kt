@@ -1,5 +1,8 @@
 package com.capstone.jeconn.ui.screen.dashboard.profile_screen.setting
 
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -30,12 +33,16 @@ import com.capstone.jeconn.navigation.NavRoute
 import com.capstone.jeconn.utils.navigateToTop
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import android.provider.Settings
 
 @Composable
 fun SettingScreen(navHostController: NavHostController) {
 
     val context = LocalContext.current
     val auth = Firebase.auth
+    val openSettings = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { _ -> /* Tangani hasil jika diperlukan */ }
 
     Column(
         modifier = Modifier
@@ -77,7 +84,8 @@ fun SettingScreen(navHostController: NavHostController) {
                 icon = R.drawable.ic_language,
                 isSetting = true
             ) {
-                //TODO
+                val intent = Intent(Settings.ACTION_LOCALE_SETTINGS)
+                openSettings.launch(intent)
             }
 
             HorizontalProfileCard(
