@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -45,6 +46,11 @@ fun MessageImage(
 ) {
     val context = LocalContext.current
     val showDialog = remember { mutableStateOf(false) }
+    val paddingValues = if (isMine) {
+        PaddingValues(start = 128.dp)
+    } else {
+        PaddingValues(end = 64.dp)
+    }
 
     Row(
         verticalAlignment = Alignment.Bottom,
@@ -55,6 +61,7 @@ fun MessageImage(
         },
         modifier = Modifier
             .fillMaxWidth()
+            .padding(paddingValues)
     ) {
         if (!isMine) {
             CropToSquareImage(
