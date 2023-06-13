@@ -5,6 +5,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,6 +37,12 @@ fun MessageText(
 ) {
     val context = LocalContext.current
 
+    val paddingValues = if (isMine) {
+        PaddingValues(start = 128.dp)
+    } else {
+        PaddingValues(end = 68.dp)
+    }
+
     Row(
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = if (isMine) {
@@ -45,6 +52,7 @@ fun MessageText(
         },
         modifier = Modifier
             .fillMaxWidth()
+            .padding(paddingValues)
     ) {
         if (!isMine) {
             CropToSquareImage(

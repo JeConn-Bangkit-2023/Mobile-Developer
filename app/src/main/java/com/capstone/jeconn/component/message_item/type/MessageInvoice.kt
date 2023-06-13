@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,7 +38,13 @@ fun MessageInvoice(
     senderProfileImageUrl: String,
     dateTime: Long
 ) {
+    val paddingValues = if (isMine) {
+        PaddingValues(start = 128.dp)
+    } else {
+        PaddingValues(end = 64.dp)
+    }
     val context = LocalContext.current
+
     Row(
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = if (isMine) {
@@ -47,6 +54,7 @@ fun MessageInvoice(
         },
         modifier = Modifier
             .fillMaxWidth()
+            .padding(paddingValues)
     ) {
         if (!isMine) {
             CropToSquareImage(

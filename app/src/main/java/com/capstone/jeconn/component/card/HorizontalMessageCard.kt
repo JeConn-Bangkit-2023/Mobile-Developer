@@ -40,12 +40,12 @@ fun HorizontalMessageCard(
     val context = LocalContext.current
     Card(
         modifier = Modifier
-            .clickable { onClick() }
             .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
         Column(
             modifier = Modifier
+                .clickable { onClick() }
                 .background(MaterialTheme.colorScheme.inversePrimary)
                 .padding(12.dp)
 
