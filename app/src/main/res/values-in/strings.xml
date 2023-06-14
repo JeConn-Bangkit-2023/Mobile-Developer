@@ -99,7 +99,7 @@
     <string name="successfully_update_profile_image">Berhasil memperbarui gambar profil</string>
     <string name="successfully_update_job_image">Berhasil memperbarui gambar pekerjaan</string>
     <string name="successfully_sent_image">Gambar berhasil dikirim</string>
-    <string name="send_picture">Kirim gambar</string>
+    <string name="send_picture">Mengirim gambar</string>
     <string name="made_an_invoice">Membuat faktur</string>
     <string name="You">Anda</string>
     <string name="server_fail">Gagal terhubung dengan server, coba lagi nanti</string>
@@ -139,7 +139,7 @@
     <string name="empty_description">Silakan isi deskripsi pekerjaan</string>
     <string name="empty_start_range">Silakan isi rentang gaji awal</string>
     <string name="empty_end_range">Silakan isi rentang gaji akhir</string>
-    <string name="end_less_than_start">Gaji akhir tidak boleh kurang dari gaji awal</string>
+    <string name="end_less_than_start">Rentang gaji akhir tidak boleh kurang dari rentang gaji awal</string>
     <string name="contact_tenant">Hubungi Pengguna Sewa</string>
     <string name="contact_freelancer">Hubungi Freelancer</string>
     <string name="empty">Kosong</string>
@@ -149,4 +149,5 @@
     <string name="message_copied">Pesan telah disalin</string>
     <string name="image_classification_true">Gambar mengandung konten ketelanjangan, harap gunakan gambar lain.</string>
     <string name="more">Lainnya</string>
+    <string name="search_freelancer">Cari Pekerja Lepas</string>
 </resources>

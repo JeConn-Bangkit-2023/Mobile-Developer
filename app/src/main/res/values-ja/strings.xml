@@ -149,4 +149,5 @@
     <string name="message_copied">メッセージがコピーされました</string>
     <string name="image_classification_true">画像にはヌードの内容が含まれています。別の画像を使用してください。</string>
     <string name="more">他の</string>
+    <string name="search_freelancer">フリーランサーを探す</string>
 </resources>

@@ -142,7 +142,8 @@ fun VacanciesScreen(navHostController: NavHostController, myPaddingValues: Paddi
                 .padding(top = 12.dp),
             text = searchTextState,
             enabled = searchEnabledState,
-            history = searchCategoryState
+            history = searchCategoryState,
+            label = context.getString(R.string.search_freelancer)
         )
 
         LazyColumn(

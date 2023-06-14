@@ -18,12 +18,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.capstone.jeconn.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,9 +30,10 @@ fun CustomSearchBar(
     text: MutableState<String>,
     enabled: MutableState<Boolean>,
     history: MutableState<List<String>>,
+    label: String,
 
     ) {
-    val context = LocalContext.current
+
     SearchBar(
         colors = SearchBarDefaults.colors(
             containerColor = MaterialTheme.colorScheme.surface,
@@ -52,7 +51,7 @@ fun CustomSearchBar(
         },
         placeholder = {
             Text(
-                text = context.getString(R.string.search_vacancies),
+                text = label,
                 style = TextStyle(
                     fontFamily = Font.QuickSand,
                     fontWeight = FontWeight.Normal,

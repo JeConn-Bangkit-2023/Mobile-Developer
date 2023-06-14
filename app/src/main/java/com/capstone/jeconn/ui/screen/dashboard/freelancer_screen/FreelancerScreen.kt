@@ -163,7 +163,8 @@ fun FreelancerScreen(navHostController: NavHostController, myPaddingValues: Padd
                 .padding(top = 12.dp),
             text = searchTextState,
             enabled = searchEnabledState,
-            history = searchCategory
+            history = searchCategory,
+            label = context.getString(R.string.search_freelancer)
         )
 
         LazyVerticalGrid(
