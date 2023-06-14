@@ -28,6 +28,7 @@ import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.data.entities.LocationEntity
 import com.capstone.jeconn.utils.CropToSquareImage
 import com.capstone.jeconn.utils.calculateDistance
+import com.capstone.jeconn.utils.cutTextLength
 import com.capstone.jeconn.utils.getTimeAgo
 
 @Composable
@@ -108,7 +109,7 @@ fun HorizontalVacanciesCard(
             Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
             Text(
-                text = description,
+                text = cutTextLength(description, 30),
                 style = TextStyle(
                     fontFamily = Font.QuickSand,
                     fontSize = 14.sp,

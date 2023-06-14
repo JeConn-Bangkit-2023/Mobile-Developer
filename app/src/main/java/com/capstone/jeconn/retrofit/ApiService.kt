@@ -1,5 +1,6 @@
 package com.capstone.jeconn.retrofit
 
+import com.capstone.jeconn.data.response.NudityResponse
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.Multipart
@@ -31,4 +32,10 @@ interface ApiService {
         @Path("username") username: String,
         @Part file: MultipartBody.Part
     ): Call<Unit>
+
+    @POST("predict")
+    @Multipart
+    fun imageDetection(
+        @Part file: MultipartBody.Part
+    ): Call<NudityResponse>
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="deskripsi">Description</string>
+    <string name="decryption">Description</string>
     <string name="Message">Message</string>
     <string name="detail_notification">Detail Notification</string>
     <string name="notification">Notification</string>
@@ -21,7 +21,7 @@
     <string name="need_support">Need support?</string>
     <string name="contact_customer_service">Contact Customer Service</string>
     <string name="home">Home</string>
-    <string name="detai_vacancies">Detail Vacancies</string>
+    <string name="detail_vacancies">Detail Vacancies</string>
     <string name="vacancies">Vacancies</string>
     <string name="detail_freelance">Detail Freelancer</string>
     <string name="freelance">Freelancer</string>
@@ -77,7 +77,7 @@
     <string name="open_to_freelancing">Open to freelancing</string>
     <string name="offers">offers</string>
     <string name="open_to_freelancing_description">Your profile will appear in the freelancer search, this action requires location and GPS permissions</string>
-    <string name="require_location_screen_title">Aktifkan Lokasi dan GPS</string>
+    <string name="require_location_screen_title">Turn on Location and GPS</string>
     <string name="require_location_screen_description">Please allow the app to access your Location and enable GPS settings on your device.</string>
     <string name="location">Location</string>
     <string name="allow">Allow</string>
@@ -145,5 +145,6 @@
     <string name="empty_message_list">Your message is empty</string>
     <string name="empty_data">Data is Empty</string>
     <string name="current_vacancies">Current vacancies</string>
-
+    <string name="message_copied">Message has been copied</string>
+    <string name="image_classification_true">Image contains nudity content, please use another image</string>
 </resources>

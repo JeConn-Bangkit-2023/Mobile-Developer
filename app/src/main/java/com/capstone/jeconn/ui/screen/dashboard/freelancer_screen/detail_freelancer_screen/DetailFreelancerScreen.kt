@@ -2,6 +2,7 @@ package com.capstone.jeconn.ui.screen.dashboard.freelancer_screen.detail_freelan
 
 import android.net.Uri
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,6 +51,7 @@ import com.capstone.jeconn.component.CustomFlatIconButton
 import com.capstone.jeconn.component.CustomLabel
 import com.capstone.jeconn.component.CustomNavbar
 import com.capstone.jeconn.component.Font
+import com.capstone.jeconn.component.OpenImageDialog
 import com.capstone.jeconn.data.dummy.DummyData
 import com.capstone.jeconn.data.entities.LocationEntity
 import com.capstone.jeconn.data.entities.PublicDataEntity
@@ -70,12 +73,19 @@ fun DetailFreelancerScreen(
 ) {
     val context = LocalContext.current
     val auth = Firebase.auth.currentUser!!
+    val showDialogStateProfileImage = rememberSaveable { mutableStateOf(false) }
+    val showDialogStatePostImage = rememberSaveable { mutableStateOf(false) }
+
 
     val freelancerState = remember {
         mutableStateOf(PublicDataEntity())
     }
 
-    val isLoading = remember {
+    val postImageUrl = rememberSaveable {
+        mutableStateOf("")
+    }
+
+    val isLoading = rememberSaveable {
         mutableStateOf(false)
     }
     if (isLoading.value) {
@@ -242,7 +252,11 @@ fun DetailFreelancerScreen(
                             modifier = Modifier
                                 .size(80.dp)
                                 .clip(CircleShape)
+                                .clickable {
+                                    showDialogStateProfileImage.value = true
+                                }
                         )
+                        OpenImageDialog(showDialogState = showDialogStateProfileImage, imageUrl = freelancerState.value.profile_image_url ?: "")
                     }
 
                     Spacer(modifier = Modifier.padding(8.dp))
@@ -358,7 +372,13 @@ fun DetailFreelancerScreen(
                                 modifier = Modifier
                                     .size(148.dp)
                                     .clip(RoundedCornerShape(8.dp))
+                                    .clickable {
+                                        postImageUrl.value = data.post_image_url.toString()
+                                        showDialogStatePostImage.value = true
+                                    }
                             )
+
+                            OpenImageDialog(showDialogState = showDialogStatePostImage, imageUrl = postImageUrl.value)
                         }
                     }
                 }
@@ -387,6 +407,5 @@ fun DetailFreelancerScreen(
                 }
             }
         }
-
     }
 }

@@ -1,6 +1,7 @@
 package com.capstone.jeconn.repository
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
@@ -8,30 +9,32 @@ import androidx.compose.runtime.mutableStateOf
 import com.capstone.jeconn.R
 import com.capstone.jeconn.data.entities.Message
 import com.capstone.jeconn.data.entities.MessageRoomEntity
+import com.capstone.jeconn.listener.ImageProcessingListener
+import com.capstone.jeconn.listener.ImageProcessor
 import com.capstone.jeconn.retrofit.ApiConfig
 import com.capstone.jeconn.state.UiState
 import com.capstone.jeconn.utils.asMap
+import com.capstone.jeconn.utils.createImageAsFormReqBody
 import com.capstone.jeconn.utils.getRandomNumeric
-import com.capstone.jeconn.utils.reduceFileImage
+import com.capstone.jeconn.utils.uriToFile
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
 
 class ChatRepository(private val context: Context) {
 
     private val auth = Firebase.auth.currentUser!!
     private val ref = Firebase.database.reference
-    private val apiService = ApiConfig.apiService
+    private val apiService = ApiConfig.uploadImageApiService
 
     val openChatChatState: MutableState<UiState<Long>> = mutableStateOf(UiState.Empty)
     val loadMessageState: MutableState<UiState<MessageRoomEntity>> = mutableStateOf(UiState.Empty)
@@ -120,41 +123,64 @@ class ChatRepository(private val context: Context) {
         ref.child("messageRoomList").child(roomChatId).child("messages").updateChildren(newMessage)
     }
 
-    fun sendImageMessage(file: File, roomChatId: String, username: String) {
+    fun sendImageMessage(uri: Uri, roomChatId: String, username: String) {
         sendImageMessageState.value = UiState.Loading
-        val myFile = reduceFileImage(file)
-        val fileRequestBody = myFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
-        val profileImage: MultipartBody.Part =
-            MultipartBody.Part.createFormData("image", file.name, fileRequestBody)
-        val response =
-            apiService.postImageMessage(file = profileImage, roomId = roomChatId, username = username)
+        CoroutineScope(Dispatchers.Default).launch {
+            val myFile = uriToFile(uri, context)
+            if (myFile.exists()) {
+                ImageProcessor(context, myFile, object : ImageProcessingListener {
+                    override fun onImageSafe() {
+                        val profileImage = createImageAsFormReqBody(myFile, "image")
+                        val response =
+                            apiService.postImageMessage(
+                                file = profileImage,
+                                roomId = roomChatId,
+                                username = username
+                            )
 
-        response.enqueue(object : Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                when (response.code()) {
-                    201 -> {
-                        sendImageMessageState.value =
-                            UiState.Success(context.getString(R.string.successfully_sent_image))
+                        response.enqueue(object : Callback<Unit> {
+                            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                                when (response.code()) {
+                                    201 -> {
+                                        sendImageMessageState.value =
+                                            UiState.Success(context.getString(R.string.successfully_sent_image))
+                                    }
+
+                                    400 -> {
+                                        sendImageMessageState.value =
+                                            UiState.Error(context.getString(R.string.image_type_wrong))
+                                    }
+
+                                    else -> {
+                                        sendImageMessageState.value =
+                                            UiState.Error(context.getString(R.string.server_fail))
+                                        Log.e("error", response.toString())
+                                    }
+                                }
+                            }
+
+                            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                                sendImageMessageState.value = UiState.Error(t.message.toString())
+                            }
+
+                        })
                     }
 
-                    400 -> {
-                        sendImageMessageState.value =
-                            UiState.Error(context.getString(R.string.image_type_wrong))
+                    override fun onImageUnsafe(errorMessage: String) {
+                        sendImageMessageState.value = UiState.Error(errorMessage)
                     }
 
-                    else -> {
-                        sendImageMessageState.value =
-                            UiState.Error(context.getString(R.string.server_fail))
-                        Log.e("error", response.toString())
+                    override fun onBadRequest(errorMessage: String) {
+                        sendImageMessageState.value = UiState.Error(errorMessage)
                     }
-                }
+
+                    override fun onServerError(errorMessage: String) {
+                        sendImageMessageState.value = UiState.Error(errorMessage)
+                    }
+
+                })
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                sendImageMessageState.value = UiState.Error(t.message.toString())
-            }
-
-        })
+        }
     }
 
     fun loadMessageList() {

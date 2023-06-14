@@ -37,6 +37,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,6 +58,7 @@ import com.capstone.jeconn.component.CustomLabel
 import com.capstone.jeconn.component.CustomNavbar
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.component.HorizontalDivider
+import com.capstone.jeconn.component.OpenImageDialog
 import com.capstone.jeconn.data.dummy.DummyData
 import com.capstone.jeconn.di.Injection
 import com.capstone.jeconn.navigation.NavRoute
@@ -66,7 +68,6 @@ import com.capstone.jeconn.utils.MakeToast
 import com.capstone.jeconn.utils.PICK_IMAGE_PERMISSION_REQUEST_CODE
 import com.capstone.jeconn.utils.ProfileViewModelFactory
 import com.capstone.jeconn.utils.navigateTo
-import com.capstone.jeconn.utils.uriToFile
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
@@ -76,6 +77,11 @@ import kotlinx.coroutines.launch
 fun MyProfileScreen(navHostController: NavHostController) {
     val context = LocalContext.current
     val currentUser = Firebase.auth.currentUser
+    val showDialogStateProfileImage = rememberSaveable { mutableStateOf(false) }
+    val showDialogStatePostImage = rememberSaveable { mutableStateOf(false) }
+    val postImageUrl = rememberSaveable {
+        mutableStateOf("")
+    }
 
     val scope = rememberCoroutineScope()
     val myProfileViewModel: MyProfileViewModel = remember {
@@ -131,7 +137,7 @@ fun MyProfileScreen(navHostController: NavHostController) {
 
             is UiState.Error -> {
                 loadingState = false
-                MakeToast.short(context, currentState.errorMessage)
+                MakeToast.long(context, currentState.errorMessage)
             }
 
             else -> {
@@ -194,12 +200,8 @@ fun MyProfileScreen(navHostController: NavHostController) {
     val pickImageLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
-                // Image selected successfully from gallery, proceed to sending to API
-                val myFile = uriToFile(uri, context)
-                if (myFile.exists()) {
-                    scope.launch {
-                        myProfileViewModel.updateProfile(myFile)
-                    }
+                scope.launch {
+                    myProfileViewModel.updateProfile(uri)
                 }
             }
         }
@@ -247,6 +249,13 @@ fun MyProfileScreen(navHostController: NavHostController) {
                     modifier = Modifier
                         .size(110.dp)
                         .clip(CircleShape)
+                        .clickable {
+                            showDialogStateProfileImage.value = true
+                        }
+                )
+                OpenImageDialog(
+                    showDialogState = showDialogStateProfileImage,
+                    imageUrl = imageProfileState.value
                 )
                 Icon(
                     imageVector = Icons.Default.Edit,
@@ -401,6 +410,14 @@ fun MyProfileScreen(navHostController: NavHostController) {
                             modifier = Modifier
                                 .size(148.dp)
                                 .clip(RoundedCornerShape(8.dp))
+                                .clickable {
+                                    postImageUrl.value = url
+                                    showDialogStatePostImage.value = true
+                                }
+                        )
+                        OpenImageDialog(
+                            showDialogState = showDialogStatePostImage,
+                            imageUrl = postImageUrl.value
                         )
                     }
                 }
