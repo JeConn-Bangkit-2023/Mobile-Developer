@@ -167,7 +167,12 @@ fun DetailMessageScreen(
                 currentState.data.members_username!!.keys.find { it != auth.displayName }?.let {
                     targetUsernameState.value = it
                 }
-                lazyListState.scrollToItem(messageRoom.lastIndex)
+
+                if (messageRoom.size > 0 ){
+                    lazyListState.scrollToItem(messageRoom.lastIndex)
+                }
+
+
             }
 
             is UiState.Error -> {
