@@ -148,4 +148,5 @@
     <string name="current_vacancies">最新の求人情報</string>
     <string name="message_copied">メッセージがコピーされました</string>
     <string name="image_classification_true">画像にはヌードの内容が含まれています。別の画像を使用してください。</string>
+    <string name="more">他の</string>
 </resources>

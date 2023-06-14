@@ -4,7 +4,6 @@ import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -43,13 +42,12 @@ import com.capstone.jeconn.ui.screen.dashboard.status_screen.StatusScreen
 import com.capstone.jeconn.ui.screen.dashboard.vacancies_screen.VacanciesScreen
 import com.capstone.jeconn.utils.navigateTo
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BaseScreen(
     navHostController: NavHostController,
 ) {
     val context = LocalContext.current
-    var contentRoute by rememberSaveable { mutableStateOf(0) }
+    val contentRoute = rememberSaveable { mutableStateOf(0) }
 
     var myPaddingValues by remember {
         mutableStateOf(PaddingValues())
@@ -61,10 +59,10 @@ fun BaseScreen(
     val currentContentIndex = rememberSaveable { mutableStateOf(0) }
 
     BackHandler {
-        if (contentRoute == 0) {
+        if (contentRoute.value == 0) {
             (context as Activity).finish()
         } else {
-            contentRoute = 0
+            contentRoute.value = 0
         }
     }
 
@@ -72,7 +70,13 @@ fun BaseScreen(
         DashboardContent(
             title = context.getString(R.string.home),
             icon = R.drawable.ic_home,
-            content = { HomeScreen(navHostController = navHostController, myPaddingValues) }
+            content = {
+                HomeScreen(
+                    navHostController = navHostController,
+                    myPaddingValues,
+                    contentRoute
+                )
+            }
         ),
         DashboardContent(
             title = context.getString(R.string.vacancies),
@@ -106,8 +110,8 @@ fun BaseScreen(
 
     Scaffold(
         floatingActionButton = {
-            if (contentRoute == 1) {
-                CustomFloatingActionButton() {
+            if (contentRoute.value == 1) {
+                CustomFloatingActionButton {
                     navigateTo(navHostController, NavRoute.CreateVacanciesScreen)
                 }
             }
@@ -135,7 +139,7 @@ fun BaseScreen(
                 }
             ) {
                 screens.forEachIndexed { index, item ->
-                    val selected = contentRoute == index
+                    val selected = contentRoute.value == index
 
                     val iconSelectedColor =
                         if (selected) MaterialTheme.colorScheme.inversePrimary else MaterialTheme.colorScheme.onBackground
@@ -147,7 +151,7 @@ fun BaseScreen(
                             indicatorColor = MaterialTheme.colorScheme.secondary
                         ),
                         onClick = {
-                            contentRoute = index
+                            contentRoute.value = index
                         },
                         label = {
                             Text(
@@ -170,7 +174,7 @@ fun BaseScreen(
         }
     ) { paddingValues ->
         myPaddingValues = paddingValues
-        screens[contentRoute].content.invoke(myPaddingValues)
+        screens[contentRoute.value].content.invoke(myPaddingValues)
     }
 
     // When Back Stack Entry happens

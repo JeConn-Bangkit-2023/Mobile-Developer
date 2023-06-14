@@ -148,4 +148,5 @@
     <string name="current_vacancies">Lowongan terbaru</string>
     <string name="message_copied">Pesan telah disalin</string>
     <string name="image_classification_true">Gambar mengandung konten ketelanjangan, harap gunakan gambar lain.</string>
+    <string name="more">Lainnya</string>
 </resources>

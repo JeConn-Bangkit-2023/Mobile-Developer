@@ -147,4 +147,5 @@
     <string name="current_vacancies">Current vacancies</string>
     <string name="message_copied">Message has been copied</string>
     <string name="image_classification_true">Image contains nudity content, please use another image</string>
+    <string name="more">More</string>
 </resources>
