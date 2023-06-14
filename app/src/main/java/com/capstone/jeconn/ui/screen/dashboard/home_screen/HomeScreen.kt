@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -11,16 +12,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -31,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.capstone.jeconn.R
 import com.capstone.jeconn.component.CustomDialogBoxLoading
+import com.capstone.jeconn.component.CustomFlatIconButton
 import com.capstone.jeconn.component.CustomNavbar
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.component.card.HorizontalVacanciesCard
@@ -48,7 +53,11 @@ import com.capstone.jeconn.utils.calculateDistanceToDecimal
 import com.capstone.jeconn.utils.navigateTo
 
 @Composable
-fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValues) {
+fun HomeScreen(
+    navHostController: NavHostController,
+    paddingValues: PaddingValues,
+    contentRoute: MutableState<Int>
+) {
     val context = LocalContext.current
 
     val isLoading = remember {
@@ -140,7 +149,7 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
     }
 
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding())
     ) {
         item {
@@ -178,22 +187,40 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
                         }
                 )
             }
-            Text(
-                text = context.getString(R.string.nearby_talent),
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontFamily = Font.QuickSand,
-                    fontWeight = FontWeight.Bold,
-                ),
+
+            Spacer(modifier = Modifier.padding(vertical = 12.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .padding(vertical = 16.dp, horizontal = 12.dp)
-            )
+            ) {
+
+                Text(
+                    text = context.getString(R.string.nearby_talent),
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontFamily = Font.QuickSand,
+                        fontWeight = FontWeight.Bold,
+                    ),
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                CustomFlatIconButton(
+                    icon = Icons.Default.KeyboardArrowRight,
+                    label = context.getString(R.string.more),
+                    isFrontIcon = false
+                ) {
+                    contentRoute.value = 2
+                }
+            }
 
             LazyRow(
                 contentPadding = PaddingValues(horizontal = 12.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(freelancerList) { value ->
+                items(freelancerList.take(5)) { value ->
                     VerticalFreelancerCard(
                         imageUrl = value.profile_image_url ?: "",
                         name = value.full_name ?: "",
@@ -207,26 +234,42 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
                             NavRoute.DetailFreelancerScreen.navigateWithUsername(
                                 value.username ?: "fauzanramadhani06"
                             )
-                        ){
+                        ) {
                             launchSingleTop = true
                         }
                     }
                 }
             }
 
-            Text(
-                text = context.getString(R.string.current_vacancies),
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontFamily = Font.QuickSand,
-                    fontWeight = FontWeight.Bold,
-                ),
+            Spacer(modifier = Modifier.padding(vertical = 12.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .padding(vertical = 16.dp, horizontal = 12.dp)
-            )
+                    .padding(vertical = 8.dp, horizontal = 12.dp)
+            ) {
+                Text(
+                    text = context.getString(R.string.current_vacancies),
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        fontFamily = Font.QuickSand,
+                        fontWeight = FontWeight.Bold,
+                    ),
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                CustomFlatIconButton(
+                    icon = Icons.Default.KeyboardArrowRight,
+                    label = context.getString(R.string.more),
+                    isFrontIcon = false
+                ) {
+                    contentRoute.value = 1
+                }
+            }
         }
 
-        items(vacanciesList) { vacancies ->
+        items(vacanciesList.take(5)) { vacancies ->
             HorizontalVacanciesCard(
                 profileImageUrl = vacancies.imageUrl!!,
                 name = vacancies.full_name!!,
@@ -244,7 +287,7 @@ fun HomeScreen(navHostController: NavHostController, paddingValues: PaddingValue
                         Uri.encode(vacancies.imageUrl),
                         calculateDistance(vacancies.location, vacancies.myLocation)
                     )
-                ){
+                ) {
                     launchSingleTop = true
                 }
             }
