@@ -8,7 +8,7 @@
     <string name="verify_ur_account_description">Tautan verifikasi telah dikirim ke email Anda. Periksa kotak masuk/spam email Anda.</string>
     <string name="is_verified">Sudah diverifikasi?</string>
     <string name="refresh">Segarkan</string>
-    <string name="verified">terverifikasi</string>
+    <string name="verified">Terverifikasi</string>
     <string name="back_to_login">Kembali ke login?</string>
     <string name="not_get_email">Belum menerima email?</string>
     <string name="resend">Kirim Ulang</string>
@@ -75,8 +75,8 @@
     <string name="category">Kategori</string>
     <string name="add_image_support">Silakan tambahkan gambar yang mendukung</string>
     <string name="profession_or_skill">profesi atau keterampilan</string>
-    <string name="open_to_freelancing">Terbuka untuk pekerjaan lepas</string>
-    <string name="offers">penawaran</string>
+    <string name="open_to_freelancing">Terbuka untuk</string>
+    <string name="offers">penawaran pekerjaan lepas</string>
     <string name="open_to_freelancing_description">Profil Anda akan muncul dalam pencarian freelancer, tindakan ini memerlukan izin lokasi dan GPS</string>
     <string name="require_location_screen_title">Aktifkan Lokasi dan GPS</string>
     <string name="require_location_screen_description">Mohon izinkan aplikasi mengakses Lokasi Anda dan aktifkan pengaturan GPS di perangkat Anda.</string>
@@ -91,10 +91,10 @@
     <string name="my_profile">Profil Saya</string>
     <string name="edit">Edit</string>
     <string name="profession_supporting_picture">Gambar pendukung Profesi</string>
-    <string name="you_are">Anda adalah</string>
+    <string name="you_are">Anda</string>
     <string name="to_offers">untuk penawaran</string>
-    <string name="closed"><b>Tutup</b></string>
-    <string name="open"><b>Buka</b></string>
+    <string name="closed"><b>Tertutup</b></string>
+    <string name="open"><b>Terbuka</b></string>
     <string name="image_type_wrong">Jenis gambar tidak didukung, harap gunakan format PNG atau JPG.</string>
     <string name="successfully_update_profile_image">Berhasil memperbarui gambar profil</string>
     <string name="successfully_update_job_image">Berhasil memperbarui gambar pekerjaan</string>
@@ -145,7 +145,7 @@
     <string name="empty">Kosong</string>
     <string name="empty_message_list">Pesan Anda kosong</string>
     <string name="empty_data">Data Kosong</string>
-    <string name="current_vacancies">Lowongan saat ini</string>
+    <string name="current_vacancies">Lowongan terbaru</string>
     <string name="message_copied">Pesan telah disalin</string>
     <string name="image_classification_true">Gambar mengandung konten ketelanjangan, harap gunakan gambar lain.</string>
 </resources>
