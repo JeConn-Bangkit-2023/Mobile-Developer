@@ -1,12 +1,12 @@
 package com.capstone.jeconn.ui.screen.dashboard.home_screen.message_screen.detail_message_screen
 
+import android.net.Uri
 import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
 import com.capstone.jeconn.data.entities.Message
 import com.capstone.jeconn.data.entities.MessageRoomEntity
 import com.capstone.jeconn.repository.ChatRepository
 import com.capstone.jeconn.state.UiState
-import java.io.File
 
 class DetailMessageViewModel(
     private val roomChatId: String,
@@ -22,8 +22,8 @@ class DetailMessageViewModel(
         )
     }
 
-    fun sendImageMessage(file: File, roomChatId: String, username: String) {
-        chatRepository.sendImageMessage(file = file, roomChatId = roomChatId, username = username)
+    fun sendImageMessage(uri: Uri, roomChatId: String, username: String) {
+        chatRepository.sendImageMessage(uri = uri, roomChatId = roomChatId, username = username)
     }
 
     init {

@@ -58,7 +58,6 @@ import com.capstone.jeconn.di.Injection
 import com.capstone.jeconn.state.UiState
 import com.capstone.jeconn.utils.MakeToast
 import com.capstone.jeconn.utils.MessageViewModelFactory
-import com.capstone.jeconn.utils.uriToFile
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
@@ -117,15 +116,12 @@ fun DetailMessageScreen(
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
                 // Image selected successfully from gallery, proceed to sending to API
-                val myFile = uriToFile(uri, context)
-                if (myFile.exists()) {
-                    scope.launch {
-                        detailMessageViewModel.sendImageMessage(
-                            file = myFile,
-                            roomChatId = id!!,
-                            username = auth.displayName!!
-                        )
-                    }
+                scope.launch {
+                    detailMessageViewModel.sendImageMessage(
+                        uri = uri,
+                        roomChatId = id!!,
+                        username = auth.displayName!!
+                    )
                 }
             }
         }
@@ -176,7 +172,7 @@ fun DetailMessageScreen(
 
             is UiState.Error -> {
                 isLoading.value = false
-                MakeToast.short(context, currentState.errorMessage)
+                MakeToast.long(context, currentState.errorMessage)
             }
 
             else -> {

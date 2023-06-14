@@ -2,6 +2,7 @@ package com.capstone.jeconn.ui.screen.dashboard.vacancies_screen.detail_vacancie
 
 import android.net.Uri
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -28,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,6 +48,7 @@ import com.capstone.jeconn.component.CustomFlatIconButton
 import com.capstone.jeconn.component.CustomLabel
 import com.capstone.jeconn.component.CustomNavbar
 import com.capstone.jeconn.component.Font
+import com.capstone.jeconn.component.OpenImageDialog
 import com.capstone.jeconn.data.dummy.DummyData
 import com.capstone.jeconn.di.Injection
 import com.capstone.jeconn.navigation.NavRoute
@@ -68,6 +71,7 @@ fun DetailVacanciesScreen(
 ) {
     val auth = Firebase.auth.currentUser
     val context = LocalContext.current
+    val showDialogStateProfileImage = rememberSaveable { mutableStateOf(false) }
     val isLoading = remember {
         mutableStateOf(false)
     }
@@ -162,7 +166,7 @@ fun DetailVacanciesScreen(
                             Spacer(modifier = Modifier.padding(horizontal = 4.dp))
 
                             Text(
-                                text = context.getString(R.string.detai_vacancies),
+                                text = context.getString(R.string.detail_vacancies),
                                 style = TextStyle(
                                     fontSize = 24.sp,
                                     fontFamily = Font.QuickSand,
@@ -188,7 +192,14 @@ fun DetailVacanciesScreen(
                                 modifier = Modifier
                                     .size(60.dp)
                                     .clip(CircleShape)
+                                    .clickable {
+                                        showDialogStateProfileImage.value = true
+                                    }
                             )
+
+                            OpenImageDialog(showDialogState = showDialogStateProfileImage, imageUrl = Uri.decode(
+                                profileImage
+                            ))
 
                             Spacer(modifier = Modifier.padding(8.dp))
 
@@ -295,7 +306,7 @@ fun DetailVacanciesScreen(
                         Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
                         Text(
-                            text = context.getString(R.string.deskripsi),
+                            text = context.getString(R.string.decryption),
                             style = TextStyle(
                                 fontSize = 16.sp,
                                 fontFamily = Font.QuickSand,

@@ -1,6 +1,11 @@
 package com.capstone.jeconn.component.message_item.type
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,10 +29,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.capstone.jeconn.R
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.utils.CropToSquareImage
+import com.capstone.jeconn.utils.MakeToast
 import com.capstone.jeconn.utils.getTimeAgo
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MessageText(
     text: String,
@@ -36,7 +44,7 @@ fun MessageText(
     dateTime: Long
 ) {
     val context = LocalContext.current
-
+    val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val paddingValues = if (isMine) {
         PaddingValues(start = 128.dp)
     } else {
@@ -92,6 +100,15 @@ fun MessageText(
                             )
                         }
                     )
+                    .combinedClickable(
+                        onLongClick = {
+                            val clipData = ClipData.newPlainText("message", text)
+                            clipboardManager.setPrimaryClip(clipData)
+                            MakeToast.short(context, context.getString(R.string.message_copied))
+                        }
+                    ) {
+                        //Nothing
+                    }
                     .background(
                         if (isMine) {
                             MaterialTheme.colorScheme.primary

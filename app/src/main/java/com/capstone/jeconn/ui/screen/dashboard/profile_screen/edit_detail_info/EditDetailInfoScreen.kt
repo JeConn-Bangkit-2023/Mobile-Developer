@@ -38,6 +38,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -63,6 +64,7 @@ import com.capstone.jeconn.component.CustomSwitchItem
 import com.capstone.jeconn.component.CustomTextField
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.component.HorizontalDivider
+import com.capstone.jeconn.component.OpenImageDialog
 import com.capstone.jeconn.component.rememberDropDownStateHolder
 import com.capstone.jeconn.data.dummy.DummyData
 import com.capstone.jeconn.di.Injection
@@ -73,13 +75,18 @@ import com.capstone.jeconn.utils.PICK_IMAGE_PERMISSION_REQUEST_CODE
 import com.capstone.jeconn.utils.ProfileViewModelFactory
 import com.capstone.jeconn.utils.dateToTimeStamp
 import com.capstone.jeconn.utils.patternNoHours
-import com.capstone.jeconn.utils.uriToFile
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun EditDetailInfoScreen(navHostController: NavHostController) {
+
+    val showDialogStatePostImage = rememberSaveable { mutableStateOf(false) }
+    val postImageUrl = rememberSaveable {
+        mutableStateOf("")
+    }
 
     val context = LocalContext.current
 
@@ -124,28 +131,17 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
         )
     }
 
+    val scope = rememberCoroutineScope()
+
     val pickImageLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            if (uri != null) {
-                // Gambar berhasil dipilih dari galeri, lanjutkan ke pengiriman ke API
-                val myFile = uriToFile(uri, context)
-                if (myFile.exists()) {
+            scope.launch {
+                if (uri != null) {
                     try {
-                        editDetailViewModel.updateJobImage(myFile)
-                    } catch (e: Exception) {
-                        MakeToast.short(context, e.message.toString())
+                        editDetailViewModel.updateJobImage(uri)
                     } finally {
                         editDetailViewModel.getPublicDataState
                     }
-//                        val bitmapImage = resizeBitmap(BitmapFactory.decodeFile(selectedImageFile.value!!.path))
-//                        val result = ObjectDetection.detect(context, bitmapImage)
-//
-//                        if (result.isNotEmpty()) {
-//                            result.map { detection ->
-//                                Log.e("categories", detection.categories.toString())
-//                                Log.e("categories", detection.boundingBox.toString())
-//                            }
-//                        }
                 }
             }
         }
@@ -217,9 +213,10 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
                     }
                 }
 
-                currentState.data.jobInformation?.imagesUrl?.values?.sortedByDescending { it.post_image_uid }?.forEach {
-                    it.post_image_url?.let { it1 -> imageJobListState.add(it1) }
-                }
+                currentState.data.jobInformation?.imagesUrl?.values?.sortedByDescending { it.post_image_uid }
+                    ?.forEach {
+                        it.post_image_url?.let { it1 -> imageJobListState.add(it1) }
+                    }
                 currentState.data.jobInformation?.isOpenToOffer.let {
                     offersState.value = it ?: false
                 }
@@ -252,7 +249,7 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
 
             is UiState.Error -> {
                 isLoading.value = false
-                MakeToast.short(context, currentState.errorMessage)
+                MakeToast.long(context, currentState.errorMessage)
             }
 
             else -> {
@@ -430,6 +427,14 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
                         modifier = Modifier
                             .size(148.dp)
                             .clip(RoundedCornerShape(8.dp))
+                            .clickable {
+                                postImageUrl.value = imageUrl
+                                showDialogStatePostImage.value = true
+                            }
+                    )
+                    OpenImageDialog(
+                        showDialogState = showDialogStatePostImage,
+                        imageUrl = postImageUrl.value
                     )
                 }
             }

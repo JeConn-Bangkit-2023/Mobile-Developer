@@ -1,11 +1,11 @@
 package com.capstone.jeconn.ui.screen.dashboard.profile_screen.edit_detail_info
 
+import android.net.Uri
 import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
 import com.capstone.jeconn.data.entities.PublicDataEntity
 import com.capstone.jeconn.repository.ProfileRepository
 import com.capstone.jeconn.state.UiState
-import java.io.File
 
 class EditDetailInfoViewModel(
     private val profileRepository: ProfileRepository
@@ -28,8 +28,8 @@ class EditDetailInfoViewModel(
         profileRepository.getPublicData()
     }
 
-    fun updateJobImage(file: File) {
-        profileRepository.updateJobImage(file)
+    fun updateJobImage(uri: Uri) {
+        profileRepository.updateJobImage(uri)
     }
 
     init {

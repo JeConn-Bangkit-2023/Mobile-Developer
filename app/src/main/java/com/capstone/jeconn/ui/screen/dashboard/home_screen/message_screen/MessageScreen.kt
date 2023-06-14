@@ -159,7 +159,7 @@ fun MessageScreen(navHostController: NavHostController) {
                                 "${context.getString(R.string.You)}: ${
                                     cutTextLength(
                                         message.messages?.values?.last()?.message ?: "",
-                                        22
+                                        20
                                     )
                                 }"
                             } else {

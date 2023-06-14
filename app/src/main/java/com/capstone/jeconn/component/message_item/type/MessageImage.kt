@@ -14,13 +14,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.capstone.jeconn.component.Font
+import com.capstone.jeconn.component.OpenImageDialog
 import com.capstone.jeconn.utils.CropToSquareImage
 import com.capstone.jeconn.utils.getTimeAgo
 
@@ -45,7 +45,7 @@ fun MessageImage(
     dateTime: Long
 ) {
     val context = LocalContext.current
-    val showDialog = remember { mutableStateOf(false) }
+    val showDialogState = rememberSaveable { mutableStateOf(false) }
     val paddingValues = if (isMine) {
         PaddingValues(start = 128.dp)
     } else {
@@ -111,7 +111,7 @@ fun MessageImage(
                     .padding(8.dp)
                     .heightIn(max = 248.dp)
                     .clickable {
-                        showDialog.value = true
+                        showDialogState.value = true
                     }
             ) {
                 GlideImage(
@@ -156,24 +156,5 @@ fun MessageImage(
         }
     }
 
-    if (showDialog.value) {
-        AlertDialog(
-            onDismissRequest = { showDialog.value = false },
-        ) {
-            Box(
-                modifier = Modifier
-                    .clickable { showDialog.value = false },
-                contentAlignment = Alignment.Center
-            ) {
-                GlideImage(
-                    model = imageUrl,
-                    contentDescription = null,
-                    contentScale = ContentScale.FillWidth,
-                    modifier = Modifier
-                ) {
-                    it
-                }
-            }
-        }
-    }
+    OpenImageDialog(showDialogState = showDialogState, imageUrl = imageUrl)
 }

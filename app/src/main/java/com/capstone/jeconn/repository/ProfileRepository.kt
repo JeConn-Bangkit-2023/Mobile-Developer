@@ -1,35 +1,38 @@
 package com.capstone.jeconn.repository
 
-import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.capstone.jeconn.R
 import com.capstone.jeconn.data.entities.PublicDataEntity
+import com.capstone.jeconn.listener.ImageProcessingListener
+import com.capstone.jeconn.listener.ImageProcessor
 import com.capstone.jeconn.retrofit.ApiConfig
 import com.capstone.jeconn.state.UiState
-import com.capstone.jeconn.utils.reduceFileImage
+import com.capstone.jeconn.utils.createImageAsFormReqBody
+import com.capstone.jeconn.utils.uriToFile
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
 
 class ProfileRepository(
     private val context: Context
 ) {
     private val ref = Firebase.database.reference
     private val auth = Firebase.auth
-    private val apiService = ApiConfig.apiService
+    private val uploadImageApiService = ApiConfig.uploadImageApiService
+
     val getPublicDataState: MutableState<UiState<PublicDataEntity>> = mutableStateOf(UiState.Empty)
     val updateProfileImageState: MutableState<UiState<String>> = mutableStateOf(UiState.Empty)
     val updateDetailInfoState: MutableState<UiState<String>> =
@@ -57,8 +60,6 @@ class ProfileRepository(
             "isOpenToOffer" to offers
         )
 
-
-
         ref.child("publicData").child(auth.currentUser!!.displayName!!).child("jobInformation")
             .updateChildren(newJobData).addOnSuccessListener {
                 ref.child("publicData").child(auth.currentUser!!.displayName!!)
@@ -74,41 +75,62 @@ class ProfileRepository(
 
     }
 
-    fun updateJobImage(file: File) {
+    fun updateJobImage(uri: Uri) {
         updateJobImageState.value = UiState.Loading
 
-        val myFile = reduceFileImage(file)
-        val fileRequestBody = myFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
-        val profileImage: MultipartBody.Part =
-            MultipartBody.Part.createFormData("image", file.name, fileRequestBody)
-        val response =
-            apiService.postJobImage(auth.currentUser!!.displayName!!, profileImage)
+        CoroutineScope(Dispatchers.Default).launch {
+            val myFile = uriToFile(uri, context)
+            if (myFile.exists()) {
+                ImageProcessor(context, myFile, object : ImageProcessingListener {
+                    override fun onImageSafe() {
 
-        response.enqueue(object : Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                when (response.code()) {
-                    201 -> {
-                        updateJobImageState.value =
-                            UiState.Success(context.getString(R.string.successfully_update_job_image))
+                        val profileImage = createImageAsFormReqBody(myFile, "image")
+                        val response =
+                            uploadImageApiService.postJobImage(auth.currentUser!!.displayName!!, profileImage)
+
+                        response.enqueue(object : Callback<Unit> {
+                            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                                when (response.code()) {
+                                    201 -> {
+                                        updateJobImageState.value =
+                                            UiState.Success(context.getString(R.string.successfully_update_job_image))
+                                    }
+
+                                    400 -> {
+                                        updateJobImageState.value =
+                                            UiState.Error(context.getString(R.string.image_type_wrong))
+                                    }
+
+                                    else -> {
+                                        updateJobImageState.value =
+                                            UiState.Error(context.getString(R.string.server_fail))
+                                    }
+                                }
+                            }
+
+                            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                                updateJobImageState.value = UiState.Error(t.message.toString())
+                            }
+
+                        })
                     }
 
-                    400 -> {
-                        updateJobImageState.value =
-                            UiState.Error(context.getString(R.string.image_type_wrong))
+                    override fun onImageUnsafe(errorMessage: String) {
+                        updateJobImageState.value = UiState.Error(errorMessage)
                     }
 
-                    else -> {
-                        updateJobImageState.value =
-                            UiState.Error(context.getString(R.string.server_fail))
+                    override fun onBadRequest(errorMessage: String) {
+                        updateJobImageState.value = UiState.Error(errorMessage)
                     }
-                }
+
+                    override fun onServerError(errorMessage: String) {
+                        updateJobImageState.value = UiState.Error(errorMessage)
+                    }
+
+                })
             }
+        }
 
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                updateJobImageState.value = UiState.Error(t.message.toString())
-            }
-
-        })
 
     }
 
@@ -135,40 +157,71 @@ class ProfileRepository(
             })
     }
 
-    @SuppressLint("ResourceType")
-    fun updateProfileImage(file: File) {
+    fun updateProfileImage(uri: Uri) {
         updateProfileImageState.value = UiState.Loading
-        val myFile = reduceFileImage(file)
-        val fileRequestBody = myFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
-        val profileImage: MultipartBody.Part =
-            MultipartBody.Part.createFormData("profile_image", file.name, fileRequestBody)
-        val response =
-            apiService.updateProfileImage(auth.currentUser!!.displayName!!, profileImage)
 
-        response.enqueue(object : Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                when (response.code()) {
-                    200 -> {
-                        updateProfileImageState.value =
-                            UiState.Success(context.getString(R.string.successfully_update_profile_image))
+        CoroutineScope(Dispatchers.Default).launch {
+            val myFile = uriToFile(uri, context)
+            if (myFile.exists()) {
+                ImageProcessor(context, myFile, object : ImageProcessingListener {
+                    override fun onImageSafe() {
+                        val profileImage =
+                            createImageAsFormReqBody(myFile,"profile_image")
+
+                        val uploadResponse =
+                            uploadImageApiService.updateProfileImage(
+                                auth.currentUser!!.displayName!!,
+                                profileImage
+                            )
+
+                        uploadResponse.enqueue(object : Callback<Unit> {
+                            override fun onResponse(
+                                call: Call<Unit>,
+                                response: Response<Unit>
+                            ) {
+                                when (response.code()) {
+                                    200 -> {
+                                        updateProfileImageState.value =
+                                            UiState.Success(context.getString(R.string.successfully_update_profile_image))
+                                    }
+
+                                    400 -> {
+                                        updateProfileImageState.value =
+                                            UiState.Error(context.getString(R.string.image_type_wrong))
+                                    }
+
+                                    else -> {
+                                        updateProfileImageState.value =
+                                            UiState.Error(context.getString(R.string.server_fail))
+                                    }
+                                }
+                            }
+
+                            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                                updateProfileImageState.value =
+                                    UiState.Error(t.message.toString())
+                            }
+
+                        })
                     }
 
-                    400 -> {
+                    override fun onImageUnsafe(errorMessage: String) {
                         updateProfileImageState.value =
-                            UiState.Error(context.getString(R.string.image_type_wrong))
+                            UiState.Error(errorMessage)
                     }
 
-                    else -> {
+                    override fun onBadRequest(errorMessage: String) {
                         updateProfileImageState.value =
-                            UiState.Error(context.getString(R.string.server_fail))
+                            UiState.Error(errorMessage)
                     }
-                }
+
+                    override fun onServerError(errorMessage: String) {
+                        updateProfileImageState.value =
+                            UiState.Error(errorMessage)
+                    }
+
+                })
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                updateProfileImageState.value = UiState.Error(t.message.toString())
-            }
-
-        })
+        }
     }
 }
