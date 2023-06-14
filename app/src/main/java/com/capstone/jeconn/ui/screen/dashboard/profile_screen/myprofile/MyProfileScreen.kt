@@ -27,6 +27,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -216,15 +217,17 @@ fun MyProfileScreen(navHostController: NavHostController) {
             modifier = Modifier
                 .padding(bottom = 24.dp)
         ) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(28.dp)
-                    .clickable {
-                        navHostController.popBackStack()
-                    }
-            )
+
+            IconButton(
+                onClick = { navHostController.popBackStack() }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(28.dp)
+                )
+            }
 
             Spacer(modifier = Modifier.padding(horizontal = 8.dp))
 
@@ -259,7 +262,7 @@ fun MyProfileScreen(navHostController: NavHostController) {
                 )
                 Icon(
                     imageVector = Icons.Default.Edit,
-                    tint = MaterialTheme.colorScheme.background,
+                    tint = Color.White,
                     contentDescription = null,
                     modifier = Modifier
                         .size(36.dp)
@@ -274,10 +277,8 @@ fun MyProfileScreen(navHostController: NavHostController) {
                                     permission
                                 ) == PackageManager.PERMISSION_GRANTED
                             ) {
-                                // Permission granted, proceed with image selection
                                 pickImageLauncher.launch("image/*")
                             } else {
-                                // Permission has not been granted, request permission
                                 ActivityCompat.requestPermissions(
                                     activity,
                                     arrayOf(permission),

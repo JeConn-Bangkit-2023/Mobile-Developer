@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,7 +32,6 @@ fun CustomSearchBar(
     enabled: MutableState<Boolean>,
     history: MutableState<List<String>>,
     label: String,
-
     ) {
 
     SearchBar(
@@ -42,6 +42,19 @@ fun CustomSearchBar(
                 unfocusedTextColor = MaterialTheme.colorScheme.onBackground
             ),
         ),
+        trailingIcon = {
+            if (text.value.isNotEmpty()) {
+                Icon(
+                    imageVector = Icons.Default.Clear,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier
+                        .clickable {
+                            text.value = ""
+                        }
+                )
+            }
+        },
         query = text.value,
         onQueryChange = { text.value = it },
         onSearch = { enabled.value = false },

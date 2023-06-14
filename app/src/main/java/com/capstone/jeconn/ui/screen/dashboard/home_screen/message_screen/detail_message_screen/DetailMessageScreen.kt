@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +24,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -168,7 +168,7 @@ fun DetailMessageScreen(
                     targetUsernameState.value = it
                 }
 
-                if (messageRoom.size > 0 ){
+                if (messageRoom.size > 0) {
                     lazyListState.scrollToItem(messageRoom.lastIndex)
                 }
 
@@ -193,15 +193,16 @@ fun DetailMessageScreen(
             .background(MaterialTheme.colorScheme.background)
     ) {
         CustomNavbar {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(28.dp)
-                    .clickable {
-                        navHostController.popBackStack()
-                    }
-            )
+            IconButton(
+                onClick = { navHostController.popBackStack() }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(28.dp)
+                )
+            }
 
             Spacer(modifier = Modifier.padding(horizontal = 8.dp))
 

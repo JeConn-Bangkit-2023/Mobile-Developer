@@ -29,6 +29,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -268,15 +269,16 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
     ) {
         CustomNavbar {
 
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(28.dp)
-                    .clickable {
-                        navHostController.popBackStack()
-                    }
-            )
+            IconButton(
+                onClick = { navHostController.popBackStack() }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(28.dp)
+                )
+            }
 
             Spacer(modifier = Modifier.padding(horizontal = 8.dp))
 
