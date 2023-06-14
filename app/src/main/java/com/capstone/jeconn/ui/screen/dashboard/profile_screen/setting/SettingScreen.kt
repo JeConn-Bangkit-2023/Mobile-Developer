@@ -1,10 +1,10 @@
 package com.capstone.jeconn.ui.screen.dashboard.profile_screen.setting
 
 import android.content.Intent
+import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,7 +34,6 @@ import com.capstone.jeconn.navigation.NavRoute
 import com.capstone.jeconn.utils.navigateToTop
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import android.provider.Settings
 
 @Composable
 fun SettingScreen(navHostController: NavHostController) {
@@ -42,7 +42,9 @@ fun SettingScreen(navHostController: NavHostController) {
     val auth = Firebase.auth
     val openSettings = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
-    ) { _ -> /* Tangani hasil jika diperlukan */ }
+    ){
+        //Nothing
+    }
 
     Column(
         modifier = Modifier
@@ -52,15 +54,16 @@ fun SettingScreen(navHostController: NavHostController) {
 
         CustomNavbar {
 
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(28.dp)
-                    .clickable {
-                        navHostController.popBackStack()
-                    }
-            )
+            IconButton(
+                onClick = { navHostController.popBackStack() }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(28.dp)
+                )
+            }
 
             Spacer(modifier = Modifier.padding(horizontal = 8.dp))
 

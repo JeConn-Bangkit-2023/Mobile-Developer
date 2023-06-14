@@ -114,7 +114,6 @@ fun MessageScreen(navHostController: NavHostController) {
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 IconButton(
-
                     onClick = { navHostController.popBackStack() }
                 ) {
                     Icon(

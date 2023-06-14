@@ -2,7 +2,6 @@ package com.capstone.jeconn.ui.screen.dashboard.home_screen.message_screen.creat
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +15,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,7 +43,11 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun CreateInvoiceScreen(navHostController: NavHostController, tenant: String?, freelancer: String?) {
+fun CreateInvoiceScreen(
+    navHostController: NavHostController,
+    tenant: String?,
+    freelancer: String?
+) {
 
     val context = LocalContext.current
 
@@ -81,15 +85,16 @@ fun CreateInvoiceScreen(navHostController: NavHostController, tenant: String?, f
     ) {
         CustomNavbar {
 
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(28.dp)
-                    .clickable {
-                        navHostController.popBackStack()
-                    }
-            )
+            IconButton(
+                onClick = { navHostController.popBackStack() }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(28.dp)
+                )
+            }
 
             Spacer(modifier = Modifier.padding(horizontal = 8.dp))
 
@@ -152,7 +157,7 @@ fun CreateInvoiceScreen(navHostController: NavHostController, tenant: String?, f
                 state = noteState,
                 modifier = Modifier.fillMaxWidth()
             )
-            
+
             Spacer(modifier = Modifier.padding(vertical = 12.dp))
 
             CustomButton(text = context.getString(R.string.create_invoice)) {

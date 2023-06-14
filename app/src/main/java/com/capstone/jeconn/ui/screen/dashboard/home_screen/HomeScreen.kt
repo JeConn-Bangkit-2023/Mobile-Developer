@@ -1,7 +1,6 @@
 package com.capstone.jeconn.ui.screen.dashboard.home_screen
 
 import android.net.Uri
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -165,54 +165,58 @@ fun HomeScreen(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                Icon(
-                    imageVector = Icons.Default.Notifications,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(28.dp)
-                        .clickable {
-                            navigateTo(navHostController, NavRoute.NotificationScreen)
-                        }
-                )
+                IconButton(
+                    onClick = { navigateTo(navHostController, NavRoute.NotificationScreen) }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Notifications,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(28.dp)
+                    )
+                }
 
-                Spacer(modifier = Modifier.padding(horizontal = 8.dp))
+                Spacer(modifier = Modifier.padding(horizontal = 4.dp))
 
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_message),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(38.dp)
-                        .clickable {
-                            navigateTo(navHostController, NavRoute.MessageScreen)
-                        }
-                )
+                IconButton(
+                    onClick = { navigateTo(navHostController, NavRoute.MessageScreen) }
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_message),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(36.dp)
+                    )
+                }
             }
 
-            Spacer(modifier = Modifier.padding(vertical = 12.dp))
+            if (freelancerList.size > 0) {
+                Spacer(modifier = Modifier.padding(vertical = 12.dp))
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .padding(vertical = 16.dp, horizontal = 12.dp)
-            ) {
-
-                Text(
-                    text = context.getString(R.string.nearby_talent),
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        fontFamily = Font.QuickSand,
-                        fontWeight = FontWeight.Bold,
-                    ),
-                )
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                CustomFlatIconButton(
-                    icon = Icons.Default.KeyboardArrowRight,
-                    label = context.getString(R.string.more),
-                    isFrontIcon = false
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .padding(vertical = 16.dp, horizontal = 12.dp)
                 ) {
-                    contentRoute.value = 2
+
+                    Text(
+                        text = context.getString(R.string.nearby_talent),
+                        style = TextStyle(
+                            fontSize = 16.sp,
+                            fontFamily = Font.QuickSand,
+                            fontWeight = FontWeight.Bold,
+                        ),
+                    )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    CustomFlatIconButton(
+                        icon = Icons.Default.KeyboardArrowRight,
+                        label = context.getString(R.string.more),
+                        isFrontIcon = false
+                    ) {
+                        contentRoute.value = 2
+                    }
                 }
             }
 
@@ -241,30 +245,32 @@ fun HomeScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.padding(vertical = 12.dp))
+            if (vacanciesList.size > 0) {
+                Spacer(modifier = Modifier.padding(vertical = 12.dp))
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .padding(vertical = 8.dp, horizontal = 12.dp)
-            ) {
-                Text(
-                    text = context.getString(R.string.current_vacancies),
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        fontFamily = Font.QuickSand,
-                        fontWeight = FontWeight.Bold,
-                    ),
-                )
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                CustomFlatIconButton(
-                    icon = Icons.Default.KeyboardArrowRight,
-                    label = context.getString(R.string.more),
-                    isFrontIcon = false
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .padding(vertical = 8.dp, horizontal = 12.dp)
                 ) {
-                    contentRoute.value = 1
+                    Text(
+                        text = context.getString(R.string.current_vacancies),
+                        style = TextStyle(
+                            fontSize = 16.sp,
+                            fontFamily = Font.QuickSand,
+                            fontWeight = FontWeight.Bold,
+                        ),
+                    )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    CustomFlatIconButton(
+                        icon = Icons.Default.KeyboardArrowRight,
+                        label = context.getString(R.string.more),
+                        isFrontIcon = false
+                    ) {
+                        contentRoute.value = 1
+                    }
                 }
             }
         }
