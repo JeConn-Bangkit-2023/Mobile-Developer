@@ -52,7 +52,6 @@ import com.capstone.jeconn.component.CustomDialogBoxLoading
 import com.capstone.jeconn.component.CustomFlatIconButton
 import com.capstone.jeconn.component.CustomLabel
 import com.capstone.jeconn.component.CustomNavbar
-import com.capstone.jeconn.component.CustomRoundedIcon
 import com.capstone.jeconn.component.Font
 import com.capstone.jeconn.component.OpenImageDialog
 import com.capstone.jeconn.data.dummy.DummyData
@@ -316,7 +315,7 @@ fun DetailFreelancerScreen(
                                         freelancerState.value.username ?: "fauzanramadhani06"
                                     )
                                 },
-                                ) {
+                            ) {
                                 Icon(
                                     painterResource(id = R.drawable.ic_message),
                                     tint = MaterialTheme.colorScheme.background,
@@ -395,6 +394,7 @@ fun DetailFreelancerScreen(
             ) {
                 items(
                     freelancerState.value.jobInformation?.imagesUrl?.toList()
+                        ?.sortedByDescending { it.first }
                         ?: listOf()
                 ) { value ->
                     val data = value.second
