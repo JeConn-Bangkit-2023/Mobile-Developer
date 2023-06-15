@@ -38,7 +38,6 @@ import com.capstone.jeconn.navigation.NavRoute
 import com.capstone.jeconn.ui.screen.dashboard.freelancer_screen.FreelancerScreen
 import com.capstone.jeconn.ui.screen.dashboard.home_screen.HomeScreen
 import com.capstone.jeconn.ui.screen.dashboard.profile_screen.ProfileScreen
-import com.capstone.jeconn.ui.screen.dashboard.status_screen.StatusScreen
 import com.capstone.jeconn.ui.screen.dashboard.vacancies_screen.VacanciesScreen
 import com.capstone.jeconn.utils.navigateTo
 
