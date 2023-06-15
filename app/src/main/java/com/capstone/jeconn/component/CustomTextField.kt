@@ -25,6 +25,7 @@ fun CustomTextField(
     modifier: Modifier = Modifier,
     label: String,
     length: Int = 50,
+    maxLine: Int = Int.MAX_VALUE,
     type: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done,
     state: MutableState<String>,
@@ -72,5 +73,6 @@ fun CustomTextField(
         keyboardActions = KeyboardActions(
             onDone = { focusManager.clearFocus() }
         ),
+        maxLines = maxLine
     )
 }

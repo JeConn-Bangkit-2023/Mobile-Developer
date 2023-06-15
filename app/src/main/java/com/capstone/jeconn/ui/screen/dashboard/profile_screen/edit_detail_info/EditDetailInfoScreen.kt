@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -48,6 +49,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
@@ -60,6 +62,7 @@ import com.capstone.jeconn.component.CustomDatePickerTextField
 import com.capstone.jeconn.component.CustomDialogBoxLoading
 import com.capstone.jeconn.component.CustomDropDownMenu
 import com.capstone.jeconn.component.CustomFlatIconButton
+import com.capstone.jeconn.component.CustomLengthCounter
 import com.capstone.jeconn.component.CustomNavbar
 import com.capstone.jeconn.component.CustomSwitchItem
 import com.capstone.jeconn.component.CustomTextField
@@ -350,9 +353,19 @@ fun EditDetailInfoScreen(navHostController: NavHostController) {
             CustomTextField(
                 label = context.getString(R.string.about),
                 state = aboutState,
-                length = 1000,
+                length = 800,
+                maxLine = 6,
+                imeAction = ImeAction.None,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .heightIn(min = 100.dp)
+            )
+
+            Spacer(modifier = Modifier.padding(4.dp))
+
+            CustomLengthCounter(
+                currentLength = aboutState.value.length,
+                maxLength = 800
             )
 
             HorizontalDivider()

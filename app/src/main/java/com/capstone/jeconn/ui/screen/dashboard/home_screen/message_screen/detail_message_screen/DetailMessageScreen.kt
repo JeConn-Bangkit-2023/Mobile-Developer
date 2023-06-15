@@ -42,6 +42,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -249,20 +250,20 @@ fun DetailMessageScreen(
                     .background(MaterialTheme.colorScheme.inversePrimary)
                     .padding(top = 0.dp, bottom = 12.dp, start = 8.dp, end = 8.dp),
             ) {
-                CustomRoundedIcon(
-                    icon = R.drawable.ic_invoice,
-                    modifier = Modifier
-                        .padding(top = 8.dp)
-                        .size(50.dp)
-
-                ) {
+//                CustomRoundedIcon(
+//                    icon = R.drawable.ic_invoice,
+//                    modifier = Modifier
+//                        .padding(top = 8.dp)
+//                        .size(50.dp)
+//
+//                ) {
 //                    navHostController.navigate(
 //                        NavRoute.CreateInvoiceScreen.navigateWithData(
 //                            tenant = targetUsernameState.value,
 //                            freelancer = auth.displayName!!
 //                        )
 //                    )
-                }
+//                }
                 CustomRoundedIcon(
                     icon = R.drawable.ic_image,
                     modifier = Modifier
@@ -295,11 +296,12 @@ fun DetailMessageScreen(
                 label = context.getString(R.string.write_a_message),
                 state = messageState,
                 length = 500,
+                maxLine = 6,
                 rounded = 50.dp,
+                imeAction = ImeAction.None,
                 modifier = Modifier
                     .weight(1f)
                     .heightIn(min = 65.dp)
-
             )
 
             CustomRoundedIcon(

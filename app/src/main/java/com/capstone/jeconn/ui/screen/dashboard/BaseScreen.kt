@@ -88,11 +88,11 @@ fun BaseScreen(
             icon = R.drawable.ic_freelancer,
             content = { FreelancerScreen(navHostController = navHostController, myPaddingValues) }
         ),
-        DashboardContent(
-            title = context.getString(R.string.status),
-            icon = R.drawable.ic_status,
-            content = { StatusScreen(navHostController = navHostController, myPaddingValues) }
-        ),
+//        DashboardContent(
+//            title = context.getString(R.string.status),
+//            icon = R.drawable.ic_status,
+//            content = { StatusScreen(navHostController = navHostController, myPaddingValues) }
+//        ),
         DashboardContent(
             title = context.getString(R.string.profile),
             icon = R.drawable.ic_profile,

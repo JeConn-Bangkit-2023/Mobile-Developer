@@ -171,6 +171,7 @@ fun LoginScreen(
                 state = passwordState,
                 label = "Password",
                 type = KeyboardType.Password,
+                imeAction = ImeAction.Done,
                 leadingIcon = R.drawable.ic_lock,
                 modifier = Modifier
                     .fillMaxWidth()
