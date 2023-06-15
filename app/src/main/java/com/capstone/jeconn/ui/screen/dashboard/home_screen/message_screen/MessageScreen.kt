@@ -88,7 +88,10 @@ fun MessageScreen(navHostController: NavHostController) {
 
             is UiState.Success -> {
                 isLoading.value = false
-                messageList.addAll(currentState.data.sortedByDescending { it.messages?.values?.last()?.date })
+                messageList.addAll(currentState.data.sortedByDescending { it.messages?.values?.last()?.date }
+                    .filter {
+                        it.messages?.values != null
+                    })
             }
 
             is UiState.Error -> {
@@ -193,7 +196,7 @@ fun MessageScreen(navHostController: NavHostController) {
                                 getProfileImage = Uri.encode(message.currentTargetImageUrl)
                                     .toString()
                             )
-                        ){
+                        ) {
                             launchSingleTop = true
                         }
                     }

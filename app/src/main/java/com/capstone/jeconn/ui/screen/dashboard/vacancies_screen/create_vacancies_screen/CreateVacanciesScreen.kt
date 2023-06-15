@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -41,6 +42,7 @@ import com.capstone.jeconn.R
 import com.capstone.jeconn.component.CustomButton
 import com.capstone.jeconn.component.CustomChip
 import com.capstone.jeconn.component.CustomDialogBoxLoading
+import com.capstone.jeconn.component.CustomLengthCounter
 import com.capstone.jeconn.component.CustomNavbar
 import com.capstone.jeconn.component.CustomTextField
 import com.capstone.jeconn.component.Font
@@ -222,15 +224,25 @@ fun CreateVacanciesScreen(navHostController: NavHostController) {
                 )
             }
 
-            CustomTextField(
-                label = context.getString(R.string.job_description),
-                state = descriptionState,
-                imeAction = ImeAction.Next,
-                length = 500,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .size(100.dp)
-            )
+            Column {
+                CustomTextField(
+                    label = context.getString(R.string.job_description),
+                    state = descriptionState,
+                    imeAction = ImeAction.None,
+                    maxLine = 6,
+                    length = 800,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 100.dp)
+                )
+
+                Spacer(modifier = Modifier.padding(4.dp))
+
+                CustomLengthCounter(
+                    currentLength = descriptionState.value.length,
+                    maxLength = 800
+                )
+            }
 
             Row {
                 Text(
@@ -287,7 +299,7 @@ fun CreateVacanciesScreen(navHostController: NavHostController) {
                         MakeToast.short(context, context.getString(R.string.empty_category))
                     }
 
-                    (descriptionState.value == "") -> {
+                    (descriptionState.value == "" || descriptionState.value == " ") -> {
                         MakeToast.short(context, context.getString(R.string.empty_description))
                     }
 

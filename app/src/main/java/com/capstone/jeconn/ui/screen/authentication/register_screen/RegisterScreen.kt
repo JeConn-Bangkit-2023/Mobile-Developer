@@ -202,6 +202,7 @@ fun RegisterScreen(navHostController: NavHostController) {
             state = passwordState,
             label = context.getString(R.string.password),
             type = KeyboardType.Password,
+            imeAction = ImeAction.Next,
             leadingIcon = R.drawable.ic_lock,
             modifier = Modifier
                 .fillMaxWidth()
@@ -213,6 +214,7 @@ fun RegisterScreen(navHostController: NavHostController) {
             state = passwordConfirmationState,
             label = context.getString(R.string.confirm_password),
             type = KeyboardType.Password,
+            imeAction = ImeAction.Done,
             leadingIcon = R.drawable.ic_lock,
             modifier = Modifier
                 .fillMaxWidth()

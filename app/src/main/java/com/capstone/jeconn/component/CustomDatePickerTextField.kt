@@ -25,7 +25,6 @@ import com.capstone.jeconn.utils.patternNoHours
 import com.capstone.jeconn.utils.patternWithHours
 import com.capstone.jeconn.utils.timeStampToDate
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomDatePickerTextField(
     state: MutableState<Long>,
