@@ -17,7 +17,7 @@ This app is an onsite entertainment freelance job search platform. It allows use
 
 ## Technology Used
 
-- Programming Language: HTML
+- Programming Language: Kotlin
 - Architecture: Model-View-ViewModel (MVVM)
 - UI Library: Jetpack Compose
 
