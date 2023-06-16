@@ -2,7 +2,7 @@
 
 Entertainment Freelance Job Seeker App
 
-![App Demo Image](https://firebasestorage.googleapis.com/v0/b/job-entertainment-connecting.appspot.com/o/App%20Demo%20Image.png?alt=media&token=e3620b9b-d8bd-4445-973a-74d8864277cb)
+![App Demo Image](https://firebasestorage.googleapis.com/v0/b/job-entertainment-connecting.appspot.com/o/App%20Demo%20Image%20resize.png?alt=media&token=8095912a-acb2-4c6f-a3b5-074470f89897)
 
 ## Description
 
