@@ -38,8 +38,9 @@ Before starting app development, make sure you have the appropriate development 
 
 ## Contact
 
-If you have any questions or feedback, please contact us via email at [fauzanramadhani06@gmail.com](fauzanramadhani06@gmail.com).
-
+If you have any questions or feedback, please contact us via email at:
+- [fauzanramadhani06@gmail.com](fauzanramadhani06@gmail.com)
+- [hadid03012001@gmail.com](hadid03012001@gmail.com)
 ---
 
 **Note:** You may have to reconfigure firebase settings
