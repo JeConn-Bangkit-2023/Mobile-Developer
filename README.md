@@ -1,4 +1,4 @@
-![App Demo Image](https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80)
+![App Demo Image](https://firebasestorage.googleapis.com/v0/b/job-entertainment-connecting.appspot.com/o/App%20Demo%20Image.png?alt=media&token=e3620b9b-d8bd-4445-973a-74d8864277cb)
 
 # JeConn
 
