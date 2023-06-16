@@ -1,8 +1,8 @@
-![App Demo Image](https://firebasestorage.googleapis.com/v0/b/job-entertainment-connecting.appspot.com/o/App%20Demo%20Image.png?alt=media&token=e3620b9b-d8bd-4445-973a-74d8864277cb)
-
 # JeConn
 
 Entertainment Freelance Job Seeker App
+
+![App Demo Image](https://firebasestorage.googleapis.com/v0/b/job-entertainment-connecting.appspot.com/o/App%20Demo%20Image.png?alt=media&token=e3620b9b-d8bd-4445-973a-74d8864277cb)
 
 ## Description
 
